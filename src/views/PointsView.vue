@@ -27,7 +27,7 @@
     </v-container>
 </template>
 <script>
-import axios from "axios";
+import axios from "../axios/axios"
 export default {
     data() {
         return {
@@ -38,7 +38,7 @@ export default {
     methods: {
         getPoints() {
             axios
-                .get("http://localhost:8080/points")
+                .get("/points")
                 .then((response) => {
                     console.log(response.data);
                     this.points = response.data;
