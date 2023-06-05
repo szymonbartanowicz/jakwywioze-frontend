@@ -52,37 +52,5 @@ export default {
         this.getPoints();
     }
 };
-// import { reactive, onMounted } from "vue";
-// import axios from "axios";
-//
-// export default {
-//     name: "App",
-//     setup() {
-//         const state = reactive({
-//             points: [],
-//         });
-//
-//         const getPoints = () => {
-//             axios
-//                 .get("http://localhost:8081/points")
-//                 .then((response) => {
-//                     console.log(response.data);
-//                     state.points = response.data;
-//                 })
-//                 .catch((errors) => {
-//                     console.log(errors);
-//                 });
-//         };
-//
-//         onMounted(() => {
-//             getPoints();
-//         });
-//
-//         return {
-//             state,
-//             getPoints,
-//         };
-//     },
-// };
 </script>
 
