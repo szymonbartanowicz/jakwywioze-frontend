@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card width="600px" class="mx-auto mt-4" v-for="point in points" v-if="points.length">
+        <v-card width="600px" class="mx-auto mt-4" v-for="point in points.points" v-if="points.points?.length" :key="point.id">
             <v-img
                 class="align-end text-white"
                 height="200"
@@ -26,31 +26,15 @@
         <div v-else>Brak punktów spełniających podane kryteria</div>
     </v-container>
 </template>
-<script>
-import axios from "../axios/axios"
-export default {
-    data() {
-        return {
-            points: [],
-        };
-    },
-    name: "App",
-    methods: {
-        getPoints() {
-            axios
-                .get("/points")
-                .then((response) => {
-                    console.log(response.data);
-                    this.points = response.data;
-                })
-                .catch((errors) => {
-                    console.log(errors);
-                });
-        },
-    },
-    mounted() {
-        this.getPoints();
-    }
-};
+<script lang="ts" setup>
+import { onMounted } from 'vue'
+import { usePointsStore } from '@/store/PointsStore'
+
+const points = usePointsStore()
+
+onMounted(() => {
+    points.getPoints()
+})
+
 </script>
 
