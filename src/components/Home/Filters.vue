@@ -4,26 +4,34 @@
           cols="4"
         >
             <v-select
+                    v-model="wasteTypes"
+                    @update:model-value="setFilters"
+                    multiple
+                    chips
                     label="Rodzaj odpadów"
-                    :items="['Drewno', 'Gruz', 'Biologiczne', 'Elektryka', 'Opony']"
+                    :items="filters.wasteTypes"
                     class="mr-3"
             ></v-select>
         </v-col>
         <v-col
           cols="4"
         >
-            <v-select
-                    label="Miasto"
-                    :items="['Poznań', 'Szczecin', 'Warszawa']"
-                    class="mr-3"
-            ></v-select>
+            <v-autocomplete
+                v-model="city"
+                @update:model-value="setFilters"
+                label="Miasto"
+                :items="filters.cities"
+                class="mr-3"
+            ></v-autocomplete>
         </v-col>
         <v-col
           cols="2"
         >
             <v-select
+                    v-model="range"
+                    @update:model-value="setFilters"
                     label="Zasięg"
-                    :items="['1', '2', '5', '10', '20', '50']"
+                    :items="[1, 2, 3, 4, 5]"
                     suffix="km"
                     class="mr-3"
             ></v-select>
@@ -44,5 +52,27 @@
         </v-col>
     </v-row>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
+import { useFiltersStore } from '@/store/FiltersStore'
+
+const filters = useFiltersStore()
+const range = ref(0)
+const city = ref('')
+const wasteTypes = ref([])
+
+function setFilters() {
+    filters.$patch({
+        filters: {
+            range: range.value,
+            city: city.value,
+            wasteTypes: wasteTypes.value
+        }
+    })
+}
+
+onMounted(() => {
+    filters.getCities()
+    filters.getWasteTypes()
+})
 </script>
