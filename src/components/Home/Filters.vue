@@ -8,6 +8,7 @@
                     @update:model-value="setFilters"
                     multiple
                     chips
+                    clearable
                     label="Rodzaj odpadów"
                     :items="filters.wasteTypes"
                     class="mr-3"
@@ -31,7 +32,7 @@
                     v-model="range"
                     @update:model-value="setFilters"
                     label="Zasięg"
-                    :items="[1, 2, 3, 4, 5]"
+                    :items="config.ranges"
                     suffix="km"
                     class="mr-3"
             ></v-select>
@@ -41,7 +42,7 @@
         >
             <router-link to="/points">
                 <v-btn
-                    color="#00C500"
+                    color="green"
                     block
                     class="text-white float-left"
                     height="56px"
@@ -55,9 +56,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useFiltersStore } from '@/store/FiltersStore'
+import config from "@/config/config";
 
 const filters = useFiltersStore()
-const range = ref(0)
+const range = ref()
 const city = ref('')
 const wasteTypes = ref([])
 

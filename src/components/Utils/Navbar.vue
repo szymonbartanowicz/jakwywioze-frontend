@@ -1,11 +1,11 @@
 <template>
-    <v-app-bar :elevation="2" color="#007199" class="custom-navbar">
+    <v-app-bar :elevation="2" color="blue" class="custom-navbar">
         <div>
             <router-link to="/">
                 <v-btn
                     class="mr-2 ml-2 text-white"
                 >
-                    <v-icon icon="mdi-recycle" color="#00C500" class="mr-1" size="x-large"></v-icon>
+                    <v-icon icon="mdi-recycle" color="green" class="mr-1" size="x-large"></v-icon>
                     Jakwywioze.pl
                 </v-btn>
             </router-link>
@@ -22,7 +22,7 @@
             <router-link to="login">
                 <v-btn
                     variant="elevated"
-                    color="#00C500"
+                    color="green"
                     rounded
                     class="text-white"
                 >

@@ -19,7 +19,6 @@ export const useFiltersStore = defineStore('filters', () => {
     async function getCities() {
         const response = await axios.get('/points/cities')
         cities.value = response.data
-        // cities.value = ["Szczecin", "Poznań", "Warszawa"]
     }
     async function getWasteTypes() {
         // const response = await axios.get('/waste-types')
@@ -31,6 +30,6 @@ export const useFiltersStore = defineStore('filters', () => {
         cities,
         wasteTypes,
         getCities,
-        getWasteTypes
+        getWasteTypes,
     }
 })

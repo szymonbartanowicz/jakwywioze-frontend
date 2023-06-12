@@ -13,7 +13,7 @@
                     label="Hasło"
                 ></v-text-field>
                 <router-link to="/"><span class="float-right mb-3 text-decoration-underline font-weight-light">Zapomniałeś hasła?</span></router-link>
-                <v-btn type="submit" block color="#00C500" class="text-white">Zaloguj się</v-btn>
+                <v-btn type="submit" block color="green" class="text-white">Zaloguj się</v-btn>
                 <v-btn
                     block
                     prepend-icon="mdi-facebook"

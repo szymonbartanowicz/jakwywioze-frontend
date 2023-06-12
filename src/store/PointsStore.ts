@@ -14,13 +14,17 @@ interface Point {
 }
 export const usePointsStore = defineStore('points', () => {
     const points = ref<Point[]>([])
+    const isLoading = ref(true)
+
     async function getPoints() {
         const response = await axios.get('/points')
         points.value = response.data
+        isLoading.value = false
     }
 
     return {
         points,
-        getPoints
+        getPoints,
+        isLoading,
     }
 })

@@ -18,7 +18,7 @@
                     label="Powtórz hasło"
                 ></v-text-field>
                 <router-link to="/login"><span class="float-right mb-3 text-decoration-underline font-weight-light">Posiadasz już konto?</span></router-link>
-                <v-btn type="submit" block color="#00C500" class="text-white">Zarejestruj się</v-btn>
+                <v-btn type="submit" block color="green" class="text-white">Zarejestruj się</v-btn>
             </v-form>
         </v-sheet>
     </v-container>
