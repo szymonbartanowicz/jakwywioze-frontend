@@ -3,20 +3,6 @@
         <v-col
           cols="4"
         >
-            <v-select
-                    v-model="wasteTypes"
-                    @update:model-value="setFilters"
-                    multiple
-                    chips
-                    clearable
-                    label="Rodzaj odpadów"
-                    :items="filters.wasteTypes"
-                    class="mr-3"
-            ></v-select>
-        </v-col>
-        <v-col
-          cols="4"
-        >
             <v-autocomplete
                 v-model="city"
                 @update:model-value="setFilters"
@@ -35,6 +21,20 @@
                     :items="config.ranges"
                     suffix="km"
                     class="mr-3"
+            ></v-select>
+        </v-col>
+        <v-col
+            cols="4"
+        >
+            <v-select
+                v-model="wasteTypesNames"
+                @update:model-value="setFilters"
+                multiple
+                chips
+                clearable
+                label="Rodzaj odpadów"
+                :items="filters.wasteTypesNames"
+                class="mr-3"
             ></v-select>
         </v-col>
         <v-col
@@ -61,20 +61,21 @@ import config from "@/config/config";
 const filters = useFiltersStore()
 const range = ref()
 const city = ref('')
-const wasteTypes = ref([])
+const wasteTypesNames = ref([])
 
 function setFilters() {
     filters.$patch({
         filters: {
             range: range.value,
             city: city.value,
-            wasteTypes: wasteTypes.value
+            wasteTypesNames: wasteTypesNames.value
         }
     })
 }
 
 onMounted(() => {
+    filters.reset()
     filters.getCities()
-    filters.getWasteTypes()
+    filters.getWasteTypesNames()
 })
 </script>
