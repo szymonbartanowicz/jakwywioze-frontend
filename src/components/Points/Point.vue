@@ -7,13 +7,13 @@
                 cover
         >
         </v-img>
-        <v-card-title class="text-left mt-2">{{ point.name }}</v-card-title>
+        <v-card-title class="text-left mt-2 ml-1">{{ point.name }}</v-card-title>
         <WasteTypesChips :waste-types="point.wasteTypes"></WasteTypesChips>
         <v-list class="text-left d-block" density="compact">
-            <v-list-item v-if="point.city && point.city != 'null'"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
+            <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
             <CurrentAvailability v-if="point.openingHours" :opening-hours="point.openingHours"></CurrentAvailability>
-            <v-list-item link v-if="point.website && point.website != 'null'"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="point.website" target="_blank">{{ point.website }}</a></v-list-item>
-            <v-list-item v-if="point.phoneNumber && point.phoneNumber != 'null'"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
+            <v-list-item link v-if="point.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="point.website" target="_blank">{{ point.website }}</a></v-list-item>
+            <v-list-item v-if="point.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                 {{ point.phoneNumber }}</v-list-item>
         </v-list>
         <v-card-actions class="float-right pa-4">
