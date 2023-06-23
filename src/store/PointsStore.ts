@@ -47,12 +47,19 @@ export const usePointsStore = defineStore('points', () => {
         isLoading.value = false
     }
 
+    function openingHoursValidated(openingHours: string): boolean {
+        if (!openingHours.length) return false;
+        const openingHoursArray = openingHours.split(';')
+        const regex = /^(?:(\d{1,2}:\d{2}–\d{1,2}:\d{2})|0)(?:;(?:\d{1,2}:\d{2}–\d{1,2}:\d{2}|0)){6}$/
+        return regex.test(openingHours);
+    }
+
     function getAvailability(openingHours: string): currentAvailabilityData {
         let data: currentAvailabilityData = {
             status: '',
             info: ''
         }
-        if (!openingHours.length) return data;
+        if (!openingHoursValidated(openingHours)) return data
         const openingHoursArray = openingHours.split(';')
         if (openingHoursArray.length != 7) return data;
         const currentTime = moment().format('HH:mm')
