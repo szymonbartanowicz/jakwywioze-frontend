@@ -17,13 +17,20 @@
                 {{ point.phoneNumber }}</v-list-item>
         </v-list>
         <v-card-actions class="float-right pa-4">
-            <v-btn variant="outlined" color="green">Info</v-btn>
-            <v-btn variant="flat" color="green" class="text-white">Trasa</v-btn>
+            <router-link :to="{
+                            name: 'point',
+                            params: {
+                              id: point.id
+                            }
+                          }">
+                <v-btn variant="outlined" color="green">Info</v-btn>
+            </router-link>
+            <v-btn variant="flat" color="green" class="text-white ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 <script lang="ts" setup>
-import { defineProps, PropType, onMounted } from 'vue';
+import { defineProps, PropType } from 'vue';
 import { usePointsStore, Point } from '@/store/PointsStore'
 import CurrentAvailability from "@/components/Points/CurrentAvailability.vue";
 import WasteTypesChips from "@/components/Points/WasteTypesChips.vue";

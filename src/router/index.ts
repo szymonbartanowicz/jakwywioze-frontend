@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from "../views/LoginView.vue";
 import PointsView from "../views/PointsView.vue";
+import PointView from "../views/PointView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/points',
     name: 'points',
     component: PointsView
+  },
+  {
+    path: '/points/:id',
+    name: 'point',
+    component: PointView
   },
 ]
 

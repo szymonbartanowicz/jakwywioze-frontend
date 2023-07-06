@@ -29,12 +29,19 @@ export const useFiltersStore = defineStore('filters', () => {
         filters.value.city = ''
         filters.value.wasteTypesNames = []
     }
+
+    function filtersAreEmpty() {
+        return (typeof filters.value.range == "undefined" || filters.value.range == 0 || filters.value.range == null)
+                && (typeof filters.value.city == "undefined" || filters.value.city == '' || filters.value.city == null)
+                && (typeof filters.value.wasteTypesNames == "undefined" || !filters.value.wasteTypesNames.length)
+    }
     return {
         filters,
         cities,
         wasteTypesNames,
         getCities,
         getWasteTypesNames,
-        reset
+        reset,
+        filtersAreEmpty
     }
 })

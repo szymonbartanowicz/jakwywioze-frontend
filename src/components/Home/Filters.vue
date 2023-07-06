@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters>
+    <v-row no-gutters class="mb-10">
         <v-col
           cols="4"
         >
@@ -17,6 +17,7 @@
             <v-select
                     v-model="range"
                     @update:model-value="setFilters"
+                    clearable
                     label="Zasięg"
                     :items="config.ranges"
                     suffix="km"
@@ -40,25 +41,26 @@
         <v-col
           cols="2"
         >
-            <router-link to="/points">
-                <v-btn
-                    color="green"
-                    block
-                    class="text-white float-left"
-                    height="56px"
-                >
-                    Szukaj
-                </v-btn>
-            </router-link>
+            <v-btn
+                @click.prevent="points.getPoints"
+                color="green"
+                block
+                class="text-white float-left"
+                height="56px"
+            >
+                Szukaj
+            </v-btn>
         </v-col>
     </v-row>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useFiltersStore } from '@/store/FiltersStore'
+import { usePointsStore } from '@/store/PointsStore'
 import config from "@/config/config";
 
 const filters = useFiltersStore()
+const points = usePointsStore()
 const range = ref()
 const city = ref('')
 const wasteTypesNames = ref([])

@@ -5,6 +5,7 @@ import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
 import Point from "@/components/Points/Point.vue";
 import config from "@/config/config";
+import loginView from "@/views/LoginView.vue";
 
 export interface wasteType {
     id: number,
@@ -31,20 +32,18 @@ interface currentAvailabilityData {
 export const usePointsStore = defineStore('points', () => {
     const points = ref<Point[]>([])
     const filters = useFiltersStore()
-    const isLoading = ref(true)
+    const isLoading = ref(false)
 
     async function getPoints() {
-        isLoading.value = true
-        const response = await axios.get('/points')
-        points.value = response.data
-        isLoading.value = false
-    }
-
-    async function getFilteredPoints() {
         isLoading.value = true
         const response = await axios.post('/points/filtered', filters.filters)
         points.value = response.data
         isLoading.value = false
+    }
+
+    async function getPoint(pointId: string | string[]) {
+        const response = await axios.get(`/points/${pointId}`)
+        return response.data
     }
 
     function openingHoursValidated(openingHours: string): boolean {
@@ -90,7 +89,7 @@ export const usePointsStore = defineStore('points', () => {
 
     function getWasteTypesMatchingFilters(wasteTypes: wasteType[]) {
         let matchingWasteTypes: wasteType[] = [];
-        wasteTypes.forEach((wt) => {
+        wasteTypes?.forEach((wt) => {
             if (filters.filters.wasteTypesNames.includes(wt.name)) {
                 matchingWasteTypes.push(wt)
             }
@@ -101,9 +100,9 @@ export const usePointsStore = defineStore('points', () => {
     return {
         points,
         getPoints,
-        getFilteredPoints,
         isLoading,
         getAvailability,
-        getWasteTypesMatchingFilters
+        getWasteTypesMatchingFilters,
+        getPoint
     }
 })

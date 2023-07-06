@@ -6,7 +6,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {defineProps, onMounted, PropType, ref, Ref} from 'vue'
+import { defineProps, onMounted, PropType, ref } from 'vue'
 import { usePointsStore, wasteType } from '@/store/PointsStore'
 import config from "@/config/config";
 

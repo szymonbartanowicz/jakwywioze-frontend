@@ -6,24 +6,9 @@
     </v-container>
 </template>
 <script lang="ts" setup>
-import { onMounted } from 'vue'
 import { usePointsStore } from '@/store/PointsStore'
-import { useFiltersStore } from '@/store/FiltersStore'
 import Point from '@/components/Points/Point.vue';
 
 const points = usePointsStore()
-const filters = useFiltersStore()
-
-onMounted(() => {
-    // if ((filters.filters.range == 0 || typeof filters.filters.range == "undefined") && filters.filters.city == "" && filters.filters.wasteTypesNames.length == 0) {
-    //     points.points = []
-    //     points.getPoints()
-    // }
-    // else {
-    //     points.points = []
-        points.getFilteredPoints()
-    // }
-})
-
 </script>
 
