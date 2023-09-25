@@ -36,7 +36,8 @@ export const usePointsStore = defineStore('points', () => {
 
     async function getPoints() {
         isLoading.value = true
-        const response = await axios.post('/points/filtered', filters.filters)
+        // const response = await axios.post('/points/filtered', filters.filters)
+        const response = await axios.get(`/points/5`)
         points.value = response.data
         isLoading.value = false
     }

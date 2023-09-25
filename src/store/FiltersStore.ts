@@ -17,7 +17,7 @@ export const useFiltersStore = defineStore('filters', () => {
     const wasteTypesNames:Ref<String[]> = ref([])
 
     async function getCities() {
-        const response = await axios.get('/points/cities')
+        const response = await axios.get('/cities')
         cities.value = response.data
     }
     async function getWasteTypesNames() {
