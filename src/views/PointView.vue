@@ -18,6 +18,15 @@
                     {{ point.phoneNumber }}</v-list-item>
             </v-list>
         </v-card>
+        <div id="map" style="height:400px; width:600px" class="mx-auto mx-4 mb-12">
+<!--            <l-map ref="map" v-model:zoom="zoom" :center="[point.lat, point.lon]">-->
+<!--                <l-tile-layer-->
+<!--                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"-->
+<!--                    layer-type="base"-->
+<!--                    name="OpenStreetMap"-->
+<!--                ></l-tile-layer>-->
+<!--            </l-map>-->
+        </div>
     </v-container>
 </template>
 <script lang="ts" setup>
@@ -26,13 +35,31 @@ import { usePointsStore } from '@/store/PointsStore'
 import { useRoute } from 'vue-router'
 import WasteTypesChips from "@/components/Points/WasteTypesChips.vue";
 import CurrentAvailability from "@/components/Points/CurrentAvailability.vue";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const points = usePointsStore()
 const route = useRoute()
 const point = ref('')
+const zoom = ref(12)
 
 onMounted(async () => {
     point.value = await points.getPoint(route.params.id)
+    const defaultIcon = L.icon({
+        iconUrl: require('../../node_modules/leaflet/dist/images/marker-icon-2x.png'), // your path may vary ...
+        iconSize: [16, 24],
+        popupAnchor: [0, 16]
+    });
+    const map = L.map('map').setView([point.value.lon, point.value.lat], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '',
+    }
+    ).addTo(map);
+    L.marker([point.value.lon, point.value.lat], {icon: defaultIcon}).addTo(map);
+    const zooMarkerPopup = L.popup().setContent("This is Munich Zoo");
+    const zooMarker = L.marker([point.value.lon, point.value.lat], {
+        icon: defaultIcon
+    }).bindPopup(zooMarkerPopup).addTo(map);
 })
 </script>
 
