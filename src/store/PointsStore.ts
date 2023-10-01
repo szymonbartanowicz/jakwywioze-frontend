@@ -37,7 +37,8 @@ export const usePointsStore = defineStore('points', () => {
     async function getPoints() {
         isLoading.value = true
         const response = await axios.post('/points/filtered', filters.filters)
-        points.value = response.data
+        points.value = response.data.points
+        filters.paginationLength = setPaginationLength(response.data.totalPoints)
         isLoading.value = false
     }
 
@@ -97,10 +98,14 @@ export const usePointsStore = defineStore('points', () => {
         return matchingWasteTypes
     }
 
+    function setPaginationLength(totalPoints: number) {
+        return Math.ceil(totalPoints / config.defaultItemsPerPage)
+    }
+
     return {
         points,
-        getPoints,
         isLoading,
+        getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
         getPoint
