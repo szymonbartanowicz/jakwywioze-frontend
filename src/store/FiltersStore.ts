@@ -5,19 +5,23 @@ import axios from "@/axios/axios";
 interface Filters {
     range: number,
     city: string,
-    wasteTypesNames: String[]
+    wasteTypesNames: String[],
+    page: number,
+    itemsPerPage: number,
 }
 export const useFiltersStore = defineStore('filters', () => {
     const filters = ref<Filters>({
         range: 0,
         city: '',
-        wasteTypesNames: []
+        wasteTypesNames: [],
+        page: 0,
+        itemsPerPage: 10,
     })
     const cities:Ref<String[]> = ref([])
     const wasteTypesNames:Ref<String[]> = ref([])
 
     async function getCities() {
-        const response = await axios.get('/points/cities')
+        const response = await axios.get('/cities')
         cities.value = response.data
     }
     async function getWasteTypesNames() {
