@@ -3,20 +3,23 @@
         <v-col
           cols="4"
         >
-            <v-autocomplete
-                v-model="city"
-                @update:model-value="setFilters"
+            <v-combobox
+                v-model="filters.currentCityName"
+                @update:search="filters.getCities($event)"
+                @update:model-value="filters.setCity($event)"
                 label="Miasto"
                 :items="filters.cities"
+                item-title="name"
+                item-value="id"
                 class="mr-3"
-            ></v-autocomplete>
+                no-data-text="Brak danych"
+            ></v-combobox>
         </v-col>
         <v-col
           cols="2"
         >
             <v-select
-                    v-model="range"
-                    @update:model-value="setFilters"
+                    v-model="filters.filters.range"
                     clearable
                     label="Zasięg"
                     :items="config.ranges"
@@ -28,8 +31,7 @@
             cols="4"
         >
             <v-select
-                v-model="wasteTypesNames"
-                @update:model-value="setFilters"
+                v-model="filters.filters.wasteTypesNames"
                 multiple
                 chips
                 clearable
@@ -61,19 +63,6 @@ import config from "@/config/config";
 
 const filters = useFiltersStore()
 const points = usePointsStore()
-const range = ref()
-const city = ref('')
-const wasteTypesNames = ref([])
-
-function setFilters() {
-    filters.$patch({
-        filters: {
-            range: range.value,
-            city: city.value,
-            wasteTypesNames: wasteTypesNames.value
-        }
-    })
-}
 
 onMounted(() => {
     filters.reset()

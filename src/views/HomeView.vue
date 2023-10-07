@@ -3,8 +3,8 @@
           <Filters/>
           <v-progress-circular v-if="points.isLoading" indeterminate color="blue"></v-progress-circular>
           <Point v-else v-for="point in points.points" :key="point.id" :point="point"></Point>
-          <Pagination></Pagination>
           <span v-if="!points.isLoading && !points.points.length && !filters.filtersAreEmpty()">Brak punktów spełniających podane kryteria.</span>
+          <Pagination v-else></Pagination>
       </v-container>
   <div>
   </div>

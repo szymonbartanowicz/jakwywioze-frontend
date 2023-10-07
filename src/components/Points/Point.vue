@@ -7,7 +7,16 @@
                 cover
         >
         </v-img>
-        <v-card-title class="text-left mt-2 ml-1">{{ point.name }}</v-card-title>
+        <v-card-title class="text-left mt-2 ml-1 router-link-custom">
+            <router-link :to="{
+                            name: 'point',
+                            params: {
+                              id: point.id
+                            }
+                          }">
+                    {{ point.name }}
+            </router-link>
+        </v-card-title>
         <WasteTypesChips :waste-types="point.wasteTypes"></WasteTypesChips>
         <v-list class="text-left d-block" density="compact">
             <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
@@ -44,3 +53,9 @@ const props = defineProps({
 });
 
 </script>
+<style>
+.router-link-custom a {
+    text-decoration: none;
+    color: inherit;
+}
+</style>

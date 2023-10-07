@@ -19,13 +19,6 @@
             </v-list>
         </v-card>
         <div id="map" style="height:400px; width:600px" class="mx-auto mx-4 mb-12">
-<!--            <l-map ref="map" v-model:zoom="zoom" :center="[point.lat, point.lon]">-->
-<!--                <l-tile-layer-->
-<!--                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"-->
-<!--                    layer-type="base"-->
-<!--                    name="OpenStreetMap"-->
-<!--                ></l-tile-layer>-->
-<!--            </l-map>-->
         </div>
     </v-container>
 </template>
@@ -44,6 +37,7 @@ const point = ref('')
 const zoom = ref(12)
 
 onMounted(async () => {
+    console.log(point)
     point.value = await points.getPoint(route.params.id)
     const defaultIcon = L.icon({
         iconUrl: require('../../node_modules/leaflet/dist/images/marker-icon-2x.png'), // your path may vary ...
@@ -56,10 +50,10 @@ onMounted(async () => {
     }
     ).addTo(map);
     L.marker([point.value.lon, point.value.lat], {icon: defaultIcon}).addTo(map);
-    const zooMarkerPopup = L.popup().setContent("This is Munich Zoo");
+    const markerPopup = L.popup().setContent(point.value.name);
     const zooMarker = L.marker([point.value.lon, point.value.lat], {
         icon: defaultIcon
-    }).bindPopup(zooMarkerPopup).addTo(map);
+    }).bindPopup(markerPopup).addTo(map);
 })
 </script>
 

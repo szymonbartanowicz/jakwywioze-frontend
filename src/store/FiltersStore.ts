@@ -6,17 +6,25 @@ import {usePointsStore} from "@/store/PointsStore";
 
 interface Filters {
     range: number,
-    city: string,
+    cityId?: number,
     wasteTypesNames: String[],
     page: number,
     itemsPerPage: number,
+}
+interface City {
+    id: number,
+    name: string,
+    voivodeship: string,
+    county: string,
+    longitude: number,
+    latitude: number,
 }
 export const useFiltersStore = defineStore('filters', () => {
     const points = usePointsStore()
     const currentPage = ref(1)
     const filters = ref<Filters>({
         range: 0,
-        city: '',
+        cityId: 0,
         wasteTypesNames: [],
         page: 0,
         itemsPerPage: config.defaultItemsPerPage,
@@ -24,10 +32,28 @@ export const useFiltersStore = defineStore('filters', () => {
     const cities:Ref<String[]> = ref([])
     const wasteTypesNames:Ref<String[]> = ref([])
     const paginationLength = ref(0)
+    const currentCityName = ref('')
 
-    async function getCities() {
-        const response = await axios.get('/cities')
-        cities.value = response.data
+    let debounceApiCallTimer: number | null = null;
+
+    async function getCities(city: string = '') {
+        if (city?.length < 3) {
+            cities.value = []
+            return
+        }
+        if (debounceApiCallTimer !== null) {
+            clearTimeout(debounceApiCallTimer);
+        }
+        debounceApiCallTimer = setTimeout(async () => {
+            const response = await axios.get(`/cities/find?name=${city}`);
+            cities.value = response.data;
+        }, 500);
+    }
+
+    function setCity(city: City | string) {
+        if (typeof city === "object") {
+            filters.value.cityId = city.id
+        }
     }
     async function getWasteTypesNames() {
         const response = await axios.get('/waste-types')
@@ -35,13 +61,13 @@ export const useFiltersStore = defineStore('filters', () => {
     }
     function reset() {
         filters.value.range = 0
-        filters.value.city = ''
+        filters.value.cityId = 0
         filters.value.wasteTypesNames = []
     }
 
     function filtersAreEmpty() {
         return (typeof filters.value.range == "undefined" || filters.value.range == 0 || filters.value.range == null)
-                && (typeof filters.value.city == "undefined" || filters.value.city == '' || filters.value.city == null)
+                && (typeof filters.value.cityId == "undefined" || filters.value.cityId == 0 || filters.value.cityId == null)
                 && (typeof filters.value.wasteTypesNames == "undefined" || !filters.value.wasteTypesNames.length)
     }
     watch(currentPage, async () => {
@@ -55,9 +81,11 @@ export const useFiltersStore = defineStore('filters', () => {
         wasteTypesNames,
         paginationLength,
         currentPage,
+        currentCityName,
         getCities,
         getWasteTypesNames,
         reset,
-        filtersAreEmpty
+        filtersAreEmpty,
+        setCity
     }
 })
