@@ -12,15 +12,18 @@
                 item-title="name"
                 item-value="id"
                 class="mr-3"
-                no-data-text="Brak danych"
-            ></v-combobox>
+            >
+                <template v-slot:prepend-inner>
+                    <v-icon @click="filters.setUserLocation" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
+                </template>
+            </v-combobox>
         </v-col>
         <v-col
           cols="2"
         >
             <v-select
+                    :disabled="!filters.filters.cityId"
                     v-model="filters.filters.range"
-                    clearable
                     label="Zasięg"
                     :items="config.ranges"
                     suffix="km"

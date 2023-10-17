@@ -3,7 +3,7 @@
         :length="filters.paginationLength"
         total-visible="5"
         v-model="filters.currentPage"
-        class="mt-4">
+        class="mt-4 mb-16">
     </v-pagination>
 </template>
 <script lang="ts" setup>

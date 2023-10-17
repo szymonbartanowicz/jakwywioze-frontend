@@ -26,8 +26,8 @@
 import { onMounted, ref} from 'vue'
 import { usePointsStore } from '@/store/PointsStore'
 import { useRoute } from 'vue-router'
-import WasteTypesChips from "@/components/Points/WasteTypesChips.vue";
-import CurrentAvailability from "@/components/Points/CurrentAvailability.vue";
+import WasteTypesChips from "@/components/Home/WasteTypesChips.vue";
+import CurrentAvailability from "@/components/Home/CurrentAvailability.vue";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import axios from "@/axios/axios";
 import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
-import Point from "@/components/Points/Point.vue";
+import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
 import loginView from "@/views/LoginView.vue";
 

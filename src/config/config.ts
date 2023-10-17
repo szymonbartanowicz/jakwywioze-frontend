@@ -23,5 +23,6 @@ export default {
       18: "#607D8B",
       19: "#9E9E9E"
   },
-  "defaultItemsPerPage": 5
+  "defaultItemsPerPage": 5,
+  "defaultRange": ''
 }

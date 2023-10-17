@@ -4,7 +4,7 @@
           <v-progress-circular v-if="points.isLoading" indeterminate color="blue"></v-progress-circular>
           <Point v-else v-for="point in points.points" :key="point.id" :point="point"></Point>
           <span v-if="!points.isLoading && !points.points.length && !filters.filtersAreEmpty()">Brak punktów spełniających podane kryteria.</span>
-          <Pagination v-else></Pagination>
+          <Pagination v-show="!points.isLoading" v-else></Pagination>
       </v-container>
   <div>
   </div>
@@ -12,8 +12,8 @@
 
 <script lang="ts" setup>
 import Filters from '@/components/Home/Filters.vue';
-import Point from "@/components/Points/Point.vue";
-import Pagination from "@/components/Points/Pagination.vue";
+import Point from "@/components/Home/Point.vue";
+import Pagination from "@/components/Home/Pagination.vue";
 import { usePointsStore } from '@/store/PointsStore'
 import { useFiltersStore } from '@/store/FiltersStore'
 import { onMounted } from 'vue'

@@ -41,8 +41,8 @@
 <script lang="ts" setup>
 import { defineProps, PropType } from 'vue';
 import { usePointsStore, Point } from '@/store/PointsStore'
-import CurrentAvailability from "@/components/Points/CurrentAvailability.vue";
-import WasteTypesChips from "@/components/Points/WasteTypesChips.vue";
+import CurrentAvailability from "@/components/Home/CurrentAvailability.vue";
+import WasteTypesChips from "@/components/Home/WasteTypesChips.vue";
 
 const points = usePointsStore()
 const props = defineProps({

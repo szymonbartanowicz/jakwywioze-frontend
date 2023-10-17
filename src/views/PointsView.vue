@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 import { usePointsStore } from '@/store/PointsStore'
-import Point from '@/components/Points/Point.vue';
+import Point from '@/components/Home/Point.vue';
 
 const points = usePointsStore()
 </script>

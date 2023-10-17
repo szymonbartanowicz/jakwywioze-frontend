@@ -5,7 +5,7 @@ import config from "@/config/config";
 import {usePointsStore} from "@/store/PointsStore";
 
 interface Filters {
-    range: number,
+    range?: number | string,
     cityId?: number,
     wasteTypesNames: String[],
     page: number,
@@ -23,7 +23,7 @@ export const useFiltersStore = defineStore('filters', () => {
     const points = usePointsStore()
     const currentPage = ref(1)
     const filters = ref<Filters>({
-        range: 0,
+        range: config.defaultRange,
         cityId: 0,
         wasteTypesNames: [],
         page: 0,
@@ -32,7 +32,7 @@ export const useFiltersStore = defineStore('filters', () => {
     const cities:Ref<String[]> = ref([])
     const wasteTypesNames:Ref<String[]> = ref([])
     const paginationLength = ref(0)
-    const currentCityName = ref('')
+    const currentCityName = ref()
 
     let debounceApiCallTimer: number | null = null;
 
@@ -60,9 +60,11 @@ export const useFiltersStore = defineStore('filters', () => {
         wasteTypesNames.value = response.data
     }
     function reset() {
-        filters.value.range = 0
+        filters.value.range = config.defaultRange
         filters.value.cityId = 0
         filters.value.wasteTypesNames = []
+        filters.value.page = 0
+        filters.value.itemsPerPage = config.defaultItemsPerPage
     }
 
     function filtersAreEmpty() {
@@ -70,6 +72,24 @@ export const useFiltersStore = defineStore('filters', () => {
                 && (typeof filters.value.cityId == "undefined" || filters.value.cityId == 0 || filters.value.cityId == null)
                 && (typeof filters.value.wasteTypesNames == "undefined" || !filters.value.wasteTypesNames.length)
     }
+
+    async function setUserLocation() {
+        navigator.geolocation.getCurrentPosition(setUserLocationSuccessCallback, setUserLocationErrorCallback);
+    }
+
+    const setUserLocationSuccessCallback = async (position: GeolocationPosition) => {
+        const response = await axios.post('/cities/closest', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+        })
+        filters.value.cityId = response.data.id
+        currentCityName.value = response.data.name
+    }
+
+    const setUserLocationErrorCallback = (error: GeolocationPositionError) => {
+        console.log(error);
+    }
+
     watch(currentPage, async () => {
         filters.value.page = currentPage.value - 1
         await points.getPoints()
@@ -86,6 +106,7 @@ export const useFiltersStore = defineStore('filters', () => {
         getWasteTypesNames,
         reset,
         filtersAreEmpty,
-        setCity
+        setCity,
+        setUserLocation
     }
 })
