@@ -10,7 +10,7 @@
                 </v-btn>
             </router-link>
         </div>
-        <div class="ml-auto mr-2">
+        <div v-if="!authorization.isUserLoggedIn()" class="ml-auto mr-2">
             <router-link to="/register">
                 <v-btn
                     rounded
@@ -30,15 +30,30 @@
                 </v-btn>
             </router-link>
         </div>
+        <div v-else class="ml-auto mr-2">
+                <v-btn
+                    rounded
+                    class="text-white mr-1"
+                    @click="authorization.logout"
+                >
+                    Wyloguj się
+                </v-btn>
+            <router-link to="profile">
+                <v-btn
+                    rounded
+                    class="text-white"
+                >
+                    {{ authorization.getCurrentUser }}
+                </v-btn>
+            </router-link>
+        </div>
     </v-app-bar>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
 
-export default defineComponent({
-    name: 'Navbar',
-});
+const authorization = useAuthorizationStore()
 </script>
 
 <style scoped>

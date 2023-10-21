@@ -17,10 +17,10 @@ import Pagination from "@/components/Home/Pagination.vue";
 import { usePointsStore } from '@/store/PointsStore'
 import { useFiltersStore } from '@/store/FiltersStore'
 import { onMounted } from 'vue'
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
 
 const points = usePointsStore()
 const filters = useFiltersStore()
-
 
 onMounted(() => {
     points.getPoints()

@@ -37,14 +37,13 @@ const point = ref('')
 const zoom = ref(12)
 
 onMounted(async () => {
-    console.log(point)
     point.value = await points.getPoint(route.params.id)
     const defaultIcon = L.icon({
         iconUrl: require('../../node_modules/leaflet/dist/images/marker-icon-2x.png'), // your path may vary ...
         iconSize: [16, 24],
         popupAnchor: [0, 16]
     });
-    const map = L.map('map').setView([point.value.lon, point.value.lat], 12);
+    const map = L.map('map').setView([point.value.lat, point.value.lon], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '',
     }
