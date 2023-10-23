@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     component: PointView,
     beforeEnter: async  (to, from, next) => {
       const points = usePointsStore() ;
-      await points.getPoint('2')
+      await points.getPoint(to.params.id)
       next()
     }
   },
