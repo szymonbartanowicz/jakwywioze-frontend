@@ -4,6 +4,7 @@
             <router-link to="/">
                 <v-btn
                     class="mr-2 ml-2 text-white"
+                    @click="filters.reset()"
                 >
                     <v-icon icon="mdi-recycle" color="green" class="mr-1" size="x-large"></v-icon>
                     Jakwywioze.pl
@@ -52,8 +53,10 @@
 
 <script lang="ts" setup>
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
+import {useFiltersStore} from "@/store/FiltersStore";
 
 const authorization = useAuthorizationStore()
+const filters = useFiltersStore()
 </script>
 
 <style scoped>

@@ -2,8 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from "../views/LoginView.vue";
-import PointsView from "../views/PointsView.vue";
 import PointView from "../views/PointView.vue";
+import {usePointsStore} from "@/store/PointsStore";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,14 +22,14 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView
   },
   {
-    path: '/points',
-    name: 'points',
-    component: PointsView
-  },
-  {
     path: '/points/:id',
     name: 'point',
-    component: PointView
+    component: PointView,
+    beforeEnter: async  (to, from, next) => {
+      const points = usePointsStore() ;
+      await points.getPoint('2')
+      next()
+    }
   },
 ]
 

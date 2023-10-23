@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import axios from "@/axios/axios";
 import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
 import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
-import loginView from "@/views/LoginView.vue";
 
 export interface wasteType {
     id: number,
@@ -16,8 +15,8 @@ export interface Point {
     name: string
     city: string,
     street: string,
-    lat: string,
-    lon: string,
+    lat: number,
+    lon: number,
     openingHours: string,
     type: string,
     imageLink: string,
@@ -28,11 +27,17 @@ interface currentAvailabilityData {
     status: string,
     info: string
 }
+interface Marker {
+    lat: number,
+    lon: number,
+    name: string
+}
 
 export const usePointsStore = defineStore('points', () => {
     const points = ref<Point[]>([])
     const filters = useFiltersStore()
     const isLoading = ref(false)
+    const currentPoint = ref<Point>()
 
     async function getPoints() {
         isLoading.value = true
@@ -44,6 +49,7 @@ export const usePointsStore = defineStore('points', () => {
 
     async function getPoint(pointId: string | string[]) {
         const response = await axios.get(`/points/${pointId}`)
+        currentPoint.value = response.data
         return response.data
     }
 
@@ -63,7 +69,8 @@ export const usePointsStore = defineStore('points', () => {
         const openingHoursArray = openingHours.split(';')
         if (openingHoursArray.length != 7) return data;
         const currentTime = moment().format('HH:mm')
-        const currentDay = moment().weekday()
+        let currentDay = moment().weekday()
+        if (currentDay === 0) currentDay = 6
         const todayFromAndTo = openingHoursArray[currentDay - 1]
         const [todayFrom, todayTo] = openingHoursArray[currentDay - 1].split('–')
         if (todayFromAndTo == '0' || currentTime < todayFrom || currentTime > todayTo) {
@@ -102,12 +109,39 @@ export const usePointsStore = defineStore('points', () => {
         return Math.ceil(totalPoints / config.defaultItemsPerPage)
     }
 
+    function getShortenedWebsite(website:string, length: number = 40) {
+        return (website.length > length) ? website.slice(0, length) + '...' : website;
+    }
+
+    const currentPointsMarkers = computed(() => {
+        return points.value.map(point =>
+        {
+            const marker: Marker = {} as Marker
+            marker.lat = point.lat
+            marker.lon = point.lon
+            marker.name = point.name
+            return marker
+        })
+    })
+
+    const currentPointMarker = computed(() => {
+        const marker: Marker = {} as Marker
+        marker.lat = <number>currentPoint.value?.lat
+        marker.lon = <number>currentPoint.value?.lon
+        marker.name = <string>currentPoint.value?.name
+        return [marker]
+    })
+
     return {
         points,
         isLoading,
+        currentPointMarker,
+        currentPointsMarkers,
+        currentPoint,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
-        getPoint
+        getPoint,
+        getShortenedWebsite,
     }
 })

@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 import { defineProps, onMounted, ref } from 'vue';
-import {  usePointsStore } from '@/store/PointsStore'
+import { usePointsStore } from '@/store/PointsStore'
 
 const points = usePointsStore()
 let availability = ref()

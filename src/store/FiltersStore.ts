@@ -34,6 +34,9 @@ export const useFiltersStore = defineStore('filters', () => {
     const paginationLength = ref(0)
     const currentCityName = ref()
 
+    const userLat = ref(0)
+    const userLon = ref(0)
+
     let debounceApiCallTimer: number | null = null;
 
     async function getCities(city: string = '') {
@@ -65,6 +68,7 @@ export const useFiltersStore = defineStore('filters', () => {
         filters.value.wasteTypesNames = []
         filters.value.page = 0
         filters.value.itemsPerPage = config.defaultItemsPerPage
+        currentPage.value = 1
     }
 
     function filtersAreEmpty() {
@@ -84,6 +88,8 @@ export const useFiltersStore = defineStore('filters', () => {
         })
         filters.value.cityId = response.data.id
         currentCityName.value = response.data.name
+        userLat.value = position.coords.latitude
+        userLon.value = position.coords.longitude
     }
 
     const setUserLocationErrorCallback = (error: GeolocationPositionError) => {
@@ -102,6 +108,8 @@ export const useFiltersStore = defineStore('filters', () => {
         paginationLength,
         currentPage,
         currentCityName,
+        userLat,
+        userLon,
         getCities,
         getWasteTypesNames,
         reset,
