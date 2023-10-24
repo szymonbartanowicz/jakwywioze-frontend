@@ -12,8 +12,8 @@ interface Token {
     sub: string,
 }
 export const useAuthorizationStore = defineStore('authorization', () => {
-    const loginUsername = ref('admin')
-    const loginPassword = ref('admin')
+    const loginUsername = ref('')
+    const loginPassword = ref('')
     const loginUsernameRules = [
         (v: string) => !!v || 'Pole login jest wymagane'
     ]
@@ -22,6 +22,30 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 3 znaki'
     ]
     const loginSuccessful = ref(true)
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const registerUsername = ref('')
+    const registerEmail = ref('')
+    const registerPassword = ref('')
+    const registerConfirmPassword = ref('')
+    const registerUsernameRules = [
+        (v: string) => !!v || 'Pole login jest wymagane'
+    ]
+    const registerEmailRules = [
+        (v: string) => !!v || 'Pole email jest wymagane',
+        (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
+    ]
+    const registerPasswordRules = [
+        (v: string) => !!v || 'Pole hasło jest wymagane',
+        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 3 znaki'
+    ]
+    const registerConfirmPasswordRules = [
+        (v: string) => !!v || 'Pole hasło jest wymagane',
+        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => v === registerPassword.value || 'Hasła nie są jednakowe'
+    ]
+    const loginMessageStatus = ref('')
+    const registerError = ref('')
+
     const currentUser= ref('')
     const token = ref('')
     async function login(event: SubmitEventPromise) {
@@ -40,10 +64,35 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             loginSuccessful.value = true
             currentUser.value = loginUsername.value
             token.value = response.data
+            loginMessageStatus.value = ''
             const decodedToken: Token = jwt_decode(token.value)
             setCookie('token', response.data, decodedToken.exp)
             setCookie('currentUser', currentUser.value, decodedToken.exp)
             await router.push({ name: 'home' })
+        }
+    }
+
+    async function register(event: SubmitEventPromise) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
+        const response = await axios.post('/users/register', {
+            email: registerEmail.value,
+            username: registerUsername.value,
+            password: registerPassword.value
+        });
+
+        if (response.data === 'Success') {
+            loginMessageStatus.value = 'accountCreated'
+            registerError.value = ''
+            await router.push({ name: 'login' });
+        }
+        else if (response.data === 'User with this email already exists'){
+            registerError.value = 'Ten email jest już zajęty'
+        }
+        else if (response.data === 'User already exists'){
+            registerError.value = 'Ta nazwa użytkownika jest już zajęta'
         }
     }
 
@@ -92,18 +141,40 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         token.value = getCookie('token')
     }
 
+    async function confirmRegistration(token: string) {
+        const response = await axios.post('/users/confirm-registration', {
+            token: token
+        });
+        if (response.data === 'Success') {
+            loginMessageStatus.value = 'registrationConfirmed'
+            await router.push({ name: 'login' })
+        }
+    }
+
     return {
         loginUsername,
         loginPassword,
         loginUsernameRules,
         loginPasswordRules,
+        registerUsername,
+        registerEmail,
+        registerPassword,
+        registerConfirmPassword,
+        registerUsernameRules,
+        registerEmailRules,
+        registerPasswordRules,
+        registerConfirmPasswordRules,
         loginSuccessful,
         currentUser,
         token,
+        getCurrentUser,
+        loginMessageStatus,
+        registerError,
         login,
         isUserLoggedIn,
         logout,
         setInitialData,
-        getCurrentUser
+        register,
+        confirmRegistration
     }
 })

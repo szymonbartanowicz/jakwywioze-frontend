@@ -1,5 +1,23 @@
 <template>
     <v-container>
+        <v-alert
+            v-if="authorization.loginMessageStatus==='accountCreated'"
+            closable
+            type="info"
+            variant="tonal"
+            class="mb-6"
+        >
+            Dziękujemy za założenie konta. W celu jego aktywacji prosimy o kliknięcie w linka, którego właśnie otrzymałeś na podanego maila.
+        </v-alert>
+        <v-alert
+            v-else-if="authorization.loginMessageStatus==='registrationConfirmed'"
+            closable
+            type="success"
+            variant="tonal"
+            class="mb-6"
+        >
+            Twoje konto zostało aktywowane.
+        </v-alert>
         <v-sheet width="500px" class="mx-auto">
             <v-form @submit.prevent="authorization.login($event)">
                 <v-text-field

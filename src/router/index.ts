@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from "../views/LoginView.vue";
 import PointView from "../views/PointView.vue";
+import ConfirmRegistration from '../views/ConfirmRegistration.vue'
 import {usePointsStore} from "@/store/PointsStore";
 
 const routes: Array<RouteRecordRaw> = [
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
       await points.getPoint(to.params.id)
       next()
     }
+  },
+  {
+    path: '/users/confirm-registration',
+    name: 'confirm-registration',
+    component: ConfirmRegistration,
   },
 ]
 
