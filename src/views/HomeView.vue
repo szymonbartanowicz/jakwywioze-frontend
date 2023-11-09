@@ -1,46 +1,40 @@
 <template>
-      <v-container>
-          <Filters/>
-          <v-progress-circular v-if="points.isLoading" indeterminate color="blue"></v-progress-circular>
-          <v-row v-else class="elevation-12 main-wrapper" no-gutters>
-              <v-col cols="4" class="points-wrapper">
-                  <Point v-for="point in points.points" :key="point.id" :point="point"></Point>
-              </v-col>
-              <v-col cols="8">
-                  <Map mode="list"></Map>
-              </v-col>
-          </v-row>
-          <span v-if="!points.isLoading && !points.points.length && !filters.filtersAreEmpty()">Brak punktów spełniających podane kryteria.</span>
-          <Pagination v-show="!points.isLoading" v-else></Pagination>
-      </v-container>
-  <div>
-  </div>
+  <v-container>
+    <Filters />
+    <Landing v-if="(points.points.length <= 0)" />
+    <v-progress-circular v-if="points.isLoading && !(points.points.length <= 0)" indeterminate color="blue" />
+    <v-row v-if="!points.isLoading && !(points.points.length <= 0)" class="elevation-12 main-wrapper" no-gutters>
+      <v-col cols="4" class="points-wrapper">
+        <Point v-for="point in points.points" :key="point.id" :point="point" />
+      </v-col>
+      <v-col cols="8">
+        <Map mode="list" />
+      </v-col>
+    </v-row>
+    <span v-if="!points.isLoading && !points.points.length && !filters.filtersAreEmpty() && !(points.points.length <= 0)">Brak punktów spełniających podane kryteria.</span>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
 import Filters from '@/components/Home/Filters.vue';
+import Landing from '@/components/Home/Landing.vue';
 import Point from "@/components/Home/Point.vue";
-import Pagination from "@/components/Home/Pagination.vue";
 import Map from "@/components/Utils/Map.vue";
 import { usePointsStore } from '@/store/PointsStore'
 import { useFiltersStore } from '@/store/FiltersStore'
-import { onMounted } from 'vue'
 
 const points = usePointsStore()
 const filters = useFiltersStore()
 
-onMounted(() => {
-    points.getPoints()
-})
 </script>
 
 <style>
 .main-wrapper {
-    max-height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
 }
 
 .points-wrapper {
-    max-height: calc(100vh - 64px);
-    overflow: scroll;
+  max-height: calc(100vh - 64px);
+  overflow: scroll;
 }
 </style>
