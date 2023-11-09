@@ -30,11 +30,13 @@ const filters = useFiltersStore()
 
 <style>
 .main-wrapper {
-  max-height: calc(100vh - 64px);
+  height: 70vh;
+  overflow-y: hidden;
 }
 
 .points-wrapper {
   max-height: calc(100vh - 64px);
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 </style>

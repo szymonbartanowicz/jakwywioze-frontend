@@ -1,66 +1,48 @@
 <template>
-    <v-app-bar :elevation="2" color="blue" class="custom-navbar">
-        <div>
-            <router-link to="/">
-                <v-btn
-                    class="mr-2 ml-2 text-white"
-                    @click="filters.reset()"
-                >
-                    <v-icon icon="mdi-recycle" color="green" class="mr-1" size="x-large"></v-icon>
-                    Jakwywioze.pl
-                </v-btn>
-            </router-link>
-        </div>
-        <div v-if="!authorization.isUserLoggedIn()" class="ml-auto mr-2">
-            <router-link to="/register">
-                <v-btn
-                    rounded
-                    class="text-white mr-1"
-                >
-                    Zarejestruj się
-                </v-btn>
-            </router-link>
-            <router-link to="login">
-                <v-btn
-                    variant="elevated"
-                    color="green"
-                    rounded
-                    class="text-white"
-                >
-                    Zaloguj się
-                </v-btn>
-            </router-link>
-        </div>
-        <div v-else class="ml-auto mr-2">
-                <v-btn
-                    rounded
-                    class="text-white mr-1"
-                    @click="authorization.logout"
-                >
-                    Wyloguj się
-                </v-btn>
-            <router-link to="profile">
-                <v-btn
-                    rounded
-                    class="text-white"
-                >
-                    {{ authorization.getCurrentUser }}
-                </v-btn>
-            </router-link>
-        </div>
-    </v-app-bar>
+  <v-app-bar app :elevation="2" color="#1976D2" class="custom-navbar">
+    <v-container>
+      <v-row align="center">
+        <v-col cols="2">
+          <router-link to="/">
+            <v-btn text class="text-white">
+              <v-icon left color="B0E8BC">mdi-map</v-icon>
+              jakwywioze.pl
+            </v-btn>
+          </router-link>
+        </v-col>
+        <v-col v-if="!authorization.isUserLoggedIn()" cols="auto" class="ml-auto">
+          <router-link to="/register">
+            <v-btn text class="text-white">Zarejestruj się</v-btn>
+          </router-link>
+          <router-link to="/login">
+            <v-btn color="green" class="text-white">Zaloguj się</v-btn>
+          </router-link>
+        </v-col>
+        <v-col v-else cols="auto" class="ml-auto">
+          <v-btn text class="text-white" @click="authorization.logout">Wyloguj się</v-btn>
+          <router-link to="/profile">
+            <v-btn text class="text-white">{{ authorization.getCurrentUser }}</v-btn>
+          </router-link>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app-bar>
 </template>
 
 <script lang="ts" setup>
-import {useAuthorizationStore} from "@/store/AuthorizationStore";
-import {useFiltersStore} from "@/store/FiltersStore";
+import { useAuthorizationStore } from "@/store/AuthorizationStore";
+import { useFiltersStore } from "@/store/FiltersStore";
 
-const authorization = useAuthorizationStore()
-const filters = useFiltersStore()
+const authorization = useAuthorizationStore();
+const filters = useFiltersStore();
 </script>
 
 <style scoped>
-.v-btn__prepend {
-    color: #fff !important;
+.custom-navbar {
+  background-color: #1976D2;
+}
+
+.text-white {
+  color: #fff !important;
 }
 </style>
