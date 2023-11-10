@@ -5,7 +5,7 @@
         <v-col cols="2">
           <router-link to="/">
             <v-btn text class="text-white">
-              <v-icon left color="B0E8BC">mdi-map</v-icon>
+              <v-icon left color="#B0E8BC">mdi-map</v-icon>
               jakwywioze.pl
             </v-btn>
           </router-link>
@@ -30,8 +30,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useAuthorizationStore } from "@/store/AuthorizationStore";
-import { useFiltersStore } from "@/store/FiltersStore";
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
+import {useFiltersStore} from "@/store/FiltersStore";
 
 const authorization = useAuthorizationStore();
 const filters = useFiltersStore();
