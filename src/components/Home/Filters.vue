@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters class="mb-10">
         <v-col
-          cols="4"
+          cols="3"
         >
             <v-combobox
                 v-model="filters.currentCityName"
@@ -31,7 +31,7 @@
             ></v-select>
         </v-col>
         <v-col
-            cols="4"
+            cols="5"
         >
             <v-select
                 v-model="filters.filters.wasteTypesNames"
@@ -48,9 +48,9 @@
         >
             <v-btn
                 @click.prevent="points.getPoints"
-                color="green"
+                color="#B0E8BC"
                 block
-                class="text-white float-left"
+                class="text-black float-left"
                 height="56px"
             >
                 Szukaj
