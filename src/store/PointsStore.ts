@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {computed, ref} from 'vue'
+import {Comment, computed, ref} from 'vue'
 import axios from "@/axios/axios";
 import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
@@ -33,12 +33,21 @@ interface Marker {
     name: string
 }
 
+interface Comment {
+    id: number,
+    text: string,
+    point: number
+    user: number
+}
+
 export const usePointsStore = defineStore('points', () => {
     const points = ref<Point[]>([])
     const filters = useFiltersStore()
     const isLoading = ref(false)
     const currentPoint = ref<Point>()
     const initLoad = ref(true)
+    const comments = ref<Comment[]>([])
+    const comment = ref('')
 
     async function getPoints() {
         isLoading.value = true
@@ -126,6 +135,24 @@ export const usePointsStore = defineStore('points', () => {
         })
     })
 
+    async function getComments(pointId: number) {
+        const response = await axios.get(`/comments/${pointId}`)
+        comments.value = response.data
+        return response.data
+    }
+
+    async function addComment(pointId: number) {
+        const response = await axios.post('/comments', {
+            text: comment.value,
+            point: pointId,
+            user: 1
+        })
+        comments.value = response.data
+        await getComments(pointId)
+        comment.value = ''
+        return response.data
+    }
+
     const currentPointMarker = computed(() => {
         const marker: Marker = {} as Marker
         marker.lat = <number>currentPoint.value?.lat
@@ -141,10 +168,14 @@ export const usePointsStore = defineStore('points', () => {
         currentPointsMarkers,
         currentPoint,
         initLoad,
+        comments,
+        comment,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
         getPoint,
         getShortenedWebsite,
+        getComments,
+        addComment,
     }
 })

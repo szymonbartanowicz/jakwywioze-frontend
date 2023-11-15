@@ -2,7 +2,7 @@
     <v-container>
         <v-row class="elevation-12 main-wrapper" no-gutters>
             <v-col cols="6" class="points-wrapper">
-                <v-card class="mx-auto" height="100%">
+                <v-card class="mx-auto">
                     <v-img
                             class="align-end text-white"
                             height="200"
@@ -19,6 +19,7 @@
                         <v-list-item v-if="points.currentPoint.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                             {{ points.currentPoint.phoneNumber }}</v-list-item>
                     </v-list>
+                    <Comments :pointId="points.currentPoint.id"></Comments>
                 </v-card>
             </v-col>
             <v-col cols="6">
@@ -28,13 +29,20 @@
     </v-container>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref} from 'vue'
-import { usePointsStore, Point } from '@/store/PointsStore'
-import { useRoute } from 'vue-router'
+import { usePointsStore } from '@/store/PointsStore'
 import WasteTypesChips from "@/components/Point/WasteTypesChips.vue";
 import CurrentAvailability from "@/components/Point/CurrentAvailability.vue";
+import Comments from '@/components/Point/Comments.vue'
 import Map from "@/components/Utils/Map.vue";
 
 const points = usePointsStore()
 </script>
 
+<style scoped>
+.points-wrapper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    min-height: 100%;
+    height: 100%;
+}
+</style>
