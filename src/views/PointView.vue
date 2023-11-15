@@ -19,8 +19,6 @@
                         <v-list-item v-if="points.currentPoint.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                             {{ points.currentPoint.phoneNumber }}</v-list-item>
                     </v-list>
-                    <div>Tu beda komentarze</div>
-                    <div>i inne chuje muje</div>
                 </v-card>
             </v-col>
             <v-col cols="6">

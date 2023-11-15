@@ -29,6 +29,7 @@
                     v-model="authorization.loginPassword"
                     :rules="authorization.loginPasswordRules"
                     label="Hasło"
+                    type="password"
                 ></v-text-field>
                 <router-link to="/"><span class="float-right mb-3 text-decoration-underline font-weight-light">Zapomniałeś hasła?</span></router-link>
                 <v-btn type="submit" block color="green" class="text-white mt-12 mb-6">Zaloguj się</v-btn>
