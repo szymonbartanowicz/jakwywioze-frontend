@@ -32,7 +32,7 @@
                     type="password"
                 ></v-text-field>
                 <router-link to="/"><span class="float-right mb-3 text-decoration-underline font-weight-light">Zapomniałeś hasła?</span></router-link>
-                <v-btn type="submit" block color="green" class="text-white mt-12 mb-6">Zaloguj się</v-btn>
+                <v-btn type="submit" block color="#B0E8BC" text="#112A46" class="mt-12 mb-6">Zaloguj się</v-btn>
             </v-form>
             <v-alert color="error" variant="text" v-show="!authorization.loginSuccessful">Nieprawidłowe dane logowania</v-alert>
         </v-sheet>

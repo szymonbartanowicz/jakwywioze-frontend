@@ -19,7 +19,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const loginPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 3 znaki'
+        (v: string) => v.length >= 8 || 'Hasło musi mieć co najmniej 8 znaków'
     ]
     const loginSuccessful = ref(true)
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;

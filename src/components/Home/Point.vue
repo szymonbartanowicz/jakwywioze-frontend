@@ -26,15 +26,15 @@
                 {{ point.phoneNumber }}</v-list-item>
         </v-list>
         <v-card-actions class="float-right pa-4">
-            <router-link :to="{
-                            name: 'point',
-                            params: {
-                              id: point.id
-                            }
-                          }">
-                <v-btn variant="flat" color="#B0E8BC" text="#112A46">Info</v-btn>
-            </router-link>
-            <v-btn variant="flat" color="#B0E8BC" text="#112A46" class="ml-2">Trasa</v-btn>
+<!--            <router-link :to="{-->
+<!--                            name: 'point',-->
+<!--                            params: {-->
+<!--                              id: point.id-->
+<!--                            }-->
+<!--                          }">-->
+<!--                <v-btn variant="outlined" color="green-lighten-1" text="#112A46">Info</v-btn>-->
+<!--            </router-link>-->
+            <v-btn variant="flat" color="#B0E8BC" class="ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>
 </template>

@@ -25,7 +25,7 @@
                     type="password"
                 ></v-text-field>
                 <router-link to="/login"><span class="float-right mb-3 text-decoration-underline font-weight-light">Posiadasz już konto?</span></router-link>
-                <v-btn type="submit" block color="green" class="text-white">Zarejestruj się</v-btn>
+                <v-btn type="submit" block color="#B0E8BC" text="112A46">Zarejestruj się</v-btn>
             </v-form>
             <v-alert color="error" variant="text" v-show="authorization.registerError">{{ authorization.registerError }}</v-alert>
         </v-sheet>
