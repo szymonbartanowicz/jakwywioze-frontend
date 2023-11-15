@@ -3,6 +3,7 @@ import { ref, Ref, watch } from 'vue'
 import axios from "@/axios/axios";
 import config from "@/config/config";
 import {usePointsStore} from "@/store/PointsStore";
+import router from "@/router";
 
 interface Filters {
     range?: number | string,
@@ -69,12 +70,18 @@ export const useFiltersStore = defineStore('filters', () => {
         filters.value.page = 0
         filters.value.itemsPerPage = config.defaultItemsPerPage
         currentPage.value = 1
+        currentCityName.value = ''
     }
 
     function filtersAreEmpty() {
         return (typeof filters.value.range == "undefined" || filters.value.range == 0 || filters.value.range == null)
                 && (typeof filters.value.cityId == "undefined" || filters.value.cityId == 0 || filters.value.cityId == null)
                 && (typeof filters.value.wasteTypesNames == "undefined" || !filters.value.wasteTypesNames.length)
+    }
+
+    async function reload() {
+        await router.push({ name: 'home' })
+        location.reload()
     }
 
     async function setUserLocation() {
@@ -115,6 +122,7 @@ export const useFiltersStore = defineStore('filters', () => {
         reset,
         filtersAreEmpty,
         setCity,
-        setUserLocation
+        setUserLocation,
+        reload,
     }
 })

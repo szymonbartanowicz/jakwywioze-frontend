@@ -29,6 +29,6 @@ onMounted(() => {
 }
 
 .v-application__wrap  > .v-container {
-    margin-top: 80px;
+    margin-top: 100px;
 }
 </style>

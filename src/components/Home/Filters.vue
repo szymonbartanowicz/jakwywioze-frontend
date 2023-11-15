@@ -49,8 +49,9 @@
             <v-btn
                 @click.prevent="points.getPoints"
                 color="#B0E8BC"
+                text="#112A46"
                 block
-                class="text-black float-left"
+                class="float-left"
                 height="56px"
             >
                 Szukaj

@@ -32,9 +32,9 @@
                               id: point.id
                             }
                           }">
-                <v-btn variant="outlined" color="green">Info</v-btn>
+                <v-btn variant="flat" color="#B0E8BC" text="#112A46">Info</v-btn>
             </router-link>
-            <v-btn variant="flat" color="green" class="text-white ml-2">Trasa</v-btn>
+            <v-btn variant="flat" color="#B0E8BC" text="#112A46" class="ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>
 </template>

@@ -38,6 +38,7 @@ export const usePointsStore = defineStore('points', () => {
     const filters = useFiltersStore()
     const isLoading = ref(false)
     const currentPoint = ref<Point>()
+    const initLoad = ref(true)
 
     async function getPoints() {
         isLoading.value = true
@@ -45,6 +46,7 @@ export const usePointsStore = defineStore('points', () => {
         points.value = response.data.points
         filters.paginationLength = setPaginationLength(response.data.totalPoints)
         isLoading.value = false
+        initLoad.value = false
     }
 
     async function getPoint(pointId: string | string[]) {
@@ -138,6 +140,7 @@ export const usePointsStore = defineStore('points', () => {
         currentPointMarker,
         currentPointsMarkers,
         currentPoint,
+        initLoad,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
