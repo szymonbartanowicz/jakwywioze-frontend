@@ -24,6 +24,8 @@ import { usePointsStore } from '@/store/PointsStore'
 import { useAuthorizationStore } from "@/store/AuthorizationStore";
 import { defineProps, onMounted} from 'vue'
 
+moment.locale('pl')
+
 const points = usePointsStore()
 const authorization = useAuthorizationStore()
 const props = defineProps({
