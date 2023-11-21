@@ -1,6 +1,6 @@
 <template>
     <div class="px-4">
-        <v-text-field label="Dodaj komentarz" variant="underlined" v-model="points.comment">
+        <v-text-field v-if="authorization.isUserLoggedIn()" label="Dodaj komentarz" variant="underlined" v-model="points.comment">
             <template v-slot:append-inner>
                 <v-btn :ripple="false" class="ma-0 pa-0" variant="plain" size="xs" :disabled="!points.comment" @click="points.addComment(pointId)" icon="mdi-send">
                 </v-btn>
@@ -10,7 +10,7 @@
             <div class="text-caption text-grey-darken-2">
                 <span>{{ comment.user }}</span>
                 <span> &bull; </span>
-                <span>2 weeks ago</span>
+                <span>{{ moment(comment.createdAt).fromNow() }}</span>
             </div>
             <p class="text-body-2">{{ comment.text }}</p>
         </div>
@@ -19,10 +19,13 @@
 
 </template>
 <script lang="ts" setup>
+import moment from "moment";
 import { usePointsStore } from '@/store/PointsStore'
-import { defineProps, onMounted } from 'vue'
+import { useAuthorizationStore } from "@/store/AuthorizationStore";
+import { defineProps, onMounted} from 'vue'
 
 const points = usePointsStore()
+const authorization = useAuthorizationStore()
 const props = defineProps({
     pointId: {
         type: Number,

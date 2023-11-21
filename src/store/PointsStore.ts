@@ -34,10 +34,9 @@ interface Marker {
 }
 
 interface Comment {
-    id: number,
+    user: number,
     text: string,
-    point: number
-    user: number
+    createdAt: string
 }
 
 export const usePointsStore = defineStore('points', () => {
@@ -138,6 +137,7 @@ export const usePointsStore = defineStore('points', () => {
     async function getComments(pointId: number) {
         const response = await axios.get(`/comments/${pointId}`)
         comments.value = response.data
+        console.log(response.data)
         return response.data
     }
 
@@ -145,7 +145,7 @@ export const usePointsStore = defineStore('points', () => {
         const response = await axios.post('/comments', {
             text: comment.value,
             point: pointId,
-            user: 1
+            user: 2
         })
         comments.value = response.data
         await getComments(pointId)

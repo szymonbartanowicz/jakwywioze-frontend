@@ -11,7 +11,7 @@
             </v-col>
         </v-row>
         <span v-if="!points.isLoading && !points.points.length && !filters.filtersAreEmpty()">Brak punktów spełniających podane kryteria.</span>
-        <Pagination v-if="!points.isLoading && points.points.length" v-else></Pagination>
+        <Pagination v-if="!points.isLoading && points.points.length"></Pagination>
     </v-container>
 </template>
 

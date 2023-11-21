@@ -57,6 +57,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             username: loginUsername.value,
             password: loginPassword.value
         })
+        console.log(response.data)
         if (response.data === 'Login unsuccessful') {
             loginSuccessful.value = false
         }
