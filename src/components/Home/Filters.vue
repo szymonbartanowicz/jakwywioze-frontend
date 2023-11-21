@@ -33,7 +33,7 @@
         <v-col
             cols="5"
         >
-            <v-select
+            <v-autocomplete
                 v-model="filters.filters.wasteTypesNames"
                 multiple
                 chips
@@ -41,7 +41,7 @@
                 label="Rodzaj odpadów"
                 :items="filters.wasteTypesNames"
                 class="mr-3"
-            ></v-select>
+            ></v-autocomplete>
         </v-col>
         <v-col
           cols="2"
