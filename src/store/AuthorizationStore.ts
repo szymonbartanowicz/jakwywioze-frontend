@@ -3,30 +3,31 @@ import {computed, ref} from "vue";
 import {SubmitEventPromise} from "vuetify";
 import axios from "@/axios/axios";
 import router from "../router/index";
-import jwt_decode from "jwt-decode";
 
-
-interface Token {
-    exp: number,
-    iat: number,
-    sub: string,
+interface User {
+    id: number,
+    email: string,
+    username: string
 }
 export const useAuthorizationStore = defineStore('authorization', () => {
-    const loginUsername = ref('')
-    const loginPassword = ref('')
-    const loginUsernameRules = [
-        (v: string) => !!v || 'Pole login jest wymagane'
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const loginEmail = ref('szymon@bartanowicz.pl')
+    const loginPassword = ref('qweqweqwe')
+    const loginEmailRules = [
+        (v: string) => !!v || 'Pole login jest wymagane',
+        (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
     ]
     const loginPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi mieć co najmniej 8 znaków'
     ]
     const loginSuccessful = ref(true)
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const registerUsername = ref('')
     const registerEmail = ref('')
     const registerPassword = ref('')
     const registerConfirmPassword = ref('')
+    const sendResetPasswordEmailEmail = ref('')
+    const resetPasswordPassword = ref('')
     const registerUsernameRules = [
         (v: string) => !!v || 'Pole login jest wymagane'
     ]
@@ -36,40 +37,44 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const registerPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 3 znaki'
+        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków'
     ]
     const registerConfirmPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków',
         (v: string) => v === registerPassword.value || 'Hasła nie są jednakowe'
     ]
+    const sendResetPasswordEmailEmailRules = [
+        (v: string) => !!v || 'Pole email jest wymagane',
+        (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
+    ]
+    const resetPasswordPasswordRules = [
+        (v: string) => !!v || 'Pole hasło jest wymagane',
+        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków'
+    ]
     const loginMessageStatus = ref('')
     const registerError = ref('')
 
-    const currentUser= ref('')
-    const token = ref('')
+    const showResetEmailSendMessage = ref(false)
+
+    const currentUser = ref<User>()
     async function login(event: SubmitEventPromise) {
         const validated = await event
         if (!validated.valid) {
             return
         }
-        const response = await axios.post('/users/login', {
-            username: loginUsername.value,
-            password: loginPassword.value
-        })
-        console.log(response.data)
-        if (response.data === 'Login unsuccessful') {
-            loginSuccessful.value = false
-        }
-        else {
+        try {
+            const response = await axios.post('/users/login', {
+                email: loginEmail.value,
+                password: loginPassword.value
+            })
             loginSuccessful.value = true
-            currentUser.value = loginUsername.value
-            token.value = response.data
+            currentUser.value = response.data
             loginMessageStatus.value = ''
-            const decodedToken: Token = jwt_decode(token.value)
-            setCookie('token', response.data, decodedToken.exp)
-            setCookie('currentUser', currentUser.value, decodedToken.exp)
+            setCookie('currentUser', JSON.stringify(response.data), response.data.exp)
             await router.push({ name: 'home' })
+        } catch (error) {
+            loginSuccessful.value = false
         }
     }
 
@@ -78,30 +83,28 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         if (!validated.valid) {
             return
         }
-        const response = await axios.post('/users/register', {
-            email: registerEmail.value,
-            username: registerUsername.value,
-            password: registerPassword.value
-        });
-
-        if (response.data === 'Success') {
+        try {
+            await axios.post('/users/register', {
+                email: registerEmail.value,
+                username: registerUsername.value,
+                password: registerPassword.value
+            });
             loginMessageStatus.value = 'accountCreated'
             registerError.value = ''
             await router.push({ name: 'login' });
-        }
-        else if (response.data === 'User with this email already exists'){
-            registerError.value = 'Ten email jest już zajęty'
-        }
-        else if (response.data === 'User already exists'){
-            registerError.value = 'Ta nazwa użytkownika jest już zajęta'
+        } catch (error) {
+            if (error.response.data === 'User with this email already exists'){
+                registerError.value = 'Ten email jest już zajęty'
+            }
+            else if (error.response.data === 'User already exists'){
+                registerError.value = 'Ta nazwa użytkownika jest już zajęta'
+            }
         }
     }
 
     async function logout() {
         loginSuccessful.value = false
-        currentUser.value = ''
-        token.value = ''
-        deleteCookie('token')
+        currentUser.value = <User>{}
         deleteCookie('currentUser')
         await router.push({ name: 'home' })
         location.reload()
@@ -112,7 +115,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     }
 
     function getDateFromTimestamp(timestamp: number) {
-        return new Date(timestamp * 1000)
+        return new Date(timestamp)
     }
     function deleteCookie(name: string) {
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`
@@ -138,24 +141,65 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     })
 
     function setInitialData() {
-        currentUser.value = getCookie('currentUser')
-        token.value = getCookie('token')
+        const user = getCookie('currentUser')
+        if (user) {
+            currentUser.value = JSON.parse(user)
+        }
     }
 
     async function confirmRegistration(token: string) {
-        const response = await axios.post('/users/confirm-registration', {
-            token: token
-        });
-        if (response.data === 'Success') {
+        try {
+            await axios.post('/users/confirm-registration', {
+                token: token
+            });
             loginMessageStatus.value = 'registrationConfirmed'
             await router.push({ name: 'login' })
+        } catch (error) {
+            //
+        }
+    }
+
+    async function sendResetPasswordEmail(event: SubmitEventPromise) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
+        try {
+            await axios.post('/users/reset-password', {
+                email: sendResetPasswordEmailEmail.value,
+            });
+            showResetEmailSendMessage.value = true
+        } catch (error) {
+            //
+        }
+    }
+
+    async function resetPassword(event: SubmitEventPromise) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get('token')
+        if (!token) {
+            return
+        }
+        try {
+            await axios.post('/users/password-reset-confirmation', {
+                password: resetPasswordPassword.value,
+                token: token,
+            });
+            loginMessageStatus.value = 'passwordResetSuccessfully'
+            await router.push({ name: 'login' })
+        } catch (error) {
+            //
         }
     }
 
     return {
-        loginUsername,
+        loginEmail,
         loginPassword,
-        loginUsernameRules,
+        loginEmailRules,
         loginPasswordRules,
         registerUsername,
         registerEmail,
@@ -167,15 +211,21 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         registerConfirmPasswordRules,
         loginSuccessful,
         currentUser,
-        token,
         getCurrentUser,
         loginMessageStatus,
         registerError,
+        sendResetPasswordEmailEmail,
+        sendResetPasswordEmailEmailRules,
+        resetPasswordPassword,
+        resetPasswordPasswordRules,
+        showResetEmailSendMessage,
         login,
         isUserLoggedIn,
         logout,
         setInitialData,
         register,
-        confirmRegistration
+        confirmRegistration,
+        sendResetPasswordEmail,
+        resetPassword,
     }
 })

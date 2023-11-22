@@ -5,6 +5,7 @@ import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
 import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
 
 export interface wasteType {
     id: number,
@@ -47,6 +48,7 @@ export const usePointsStore = defineStore('points', () => {
     const initLoad = ref(true)
     const comments = ref<Comment[]>([])
     const comment = ref('')
+    const authorization = useAuthorizationStore()
 
     async function getPoints() {
         isLoading.value = true
@@ -137,7 +139,6 @@ export const usePointsStore = defineStore('points', () => {
     async function getComments(pointId: number) {
         const response = await axios.get(`/comments/${pointId}`)
         comments.value = response.data
-        console.log(response.data)
         return response.data
     }
 
@@ -145,7 +146,7 @@ export const usePointsStore = defineStore('points', () => {
         const response = await axios.post('/comments', {
             text: comment.value,
             point: pointId,
-            user: 2
+            user: authorization.currentUser?.id
         })
         comments.value = response.data
         await getComments(pointId)

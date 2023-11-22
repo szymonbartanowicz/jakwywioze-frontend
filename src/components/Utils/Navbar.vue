@@ -22,7 +22,7 @@
         <v-col v-else cols="auto" class="ml-auto">
           <v-btn text color="#112A46" @click="authorization.logout">Wyloguj się</v-btn>
           <router-link to="/profile">
-            <v-btn text color="#112A46">{{ authorization.getCurrentUser }}</v-btn>
+            <v-btn text color="#112A46">{{ authorization.getCurrentUser.username }}</v-btn>
           </router-link>
         </v-col>
       </v-row>

@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {usePointsStore} from "@/store/PointsStore";
 import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from "../views/LoginView.vue";
 import PointView from "../views/PointView.vue";
 import ConfirmRegistration from '../views/ConfirmRegistration.vue'
-import {usePointsStore} from "@/store/PointsStore";
+import SendResetPasswordEmail from "@/views/SendResetPasswordEmail.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +38,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/users/confirm-registration',
     name: 'confirm-registration',
     component: ConfirmRegistration,
+  },
+  {
+    path: '/send-reset-password-email',
+    name: 'send-reset-password-email',
+    component: SendResetPasswordEmail,
+  },
+  {
+    path: '/users/password-reset-confirmation',
+    name: 'password-reset-confirmation',
+    component: ResetPassword,
   },
 ]
 
