@@ -45,13 +45,13 @@ export const useFiltersStore = defineStore('filters', () => {
             cities.value = []
             return
         }
-        if (debounceApiCallTimer !== null) {
-            clearTimeout(debounceApiCallTimer);
-        }
-        debounceApiCallTimer = setTimeout(async () => {
-            const response = await axios.get(`/cities/find?name=${city}`);
-            cities.value = response.data;
-        }, 500);
+        // if (debounceApiCallTimer !== null) {
+        //     clearTimeout(debounceApiCallTimer);
+        // }
+        // debounceApiCallTimer = setTimeout(async () => {
+        const response = await axios.get(`/cities/find?name=${city}`);
+        cities.value = response.data;
+        // }, 500);
     }
 
     function setCity(city: City | string) {
