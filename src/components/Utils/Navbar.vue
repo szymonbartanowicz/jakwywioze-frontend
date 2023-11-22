@@ -20,10 +20,38 @@
           </router-link>
         </v-col>
         <v-col v-else cols="auto" class="ml-auto">
-          <v-btn text color="#112A46" @click="authorization.logout">Wyloguj się</v-btn>
-          <router-link to="/profile">
-            <v-btn text color="#112A46">{{ authorization.getCurrentUser.username }}</v-btn>
-          </router-link>
+            <v-menu location="bottom">
+                <template v-slot:activator="{ props }">
+                    <v-btn
+                            text color="#112A46"
+                            v-bind="props"
+                            append-icon="mdi-menu-down"
+                    >
+                        {{ authorization.getCurrentUser.username }}
+                    </v-btn>
+                </template>
+                <v-list class="">
+                    <v-list-item>
+                        <v-list-item-title>
+                            <router-link to="/profile">
+                                <v-btn prepend-icon="mdi-account" variant="text" color="#112A46">Profil</v-btn>
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title>
+                            <router-link to="/add-dynamic-point">
+                              <v-btn prepend-icon="mdi-plus" variant="text" color="#112A46">Dodaj punkt</v-btn>
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title>
+                            <v-btn prepend-icon="mdi-logout" variant="text" color="#112A46" @click="authorization.logout">Wyloguj się</v-btn>
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-col>
       </v-row>
     </v-container>

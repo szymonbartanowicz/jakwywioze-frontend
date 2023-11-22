@@ -11,8 +11,8 @@ interface User {
 }
 export const useAuthorizationStore = defineStore('authorization', () => {
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    const loginEmail = ref('szymon@bartanowicz.pl')
-    const loginPassword = ref('qweqweqwe')
+    const loginEmail = ref('')
+    const loginPassword = ref('')
     const loginEmailRules = [
         (v: string) => !!v || 'Pole login jest wymagane',
         (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',

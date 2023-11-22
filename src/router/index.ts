@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import {usePointsStore} from "@/store/PointsStore";
-import HomeView from '../views/HomeView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import LoginView from "../views/LoginView.vue";
-import PointView from "../views/PointView.vue";
-import ConfirmRegistration from '../views/ConfirmRegistration.vue'
+import HomeView from '@/views/HomeView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import LoginView from "@/views/LoginView.vue";
+import PointView from "@/views/PointView.vue";
+import ConfirmRegistration from '@/views/ConfirmRegistration.vue'
 import SendResetPasswordEmail from "@/views/SendResetPasswordEmail.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
+import Profile from "@/views/Profile.vue";
+import AddDynamicPoint from "@/views/AddDynamicPoint.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +50,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/users/password-reset-confirmation',
     name: 'password-reset-confirmation',
     component: ResetPassword,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
+  },
+  {
+    path: '/add-dynamic-point',
+    name: 'add-dynamic-point',
+    component: AddDynamicPoint,
   },
 ]
 
