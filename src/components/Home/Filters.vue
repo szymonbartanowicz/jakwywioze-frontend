@@ -69,7 +69,7 @@ const filters = useFiltersStore()
 const points = usePointsStore()
 
 onMounted(() => {
-    filters.reset()
+    // filters.reset()
     filters.getCities()
     filters.getWasteTypesNames()
 })

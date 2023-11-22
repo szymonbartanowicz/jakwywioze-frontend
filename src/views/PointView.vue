@@ -1,5 +1,8 @@
 <template>
     <v-container>
+        <router-link to="/">
+            <v-btn prepend-icon="mdi-arrow-left" variant="text" color="#112A46" class="mb-3 d-flex">Powrót do listy</v-btn>
+        </router-link>
         <v-row class="elevation-12 main-wrapper" no-gutters>
             <v-col cols="6" class="points-wrapper">
                 <v-card class="mx-auto">
@@ -44,5 +47,9 @@ const points = usePointsStore()
     overflow-x: hidden;
     min-height: 100%;
     height: 100%;
+}
+
+a {
+    text-decoration: none;
 }
 </style>
