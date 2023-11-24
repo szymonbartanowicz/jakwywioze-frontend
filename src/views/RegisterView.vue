@@ -16,13 +16,19 @@
                     v-model="authorization.registerPassword"
                     :rules="authorization.registerPasswordRules"
                     label="Hasło"
-                    type="password"
+                    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showPassword ? 'text' : 'password'"
+                    @click:append-inner="showPassword = !showPassword"
+                    counter
                 ></v-text-field>
                 <v-text-field
                     v-model="authorization.registerConfirmPassword"
                     :rules="authorization.registerConfirmPasswordRules"
                     label="Powtórz hasło"
-                    type="password"
+                    :append-inner-icon="showRepeatPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showRepeatPassword ? 'text' : 'password'"
+                    @click:append-inner="showRepeatPassword = !showRepeatPassword"
+                    counter
                 ></v-text-field>
                 <router-link to="/login"><span class="float-right mb-3 text-decoration-underline font-weight-light">Posiadasz już konto?</span></router-link>
                 <v-btn type="submit" block color="#B0E8BC" text="112A46">Zarejestruj się</v-btn>
@@ -34,6 +40,10 @@
 
 <script lang="ts" setup>
 import { useAuthorizationStore } from '@/store/AuthorizationStore'
+import {ref} from "vue";
 
 const authorization = useAuthorizationStore()
+
+const showPassword = ref(false)
+const showRepeatPassword = ref(false)
 </script>

@@ -28,6 +28,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     const registerConfirmPassword = ref('')
     const sendResetPasswordEmailEmail = ref('')
     const resetPasswordPassword = ref('')
+    const resetPasswordConfirmPassword = ref('')
     const registerUsernameRules = [
         (v: string) => !!v || 'Pole login jest wymagane'
     ]
@@ -37,11 +38,11 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const registerPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków'
+        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków'
     ]
     const registerConfirmPasswordRules = [
-        (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
+        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
         (v: string) => v === registerPassword.value || 'Hasła nie są jednakowe'
     ]
     const sendResetPasswordEmailEmailRules = [
@@ -50,7 +51,12 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const resetPasswordPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 3 || 'Hasło musi być dłuższe niz 8 znaków'
+        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
+    ]
+    const resetPasswordConfirmPasswordRules = [
+        (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
+        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => v === resetPasswordPassword.value || 'Hasła nie są jednakowe'
     ]
     const loginMessageStatus = ref('')
     const registerError = ref('')
@@ -217,7 +223,9 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         sendResetPasswordEmailEmail,
         sendResetPasswordEmailEmailRules,
         resetPasswordPassword,
+        resetPasswordConfirmPassword,
         resetPasswordPasswordRules,
+        resetPasswordConfirmPasswordRules,
         showResetEmailSendMessage,
         login,
         isUserLoggedIn,
