@@ -1,9 +1,9 @@
 <template>
-    <v-list-item v-if="availability?.status.length">
+    <div v-if="availability?.status.length">
         <v-icon icon="mdi-clock" class="mr-2"></v-icon>
         <span v-if="availability?.status == 'opened'" class="text-green-darken-1 font-weight-bold">Otwarte <span class="text-grey-darken-1 font-weight-thin">{{ availability?.info }}</span></span>
         <span v-else class="text-red">Zamknięte <span class="text-grey-darken-1 font-weight-thin">{{ availability?.info }}</span></span>
-    </v-list-item>
+    </div>
 </template>
 <script lang="ts" setup>
 import { defineProps, onMounted, ref } from 'vue';

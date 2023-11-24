@@ -20,20 +20,12 @@
         <WasteTypesChips :waste-types="point.wasteTypes"></WasteTypesChips>
         <v-list class="text-left d-block" density="compact">
             <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
-            <CurrentAvailability v-if="point.openingHours" :opening-hours="point.openingHours"></CurrentAvailability>
+            <CurrentAvailability v-if="point.openingHours" :opening-hours="point.openingHours" class="ml-4"></CurrentAvailability>
             <v-list-item link v-if="point.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="point.website" target="_blank">{{ points.getShortenedWebsite(point.website) }}</a></v-list-item>
             <v-list-item v-if="point.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                 {{ point.phoneNumber }}</v-list-item>
         </v-list>
         <v-card-actions class="float-right pa-4">
-<!--            <router-link :to="{-->
-<!--                            name: 'point',-->
-<!--                            params: {-->
-<!--                              id: point.id-->
-<!--                            }-->
-<!--                          }">-->
-<!--                <v-btn variant="outlined" color="green-lighten-1" text="#112A46">Info</v-btn>-->
-<!--            </router-link>-->
             <v-btn variant="flat" color="#B0E8BC" class="ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>

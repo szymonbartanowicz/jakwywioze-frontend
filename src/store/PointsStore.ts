@@ -73,6 +73,7 @@ export const usePointsStore = defineStore('points', () => {
     }
 
     function getAvailability(openingHours: string): currentAvailabilityData {
+        moment.locale('pl')
         let data: currentAvailabilityData = {
             status: '',
             info: ''
@@ -82,16 +83,16 @@ export const usePointsStore = defineStore('points', () => {
         if (openingHoursArray.length != 7) return data;
         const currentTime = moment().format('HH:mm')
         let currentDay = moment().weekday()
-        if (currentDay === 0) currentDay = 6
-        const todayFromAndTo = openingHoursArray[currentDay - 1]
-        const [todayFrom, todayTo] = openingHoursArray[currentDay - 1].split('–')
+        const todayFromAndTo = openingHoursArray[currentDay]
+        const [todayFrom, todayTo] = openingHoursArray[currentDay].split('–')
         if (todayFromAndTo == '0' || currentTime < todayFrom || currentTime > todayTo) {
             data.status = 'closed'
             if (currentTime < todayFrom) {
-                data.info = `Otwarcie ${config.weekDays[currentDay - 1]} ${openingHoursArray[currentDay - 1].split('–')[0]}`
+                data.info = `Otwarcie ${config.weekDays[currentDay]} ${openingHoursArray[currentDay].split('–')[0]}`
             }
             else {
-                let nextFrom = openingHoursArray[currentDay]
+                let nextDay = currentDay += 1
+                let nextFrom = openingHoursArray[nextDay]
                 let i = currentDay
                 while (nextFrom == '0') {
                     i++
@@ -162,6 +163,11 @@ export const usePointsStore = defineStore('points', () => {
         return [marker]
     })
 
+    function getOpeningHoursForDay(day: number) {
+        const openingHoursPerDay = currentPoint.value?.openingHours.split(';')[day]
+        return openingHoursPerDay !== '0' ? openingHoursPerDay : 'Zamknięte'
+    }
+
     return {
         points,
         isLoading,
@@ -178,5 +184,6 @@ export const usePointsStore = defineStore('points', () => {
         getShortenedWebsite,
         getComments,
         addComment,
+        getOpeningHoursForDay
     }
 })

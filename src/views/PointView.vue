@@ -17,7 +17,26 @@
                     <WasteTypesChips :waste-types="points.currentPoint.wasteTypes"></WasteTypesChips>
                     <v-list class="text-left d-block" density="compact">
                         <v-list-item v-if="points.currentPoint.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ points.currentPoint.city }}</v-list-item>
-                        <CurrentAvailability v-if="points.currentPoint.openingHours" :opening-hours="points.currentPoint.openingHours"></CurrentAvailability>
+                        <v-menu location="bottom">
+                            <template v-slot:activator="{ props }">
+                                <v-btn
+                                    variant="flat"
+                                    v-bind="props"
+                                    append-icon="mdi-menu-down"
+                                >
+                                    <CurrentAvailability v-if="points.currentPoint.openingHours" :opening-hours="points.currentPoint.openingHours"></CurrentAvailability>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item v-for="(item, index) in config.weekDays" :key="index">
+                                    <v-list-item-title>
+                                        <span>{{ item }}</span>
+                                        <span>: </span>
+                                        <span class="font-weight-thin">{{ points.getOpeningHoursForDay(index) }}</span>
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
                         <v-list-item link v-if="points.currentPoint.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="points.currentPoint.website" target="_blank">{{ points.getShortenedWebsite(points.currentPoint.website) }}</a></v-list-item>
                         <v-list-item v-if="points.currentPoint.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                             {{ points.currentPoint.phoneNumber }}</v-list-item>
@@ -37,6 +56,7 @@ import WasteTypesChips from "@/components/Point/WasteTypesChips.vue";
 import CurrentAvailability from "@/components/Point/CurrentAvailability.vue";
 import Comments from '@/components/Point/Comments.vue'
 import Map from "@/components/Utils/Map.vue";
+import config from '@/config/config'
 
 const points = usePointsStore()
 </script>
