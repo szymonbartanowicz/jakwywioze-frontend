@@ -6,6 +6,8 @@ import moment from "moment";
 import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
+import router from "@/router";
+import {point} from "leaflet";
 
 export interface wasteType {
     id: number,
@@ -35,6 +37,8 @@ interface Marker {
 }
 
 interface Comment {
+    id: number,
+    userId: number,
     user: number,
     text: string,
     createdAt: string
@@ -155,6 +159,18 @@ export const usePointsStore = defineStore('points', () => {
         return response.data
     }
 
+    async function deleteComment(commentId: number, pointId: number) {
+        console.log(commentId, pointId)
+        try {
+            if (confirm('Czy jesteś pewnien?')) {
+                await axios.delete(`/comments/${commentId}`)
+                await getComments(pointId)
+            }
+        } catch (error) {
+            //
+        }
+    }
+
     const currentPointMarker = computed(() => {
         const marker: Marker = {} as Marker
         marker.lat = <number>currentPoint.value?.lat
@@ -184,6 +200,7 @@ export const usePointsStore = defineStore('points', () => {
         getShortenedWebsite,
         getComments,
         addComment,
-        getOpeningHoursForDay
+        getOpeningHoursForDay,
+        deleteComment,
     }
 })

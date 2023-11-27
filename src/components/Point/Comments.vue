@@ -11,6 +11,7 @@
                 <span>{{ comment.user }}</span>
                 <span> &bull; </span>
                 <span>{{ moment(comment.createdAt).fromNow() }}</span>
+                <a v-if="authorization.currentUser?.id === comment.userId" class="ml-1 text-caption text-grey-darken-2" href="" @click.prevent="points.deleteComment(2, <number>props.pointId)"> usuń</a>
             </div>
             <p class="text-body-2">{{ comment.text }}</p>
         </div>
@@ -33,9 +34,15 @@ const props = defineProps({
         type: Number,
         required: true,
     },
-});
+})
 
 onMounted(() => {
-    points.getComments(props.pointId)
+    points.getComments(<number>props.pointId)
 })
 </script>
+
+<style scoped>
+a {
+    text-decoration: none;
+}
+</style>
