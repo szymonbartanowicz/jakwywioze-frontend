@@ -55,7 +55,7 @@ export const useFiltersStore = defineStore('filters', () => {
     }
 
     function setCity(city: City | string) {
-        if (typeof city === "object") {
+        if (city && typeof city === "object") {
             filters.value.cityId = city.id
         }
     }
@@ -84,23 +84,24 @@ export const useFiltersStore = defineStore('filters', () => {
         location.reload()
     }
 
-    async function setUserLocation() {
-        navigator.geolocation.getCurrentPosition(setUserLocationSuccessCallback, setUserLocationErrorCallback);
-    }
-
-    const setUserLocationSuccessCallback = async (position: GeolocationPosition) => {
+    async function setCityOnFilters(position: GeolocationPosition) {
+        userLat.value = position.coords.latitude
+        userLon.value = position.coords.longitude
         const response = await axios.post('/cities/closest', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
+        }).then((response) => {
+            filters.value.cityId = response.data.id
+            currentCityName.value = response.data.name
         })
-        filters.value.cityId = response.data.id
-        currentCityName.value = response.data.name
-        userLat.value = position.coords.latitude
-        userLon.value = position.coords.longitude
     }
 
-    const setUserLocationErrorCallback = (error: GeolocationPositionError) => {
-        console.log(error);
+    function setClosestCity() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                await setCityOnFilters(position)
+            });
+        }
     }
 
     watch(currentPage, async () => {
@@ -119,10 +120,9 @@ export const useFiltersStore = defineStore('filters', () => {
         userLon,
         getCities,
         getWasteTypesNames,
-        reset,
         filtersAreEmpty,
         setCity,
-        setUserLocation,
+        setClosestCity,
         reload,
     }
 })

@@ -23,17 +23,17 @@ function init(map: L.Map) {
 function setMarkers(map: L.Map) {
   const markers = getMarkers(props.mode);
   for (let i = 0; i < markers.length; i++) {
-    const marker = L.marker([markers[i]?.lon, markers[i]?.lat], {
+    const marker = L.marker([markers[i].lat, markers[i].lon], {
       icon: customMarkerIcon,
     }).addTo(map);
-    const markerPopup = L.popup().setContent(markers[i]?.name);
+    const markerPopup = L.popup().setContent(markers[i].name);
     marker.bindPopup(markerPopup);
   }
 }
 
 function setUserMarker(map: L.Map) {
   if (filters.userLat && filters.userLon) {
-    const marker = L.marker([filters.userLon, filters.userLat], {
+    const marker = L.marker([filters.userLat, filters.userLon], {
       icon: customMarkerIcon,
     }).addTo(map);
   }
@@ -58,9 +58,9 @@ function getInitCoords(mode: string): [number, number] {
   if (filters.userLat && filters.userLon) {
     return [filters.userLon, filters.userLat];
   } else if (mode === 'detail' && points.currentPoint?.lon && points.currentPoint?.lat) {
-    return [points.currentPoint.lon, points.currentPoint.lat];
+    return [points.currentPoint.lat, points.currentPoint.lon];
   } else {
-    return [points?.currentPointsMarkers[0]?.lon, points?.currentPointsMarkers[0]?.lat];
+    return [points.currentPointsMarkers[0].lat, points.currentPointsMarkers[0].lon];
   }
 }
 

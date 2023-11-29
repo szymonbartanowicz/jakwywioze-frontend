@@ -168,6 +168,22 @@ export const usePointsStore = defineStore('points', () => {
         return openingHoursPerDay !== '0' ? openingHoursPerDay : 'Zamknięte'
     }
 
+    function setRouteToPoint(pointLat: number, pointLon: number) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                openGoogleMapsRoute(position, pointLat, pointLon)
+            });
+        }
+    }
+
+    function openGoogleMapsRoute(position: GeolocationPosition, pointLat: number, pointLon: number) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const origin = encodeURIComponent(`${latitude},${longitude}`);
+        const destination = encodeURIComponent(`${pointLat},${pointLon}`);
+        window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`)
+    }
+
     return {
         points,
         isLoading,
@@ -184,6 +200,7 @@ export const usePointsStore = defineStore('points', () => {
         getShortenedWebsite,
         getComments,
         addComment,
-        getOpeningHoursForDay
+        getOpeningHoursForDay,
+        setRouteToPoint,
     }
 })

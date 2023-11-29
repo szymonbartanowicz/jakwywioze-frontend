@@ -14,7 +14,7 @@
                 class="mr-3"
             >
                 <template v-slot:prepend-inner>
-                    <v-icon @click="filters.setUserLocation" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
+                    <v-icon @click="filters.setClosestCity" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
                 </template>
             </v-combobox>
         </v-col>

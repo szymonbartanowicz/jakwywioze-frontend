@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useAuthorizationStore} from "../store/AuthorizationStore";
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
 
 const authorization = useAuthorizationStore()
 </script>
