@@ -17,7 +17,7 @@
                     <WasteTypesChips :waste-types="points.currentPoint.wasteTypes"></WasteTypesChips>
                     <v-list class="text-left d-block" density="compact">
                         <v-list-item v-if="points.currentPoint.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ points.currentPoint.city }}</v-list-item>
-                        <v-menu v-if="!points.currentPoint.isDynamic"  location="bottom">
+                        <v-menu v-if="!points.currentPoint.isDynami  location="bottom">
                             <template v-slot:activator="{ props }">
                                 <v-btn
                                     variant="flat"
