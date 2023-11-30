@@ -6,6 +6,7 @@ import moment from "moment";
 import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
+import router from "@/router";
 
 export interface wasteType {
     id: number,
@@ -184,6 +185,40 @@ export const usePointsStore = defineStore('points', () => {
         window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`)
     }
 
+    const dynamicPointName = ref('')
+    const dynamicPointCity = ref('')
+    const dynamicPointStreet = ref('')
+    const dynamicPointZipcode = ref('')
+    const dynamicPointPhone = ref('')
+    const dynamicPointDescription = ref('')
+    const dynamicPointStartDate = ref(new Date())
+    const dynamicPointEndDate = ref(new Date())
+    const dynamicPointAdditionalWasteType = ref([])
+
+    async function addDynamicPoint() {
+        try {
+            const response = await axios.post("/points", {
+                name: dynamicPointName.value,
+                city: dynamicPointCity.value,
+                street: dynamicPointStreet.value,
+                zipcode: dynamicPointZipcode.value,
+                phoneNumber: dynamicPointPhone.value,
+                dynamicPointInfo: {
+                    user: authorization?.currentUser?.id,
+                    description: dynamicPointDescription.value,
+                    startDate: dynamicPointStartDate.value,
+                    endDate: dynamicPointEndDate.value,
+                    additionalWasteTypes: [dynamicPointAdditionalWasteType.value],
+                },
+            });
+            if (typeof response === 'object') {
+                await router.push({name: 'home'})
+            }
+        } catch (error) {
+            //
+        }
+    }
+
     return {
         points,
         isLoading,
@@ -193,6 +228,15 @@ export const usePointsStore = defineStore('points', () => {
         initLoad,
         comments,
         comment,
+        dynamicPointName,
+        dynamicPointCity,
+        dynamicPointStreet,
+        dynamicPointZipcode,
+        dynamicPointPhone,
+        dynamicPointDescription,
+        dynamicPointStartDate,
+        dynamicPointEndDate,
+        dynamicPointAdditionalWasteType,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
@@ -202,5 +246,6 @@ export const usePointsStore = defineStore('points', () => {
         addComment,
         getOpeningHoursForDay,
         setRouteToPoint,
+        addDynamicPoint
     }
 })
