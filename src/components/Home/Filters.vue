@@ -19,7 +19,7 @@
             </v-combobox>
         </v-col>
         <v-col
-          cols="2"
+          cols="1"
         >
             <v-select
                     :disabled="!filters.filters.cityId"
@@ -31,7 +31,7 @@
             ></v-select>
         </v-col>
         <v-col
-            cols="5"
+            cols="3"
         >
             <v-autocomplete
                 v-model="filters.filters.wasteTypesNames"
@@ -43,6 +43,13 @@
                 class="mr-3"
             ></v-autocomplete>
         </v-col>
+        <v-col cols="3">
+            <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
+                <template v-slot:activator="{ props }">
+                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne ?" class=""></v-checkbox>
+                </template>
+            </v-tooltip>
+        </v-col>
         <v-col
           cols="2"
         >
@@ -51,7 +58,6 @@
                 color="#B0E8BC"
                 text="#112A46"
                 block
-                class="float-left"
                 height="56px"
             >
                 Szukaj

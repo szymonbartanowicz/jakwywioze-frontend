@@ -11,6 +11,7 @@ interface Filters {
     wasteTypesNames: String[],
     page: number,
     itemsPerPage: number,
+    addDynamicPoints: boolean,
 }
 interface City {
     id: number,
@@ -29,16 +30,16 @@ export const useFiltersStore = defineStore('filters', () => {
         wasteTypesNames: [],
         page: 0,
         itemsPerPage: config.defaultItemsPerPage,
+        addDynamicPoints: true,
     })
     const cities:Ref<String[]> = ref([])
     const wasteTypesNames:Ref<String[]> = ref([])
     const paginationLength = ref(0)
     const currentCityName = ref()
-
     const userLat = ref(0)
     const userLon = ref(0)
 
-    let debounceApiCallTimer: number | null = null;
+    // let debounceApiCallTimer: number | null = null;
 
     async function getCities(city: string = '') {
         if (city?.length < 3) {
