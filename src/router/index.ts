@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import {usePointsStore} from "@/store/PointsStore";
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import HomeView from '@/views/HomeView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from "@/views/LoginView.vue";
@@ -55,11 +56,24 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/add-dynamic-point',
     name: 'add-dynamic-point',
     component: AddDynamicPoint,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/:notFound',
+    name: 'not-found',
+    redirect: {
+      name: 'home'
+    }
   },
 ]
 
@@ -67,5 +81,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach((to, from, next) => {
+  const authorization = useAuthorizationStore()
+  if (to.meta.requiresAuth) {
+    if (authorization.isUserLoggedIn()) {
+      next();
+    } else {
+      next('/login');
+    }
+  } else {
+    next();
+  }
+});
 
 export default router
