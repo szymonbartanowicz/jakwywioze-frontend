@@ -117,7 +117,10 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     }
 
     function setCookie(name: string, value: string, expirationTimestamp: number) {
-        document.cookie = `${name}=${value}; expires=${getDateFromTimestamp(expirationTimestamp)}`
+        if (getCookie(name)) {
+            deleteCookie(name)
+        }
+        document.cookie = `${name}=${value}; expires=${getDateFromTimestamp(expirationTimestamp)}; path=/`
     }
 
     function getDateFromTimestamp(timestamp: number) {
