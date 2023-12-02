@@ -1,12 +1,19 @@
 <template>
     <v-card class="mx-auto elevation-6">
-        <v-img
+        <router-link :to="{
+                            name: 'point',
+                            params: {
+                              id: point.id
+                            }
+                          }">
+            <v-img
                 class="align-end text-white"
                 height="200"
                 :src="point.imageLink ? point.imageLink : require('../../assets/images/default.png')"
                 cover
-        >
-        </v-img>
+            >
+            </v-img>
+        </router-link>
         <v-card-title class="text-left mt-2 ml-1 router-link-custom">
             <router-link :to="{
                             name: 'point',
