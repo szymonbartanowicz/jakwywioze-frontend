@@ -12,6 +12,7 @@
                 item-title="name"
                 item-value="id"
                 class="mr-3"
+                :disabled="filters.disableSetCityBtn"
             >
                 <template v-slot:prepend-inner>
                     <v-icon @click="filters.setClosestCity" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>

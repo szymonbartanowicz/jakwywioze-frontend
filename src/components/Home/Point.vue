@@ -33,7 +33,7 @@
                 {{ point.phoneNumber }}</v-list-item>
         </v-list>
         <v-card-actions class="float-right pa-4">
-            <v-btn @click="points.setRouteToPoint(point.lat, point.lon)" variant="flat" color="#B0E8BC" class="ml-2">Trasa</v-btn>
+            <v-btn :loading="points.disableSetRouteBtn" :disabled="points.disableSetRouteBtn" @click="points.setRouteToPoint(point.lat, point.lon)" variant="flat" color="#B0E8BC" class="ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>
 </template>

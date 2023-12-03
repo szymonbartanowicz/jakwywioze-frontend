@@ -50,7 +50,7 @@ export const usePointsStore = defineStore('points', () => {
     const comments = ref<Comment[]>([])
     const comment = ref('')
     const authorization = useAuthorizationStore()
-
+    const disableSetRouteBtn = ref(false)
     async function getPoints() {
         isLoading.value = true
         const response = await axios.post('/points/filtered', filters.filters)
@@ -171,9 +171,10 @@ export const usePointsStore = defineStore('points', () => {
 
     function setRouteToPoint(pointLat: number, pointLon: number) {
         if (navigator.geolocation) {
+            disableSetRouteBtn.value = true
             navigator.geolocation.getCurrentPosition((position) => {
                 openGoogleMapsRoute(position, pointLat, pointLon)
-            });
+            })
         }
     }
 
@@ -183,6 +184,7 @@ export const usePointsStore = defineStore('points', () => {
         const origin = encodeURIComponent(`${latitude},${longitude}`);
         const destination = encodeURIComponent(`${pointLat},${pointLon}`);
         window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`)
+        disableSetRouteBtn.value = false
     }
 
     const dynamicPointName = ref('')
@@ -237,6 +239,7 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointStartDate,
         dynamicPointEndDate,
         dynamicPointAdditionalWasteType,
+        disableSetRouteBtn,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,

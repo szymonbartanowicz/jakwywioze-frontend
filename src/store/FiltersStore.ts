@@ -38,6 +38,7 @@ export const useFiltersStore = defineStore('filters', () => {
     const currentCityName = ref()
     const userLat = ref(0)
     const userLon = ref(0)
+    const disableSetCityBtn = ref(false)
 
     // let debounceApiCallTimer: number | null = null;
 
@@ -94,11 +95,13 @@ export const useFiltersStore = defineStore('filters', () => {
         }).then((response) => {
             filters.value.cityId = response.data.id
             currentCityName.value = response.data.name
+            disableSetCityBtn.value = false
         })
     }
 
     function setClosestCity() {
         if (navigator.geolocation) {
+            disableSetCityBtn.value = true
             navigator.geolocation.getCurrentPosition(async (position) => {
                 await setCityOnFilters(position)
             });
@@ -119,6 +122,7 @@ export const useFiltersStore = defineStore('filters', () => {
         currentCityName,
         userLat,
         userLon,
+        disableSetCityBtn,
         getCities,
         getWasteTypesNames,
         filtersAreEmpty,
