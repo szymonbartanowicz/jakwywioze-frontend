@@ -67,7 +67,7 @@ function getInitCoords(mode: string): [number, number] {
 onMounted(async () => {
   const coords = getInitCoords(props.mode);
   if (coords[0] && coords[1]) {
-    const map = L.map('map').setView(getInitCoords(props.mode), 12);
+    const map = L.map('map').setView(getInitCoords(props.mode), 11);
     init(map);
     setMarkers(map);
     setUserMarker(map);

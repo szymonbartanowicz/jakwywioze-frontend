@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app :elevation="2" color="#B0E8BC" class="custom-navbar">
+  <v-app-bar app :elevation="2" color="#148AAC" class="custom-navbar">
     <v-container>
       <v-row align="center">
         <v-col cols="2">
