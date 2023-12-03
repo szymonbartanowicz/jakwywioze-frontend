@@ -8,6 +8,7 @@ import config from "@/config/config";
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import router from "@/router";
 import {tr} from "vuetify/locale";
+import {SubmitEventPromise} from "vuetify";
 
 export interface wasteType {
     id: number,
@@ -196,9 +197,13 @@ export const usePointsStore = defineStore('points', () => {
     const dynamicPointDescription = ref('')
     const dynamicPointStartDate = ref(new Date())
     const dynamicPointEndDate = ref(new Date())
-    const dynamicPointAdditionalWasteType = ref([])
+    const dynamicPointAdditionalWasteType = ref('')
 
-    async function addDynamicPoint() {
+    async function addDynamicPoint(event: SubmitEventPromise) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
         try {
             const response = await axios.post("/points", {
                 name: dynamicPointName.value,
@@ -211,7 +216,7 @@ export const usePointsStore = defineStore('points', () => {
                     description: dynamicPointDescription.value,
                     startDate: dynamicPointStartDate.value,
                     endDate: dynamicPointEndDate.value,
-                    additionalWasteTypes: [dynamicPointAdditionalWasteType.value],
+                    additionalWasteTypes: dynamicPointAdditionalWasteType.value.split(','),
                 },
             });
             if (typeof response === 'object') {
