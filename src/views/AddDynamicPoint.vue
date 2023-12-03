@@ -19,24 +19,26 @@
             <v-text-field v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-              <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Inne typy śmieci"></v-text-field>
+            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Inne typy śmieci"></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea v-model="points.dynamicPointDescription" label="Opis"></v-textarea>
           </v-col>
           <v-col cols="12" md="6">
-              <date-picker
-                      label="Start Date"
-                      v-model="points.dynamicPointStartDate"
-              ></date-picker>
+            <date-picker
+                label="Start Date"
+                value=""
+                v-model="points.dynamicPointStartDate"
+            ></date-picker>
 
           </v-col>
-            <v-col cols="12" md="6">
-                <date-picker
-                        label="End Date"
-                        v-model="points.dynamicPointEndDate"
-                ></date-picker>
-            </v-col>
+          <v-col cols="12" md="6">
+            <date-picker
+                label="End Date"
+                value=""
+                v-model="points.dynamicPointEndDate"
+            ></date-picker>
+          </v-col>
         </v-row>
         <v-btn type="submit" color="#B0E8BC" block text="#112A46" class="mt-2">Dodaj punkt</v-btn>
       </v-form>
@@ -46,7 +48,7 @@
 
 <script lang="ts" setup>
 import DatePicker from "@/components/Utils/DatePicker.vue";
-import { usePointsStore } from '@/store/PointsStore'
+import {usePointsStore} from '@/store/PointsStore'
 import {ref} from "vue";
 
 const points = usePointsStore()

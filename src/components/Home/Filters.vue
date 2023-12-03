@@ -26,7 +26,6 @@
                     v-model="filters.filters.range"
                     label="Zasięg"
                     :items="config.ranges"
-                    suffix="km"
                     class="mr-3"
             ></v-select>
         </v-col>
@@ -46,7 +45,7 @@
         <v-col cols="3">
             <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
                 <template v-slot:activator="{ props }">
-                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne ?" class=""></v-checkbox>
+                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB" ></v-checkbox>
                 </template>
             </v-tooltip>
         </v-col>
@@ -80,3 +79,9 @@ onMounted(() => {
     filters.getWasteTypesNames()
 })
 </script>
+
+<style>
+input[type="checkbox"].myCheckbox:checked {
+  background-color: green;
+}
+</style>

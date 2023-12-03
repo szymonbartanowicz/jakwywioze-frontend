@@ -33,6 +33,7 @@
                     v-model="authorization.loginEmail"
                     :rules="authorization.loginEmailRules"
                     label="Email"
+                    type="email"
                 ></v-text-field>
                 <v-text-field
                     v-model="authorization.loginPassword"

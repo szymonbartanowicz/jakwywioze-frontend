@@ -7,6 +7,7 @@ import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import router from "@/router";
+import {tr} from "vuetify/locale";
 
 export interface wasteType {
     id: number,
@@ -45,6 +46,7 @@ export const usePointsStore = defineStore('points', () => {
     const points = ref<Point[]>([])
     const filters = useFiltersStore()
     const isLoading = ref(false)
+    const isSearchBtnClicked = ref(false)
     const currentPoint = ref<Point>()
     const initLoad = ref(true)
     const comments = ref<Comment[]>([])
@@ -53,6 +55,7 @@ export const usePointsStore = defineStore('points', () => {
 
     async function getPoints() {
         isLoading.value = true
+        isSearchBtnClicked.value = true;
         const response = await axios.post('/points/filtered', filters.filters)
         points.value = response.data.points
         filters.paginationLength = setPaginationLength(response.data.totalPoints)
@@ -222,6 +225,7 @@ export const usePointsStore = defineStore('points', () => {
     return {
         points,
         isLoading,
+        isSearchBtnClicked,
         currentPointMarker,
         currentPointsMarkers,
         currentPoint,

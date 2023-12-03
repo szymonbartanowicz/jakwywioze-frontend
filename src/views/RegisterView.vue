@@ -11,6 +11,7 @@
                     v-model="authorization.registerEmail"
                     :rules="authorization.registerEmailRules"
                     label="Email"
+                    type="email"
                 ></v-text-field>
                 <v-text-field
                     v-model="authorization.registerPassword"
