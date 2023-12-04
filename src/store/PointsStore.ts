@@ -227,6 +227,13 @@ export const usePointsStore = defineStore('points', () => {
         }
     }
 
+// , {
+//         headers: {
+//             'Content-Type': 'application/json',
+//                 'Authorization': `Basic ${authorization.getCookie('token')}`
+//         }
+//     }
+
     return {
         points,
         isLoading,

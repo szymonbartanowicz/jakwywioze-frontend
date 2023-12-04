@@ -1,4 +1,13 @@
 <template>
+    <v-row>
+        <v-col cols="3" class="showDynamicPoints">
+            <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
+                <template v-slot:activator="{ props }">
+                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB" ></v-checkbox>
+                </template>
+            </v-tooltip>
+        </v-col>
+    </v-row>
     <v-row no-gutters class="mb-10">
         <v-col
           cols="3"
@@ -19,7 +28,7 @@
             </v-combobox>
         </v-col>
         <v-col
-          cols="1"
+          cols="2"
         >
             <v-select
                     :disabled="!filters.filters.cityId"
@@ -27,10 +36,11 @@
                     label="Zasięg"
                     :items="config.ranges"
                     class="mr-3"
+                    suffix="km"
             ></v-select>
         </v-col>
         <v-col
-            cols="3"
+            cols="5"
         >
             <v-autocomplete
                 v-model="filters.filters.wasteTypesNames"
@@ -39,15 +49,8 @@
                 clearable
                 label="Rodzaj odpadów"
                 :items="filters.wasteTypesNames"
-                class="mr-3"
+                class="mr-3 wasteTypesNames"
             ></v-autocomplete>
-        </v-col>
-        <v-col cols="3">
-            <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
-                <template v-slot:activator="{ props }">
-                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB" ></v-checkbox>
-                </template>
-            </v-tooltip>
         </v-col>
         <v-col
           cols="2"
@@ -74,7 +77,6 @@ const filters = useFiltersStore()
 const points = usePointsStore()
 
 onMounted(() => {
-    // filters.reset()
     filters.getCities()
     filters.getWasteTypesNames()
 })
@@ -84,4 +86,10 @@ onMounted(() => {
 input[type="checkbox"].myCheckbox:checked {
   background-color: green;
 }
+
+.v-overlay-container > .v-menu {
+    width:300px!important;
+    max-width: 300px!important;
+}
+
 </style>

@@ -14,14 +14,14 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     const loginEmail = ref('')
     const loginPassword = ref('')
     const loginEmailRules = [
-        (v: string) => !!v || 'Pole login jest wymagane',
+        (v: string) => !!v || 'Pole email jest wymagane',
         (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
     ]
     const loginPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi mieć co najmniej 8 znaków'
     ]
-    const loginSuccessful = ref(true)
+    const loginError = ref('')
     const registerUsername = ref('')
     const registerEmail = ref('')
     const registerPassword = ref('')
@@ -74,14 +74,24 @@ export const useAuthorizationStore = defineStore('authorization', () => {
                 email: loginEmail.value,
                 password: loginPassword.value
             })
-            loginSuccessful.value = true
+            loginError.value = ''
             currentUser.value = response.data
             loginMessageStatus.value = ''
             setCookie('currentUser', JSON.stringify(response.data), response.data.exp)
+            setCookie('token', generateToken(loginEmail.value, loginPassword.value), response.data.exp)
             await router.push({ name: 'home' })
         } catch (error) {
-            loginSuccessful.value = false
+            if (error.response.data === 'User not active') {
+                loginError.value = 'To konto jest nieaktywne'
+            }
+            else {
+                loginError.value = 'Nieprawidłowe dane logowania'
+            }
         }
+    }
+
+    function generateToken(email: string, password: string) {
+        return btoa(`${loginEmail.value}:${loginPassword.value}`)
     }
 
     async function register(event: SubmitEventPromise) {
@@ -109,9 +119,10 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     }
 
     async function logout() {
-        loginSuccessful.value = false
+        loginError.value = ''
         currentUser.value = <User>{}
         deleteCookie('currentUser')
+        deleteCookie('token')
         await router.push({ name: 'home' })
         location.reload()
     }
@@ -218,7 +229,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         registerEmailRules,
         registerPasswordRules,
         registerConfirmPasswordRules,
-        loginSuccessful,
+        loginError,
         currentUser,
         getCurrentUser,
         loginMessageStatus,
@@ -238,5 +249,6 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         confirmRegistration,
         sendResetPasswordEmail,
         resetPassword,
+        getCookie
     }
 })

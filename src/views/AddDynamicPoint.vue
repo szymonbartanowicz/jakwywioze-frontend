@@ -19,7 +19,7 @@
             <v-text-field :rules="phoneRules" v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Inne typy śmieci, nazwy po przecinku, np. typ1, typ2, typ3"></v-text-field>
+            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Typy odpadów, nazwy po przecinku, np. typ1, typ2, typ3"></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea :rules="descriptionRules" v-model="points.dynamicPointDescription" label="Opis"></v-textarea>
@@ -30,7 +30,6 @@
                 value=""
                 v-model="points.dynamicPointStartDate"
             ></date-picker>
-
           </v-col>
           <v-col cols="12" md="6">
             <date-picker
@@ -60,17 +59,20 @@ const cityRules = [
 const streetRules = [
     (v: string) => !!v || 'Pole ulica i numer jest wymagane',
 ]
-const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/;
+const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/
 const zipcodeRules = [
     (v: string) => !!v || 'Pole kod pocztowy jest wymagane',
     (v: string) => zipcodeRegex.test(v) || 'Nieprawidłowy format kodu pocztowego',
 ]
+const phoneRegex = /^(\+48)?\d{9}$/
 const phoneRules = [
     (v: string) => !!v || 'Pole numer telefonu jest wymagane',
+    (v: string) => phoneRegex.test(v) || 'Nieprawidłowy format numeru telefonu',
 ]
 const descriptionRules = [
     (v: string) => !!v || 'Pole opis jest wymagane',
 ]
 
 const points = usePointsStore()
+
 </script>

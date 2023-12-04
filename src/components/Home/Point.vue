@@ -24,7 +24,7 @@
                     {{ point.name }}
             </router-link>
         </v-card-title>
-        <WasteTypesChips :waste-types="point.wasteTypes"></WasteTypesChips>
+        <WasteTypesChips mode="list" :waste-types="point.wasteTypes"></WasteTypesChips>
         <v-list class="text-left d-block" density="compact">
             <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
             <CurrentAvailability v-if="point.openingHours" :opening-hours="point.openingHours" class="ml-4"></CurrentAvailability>

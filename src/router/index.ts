@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'add-dynamic-point',
     component: AddDynamicPoint,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {

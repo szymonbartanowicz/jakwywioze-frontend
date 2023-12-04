@@ -1,7 +1,7 @@
 <template>
     <div class="ml-5 d-flex flex-wrap">
-        <v-chip :color="config.wasteTypesColors[wasteType.id]" size="x-small" class="mr-1 mb-1" v-for="wasteType in wasteTypes">
-            {{ wasteType.name }}
+        <v-chip size="x-small" class="mr-1 mb-1" v-for="wasteType in wasteTypes">
+            {{ wasteType.name ? wasteType.name : wasteType }}
         </v-chip>
     </div>
 </template>
@@ -17,11 +17,32 @@ const props = defineProps({
         type: Object as PropType<wasteType[]>,
         required: true,
     },
+    mode: {
+        type: String,
+        required: true,
+    },
+    isDynamic: {
+        type: Boolean,
+        required: false,
+    }
 });
 
 let wasteTypes = ref()
 
 onMounted(() => {
-    wasteTypes.value = points.getWasteTypesMatchingFilters(props.wasteTypes)
+    if (props.mode === 'list') {
+        wasteTypes.value = points.getWasteTypesMatchingFilters(props.wasteTypes)
+    }
+    else if (props.mode === 'detail' && !props.isDynamic) {
+        wasteTypes.value = props.wasteTypes
+    }
+    else {
+        wasteTypes.value = props.wasteTypes
+    }
 })
 </script>
+<style scoped>
+.wasteTypes {
+    padding: 0 20px;
+}
+</style>

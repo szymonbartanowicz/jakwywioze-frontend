@@ -32,7 +32,7 @@ const filters = useFiltersStore()
 
 <style>
 .main-wrapper {
-  overflow-y: hidden;
+  overflow-y: scroll;
   height: 65vh;
 }
 
