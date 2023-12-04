@@ -56,7 +56,7 @@ function getMarkers(mode: string) {
 
 function getInitCoords(mode: string): [number, number] {
   if (filters.userLat && filters.userLon) {
-    return [filters.userLon, filters.userLat];
+    return [filters.userLat, filters.userLon];
   } else if (mode === 'detail' && points.currentPoint?.lon && points.currentPoint?.lat) {
     return [points.currentPoint.lat, points.currentPoint.lon];
   } else {
