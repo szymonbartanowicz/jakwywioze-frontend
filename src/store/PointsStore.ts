@@ -53,7 +53,7 @@ export const usePointsStore = defineStore('points', () => {
     const comments = ref<Comment[]>([])
     const comment = ref('')
     const authorization = useAuthorizationStore()
-
+    const dynamicPoints = ref([])
     async function getPoints() {
         isLoading.value = true
         isSearchBtnClicked.value = true;
@@ -227,12 +227,11 @@ export const usePointsStore = defineStore('points', () => {
         }
     }
 
-// , {
-//         headers: {
-//             'Content-Type': 'application/json',
-//                 'Authorization': `Basic ${authorization.getCookie('token')}`
-//         }
-//     }
+    async function getDynamicPoints(userId: number) {
+        const response = await axios.get(`/points/user/${userId}`)
+        dynamicPoints.value = response.data
+        return response.data
+    }
 
     return {
         points,
@@ -253,6 +252,7 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointStartDate,
         dynamicPointEndDate,
         dynamicPointAdditionalWasteType,
+        dynamicPoints,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,
@@ -262,6 +262,7 @@ export const usePointsStore = defineStore('points', () => {
         addComment,
         getOpeningHoursForDay,
         setRouteToPoint,
-        addDynamicPoint
+        addDynamicPoint,
+        getDynamicPoints
     }
 })

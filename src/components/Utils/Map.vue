@@ -24,7 +24,7 @@ function setMarkers(map: L.Map) {
   const markers = getMarkers(props.mode);
   for (let i = 0; i < markers.length; i++) {
     const marker = L.marker([markers[i].lat, markers[i].lon], {
-      icon: customMarkerIcon,
+      icon: defaultI,
     }).addTo(map);
     const markerPopup = L.popup().setContent(markers[i].name);
     marker.bindPopup(markerPopup);
@@ -34,12 +34,12 @@ function setMarkers(map: L.Map) {
 function setUserMarker(map: L.Map) {
   if (filters.userLat && filters.userLon) {
     const marker = L.marker([filters.userLat, filters.userLon], {
-      icon: customMarkerIcon,
+      icon: defaultI,
     }).addTo(map);
   }
 }
 
-const customMarkerIcon = L.icon({
+const defaultI = L.icon({
   iconUrl: require('@/assets/images/map-marker.svg'),
   iconSize: [32, 32],
   iconAnchor: [16, 32],
