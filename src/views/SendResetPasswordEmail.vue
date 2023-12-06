@@ -9,7 +9,7 @@
         >
             Na podany adres email został wysłany link resetujący hasło.
         </v-alert>
-        <v-sheet width="500px" class="mx-auto">
+        <v-sheet max-width="500px" class="mx-auto">
             <v-form @submit.prevent="authorization.sendResetPasswordEmail($event)">
                 <v-text-field
                         v-model="authorization.sendResetPasswordEmailEmail"

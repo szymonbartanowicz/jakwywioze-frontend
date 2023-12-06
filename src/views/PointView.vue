@@ -4,11 +4,11 @@
             <v-btn prepend-icon="mdi-arrow-left" variant="text" color="#112A46" class="mb-3 d-flex">Powrót do listy</v-btn>
         </router-link>
         <v-row class="elevation-12 main-wrapper" no-gutters>
-            <v-col cols="6" class="points-wrapper">
+            <v-col colse="12" sm="6" class="points-wrapper">
                 <point-card v-if="!points.currentPoint.isDynamic"></point-card>
                 <dynamic-point-card v-else></dynamic-point-card>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" class="d-none d-sm-block">
                 <Map mode="detail"></Map>
             </v-col>
         </v-row>

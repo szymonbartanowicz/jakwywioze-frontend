@@ -1,37 +1,37 @@
 <template>
   <v-container>
-    <v-sheet width="500" class="mx-auto">
+    <v-sheet max-width="500" class="mx-auto mb-6">
       <v-form @submit.prevent="points.addDynamicPoint($event)">
         <v-row>
           <v-col cols="12">
             <v-text-field :rules="nameRules" v-model="points.dynamicPointName" label="Nazwa"></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <v-text-field :rules="cityRules" v-model="points.dynamicPointCity" label="Miasto"></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <v-text-field :rules="streetRules" v-model="points.dynamicPointStreet" label="Ulica i numer"></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <v-text-field :rules="zipcodeRules" v-model="points.dynamicPointZipcode" label="Kod pocztowy"></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <v-text-field :rules="phoneRules" v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Typy odpadów, nazwy po przecinku, np. typ1, typ2, typ3"></v-text-field>
+            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Typy odpadów przecinku, np. typ1, typ2, typ3"></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea :rules="descriptionRules" v-model="points.dynamicPointDescription" label="Opis"></v-textarea>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <date-picker
                 label="Data od"
                 value=""
                 v-model="points.dynamicPointStartDate"
             ></date-picker>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <date-picker
                 label="Data do"
                 value=""

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="8" class="mx-auto">
+      <v-col cols="12" sm="8" class="mx-auto">
         <v-card class="filters-info py-4">
           <v-card-title class="headline">
             Witaj w jakwywioze.pl

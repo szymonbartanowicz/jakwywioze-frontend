@@ -1,16 +1,16 @@
 <template>
     <v-row>
-        <v-col cols="3" class="showDynamicPoints">
+        <v-col colse="12" sm="3" class="pl-0">
             <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
                 <template v-slot:activator="{ props }">
-                    <v-checkbox v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB" ></v-checkbox>
+                    <v-checkbox class="ml-0 pl-0" v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB"></v-checkbox>
                 </template>
             </v-tooltip>
         </v-col>
     </v-row>
     <v-row no-gutters class="mb-10">
         <v-col
-          cols="3"
+          cols="12" sm="3"
         >
             <v-combobox
                 v-model="filters.currentCityName"
@@ -20,27 +20,26 @@
                 :items="filters.cities"
                 item-title="name"
                 item-value="id"
-                class="mr-3"
+                class="mr-0 mr-sm-3"
             >
                 <template v-slot:prepend-inner>
                     <v-icon @click="filters.setClosestCity" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
                 </template>
             </v-combobox>
         </v-col>
-        <v-col
-          cols="2"
-        >
+        <v-col cols="6" sm="2">
             <v-select
                     :disabled="!filters.filters.cityId"
                     v-model="filters.filters.range"
                     label="Zasięg"
                     :items="config.ranges"
-                    class="mr-3"
+                    class="mr-0 mr-sm-3"
                     suffix="km"
             ></v-select>
         </v-col>
         <v-col
-            cols="5"
+            cols="12"
+            sm="5"
         >
             <v-autocomplete
                 v-model="filters.filters.wasteTypesNames"
@@ -49,11 +48,12 @@
                 clearable
                 label="Rodzaj odpadów"
                 :items="filters.wasteTypesNames"
-                class="mr-3 wasteTypesNames"
+                class="mr-0 mr-sm-3 wasteTypesNames"
             ></v-autocomplete>
         </v-col>
         <v-col
-          cols="2"
+            cols="12"
+          sm="2"
         >
             <v-btn
                 @click.prevent="points.getPoints"
@@ -83,10 +83,6 @@ onMounted(() => {
 </script>
 
 <style>
-input[type="checkbox"].myCheckbox:checked {
-  background-color: green;
-}
-
 .v-overlay-container > .v-menu {
     width:300px!important;
     max-width: 300px!important;

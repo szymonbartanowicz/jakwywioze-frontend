@@ -5,10 +5,10 @@
     <span v-if="!points.isLoading && points.points.length === 0 && !filters.filtersAreEmpty() && points.isSearchBtnClicked">Brak punktów spełniających podane kryteria.</span>
     <v-progress-circular v-if="points.isLoading" indeterminate color="blue"></v-progress-circular>
     <v-row v-else-if="!points.isLoading && points.points.length" class="elevation-12 main-wrapper" no-gutters>
-      <v-col cols="4" class="points-wrapper">
+      <v-col cols="12" sm="4" class="points-wrapper">
         <Point v-for="point in points.points" :key="point.id" :point="point"></Point>
       </v-col>
-      <v-col cols="8">
+      <v-col cols="8" class="d-none d-sm-block">
         <Map mode="list"></Map>
       </v-col>
     </v-row>

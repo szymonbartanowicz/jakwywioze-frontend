@@ -3,10 +3,7 @@
     <v-col>
       <v-menu
           v-model="showDatePicker"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          offset-y
-          attach
+          :close-on-content-click="true"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
@@ -14,63 +11,62 @@
               :label="label"
               readonly
               v-bind="attrs"
-              v-on="on"
+              v-on="{on}"
               @click.stop="toggleDatePicker"
               append-icon="mdi-calendar"
+              class="textFieldCstm"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="selectedDate" @input="closeDatePicker" title="Wybierz datę" hide-header color="#AADEB5"
-                       flat :locale="pl" position="relative" ></v-date-picker>
+        <v-locale-provider locale="pl">
+            <v-date-picker v-model="selectedDate"
+                           @input="closeDatePicker"
+                           title="Wybierz datę"
+                           hide-header
+                           color="#AADEB5"
+                           locale="pl"
+                           class="datePickerCstm"
+                           elevation="1"
+            ></v-date-picker>
+        </v-locale-provider>
       </v-menu>
     </v-col>
   </v-row>
 </template>
+<script setup lang="ts">
+import { ref, computed, defineProps, defineEmits } from 'vue'
+import moment from "moment/moment";
+import config from "@/config/config";
 
-<script>
-import {pl} from "vuetify/locale";
+interface Props {
+    value: string;
+    label: string;
+}
 
-export default {
-  props: {
-    value: {
-      type: String,
-      required: true
-    },
-    label: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      selectedDate: this.isValidDate(this.value) ? new Date(this.value) : new Date(),
-      showDatePicker: false,
-    };
-  },
-  computed: {
-    pl() {
-      return pl
-    },
-    formattedDate() {
-      const offset = this.selectedDate.getTimezoneOffset();
-      const adjustedDate = new Date(this.selectedDate.getTime() - (offset * 60 * 1000));
-      return adjustedDate.toISOString().split('T')[0];
-    }
-  },
-  methods: {
-    isValidDate(dateString) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/;
-      return regex.test(dateString);
-    },
-    toggleDatePicker() {
-      this.showDatePicker = !this.showDatePicker;
-    },
-    closeDatePicker() {
-      this.showDatePicker = false;
-      this.$emit('input', this.formattedDate);
-    }
-  }
-};
+const props = defineProps<Props>();
+const emit = defineEmits(['update:value']);
+
+const selectedDate = ref(
+    props.value && isValidDate(props.value) ? new Date(props.value) : new Date()
+);
+const showDatePicker = ref(false);
+
+const formattedDate = computed(() => {
+    return moment(selectedDate.value).format(config.userDateFormat)
+})
+
+function isValidDate(dateString: string): boolean {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
+}
+
+function toggleDatePicker(): void {
+    showDatePicker.value = !showDatePicker.value;
+}
+
+function closeDatePicker(): void {
+    showDatePicker.value = false;
+    emit('update:value', formattedDate.value);
+}
 </script>
 
-<style scoped>
-</style>
+

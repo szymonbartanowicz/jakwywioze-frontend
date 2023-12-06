@@ -9,4 +9,10 @@
     margin-top: auto;
     width: 100vw;
 }
+
+@media only screen and (max-width: 600px) {
+    .custom-footer {
+        font-size: 12px;
+    }
+}
 </style>

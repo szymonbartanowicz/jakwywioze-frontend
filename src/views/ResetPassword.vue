@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-sheet width="500px" class="mx-auto">
+        <v-sheet max-width="500px" class="mx-auto">
             <v-form @submit.prevent="authorization.resetPassword($event)">
                 <v-text-field
                         v-model="authorization.resetPasswordPassword"

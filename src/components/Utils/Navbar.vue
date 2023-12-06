@@ -2,28 +2,28 @@
   <v-app-bar app :elevation="2" color="#148AAC" class="custom-navbar">
     <v-container>
       <v-row align="center">
-        <v-col cols="2">
+        <v-col cols="2 ml-10 ml-sm-0">
           <router-link to="/">
-            <v-btn text color="#112A46" @click="filters.reload()"
+            <v-btn text color="white" @click="filters.reload()"
             >
-                <v-icon left color="#112A46">mdi-recycle</v-icon>
-                jakwywioze.pl
+                <v-icon left color="white">mdi-recycle</v-icon>
+                <span class="">jakwywioze.pl</span>
             </v-btn>
           </router-link>
         </v-col>
         <v-col v-if="!authorization.isUserLoggedIn()" cols="auto" class="ml-auto">
-          <router-link to="/register">
-            <v-btn text color="#112A46">Zarejestruj się</v-btn>
+          <router-link class="d-none d-sm-inline" to="/register">
+            <v-btn text color="white">Zarejestruj się</v-btn>
           </router-link>
           <router-link to="/login">
-            <v-btn text color="#112A46">Zaloguj się</v-btn>
+            <v-btn text color="white">Zaloguj się</v-btn>
           </router-link>
         </v-col>
         <v-col v-else cols="auto" class="ml-auto">
             <v-menu location="bottom">
                 <template v-slot:activator="{ props }">
                     <v-btn
-                            text color="#112A46"
+                            text color="white"
                             v-bind="props"
                             append-icon="mdi-menu-down"
                     >
@@ -61,7 +61,10 @@
 <script lang="ts" setup>
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import {useFiltersStore} from "@/store/FiltersStore";
+import {ref} from "vue";
 
 const authorization = useAuthorizationStore();
 const filters = useFiltersStore();
+
+const drawer = ref(false)
 </script>

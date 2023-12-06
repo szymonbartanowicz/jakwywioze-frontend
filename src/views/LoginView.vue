@@ -27,7 +27,7 @@
         >
             Twoje hasło zostało zresetowane.
         </v-alert>
-        <v-sheet width="500px" class="mx-auto">
+        <v-sheet class="mx-auto" max-width="500px">
             <v-form @submit.prevent="authorization.login($event)">
                 <v-text-field
                     v-model="authorization.loginEmail"
@@ -49,6 +49,7 @@
             </v-form>
             <v-alert color="error" variant="text" v-show="authorization.loginError">{{ authorization.loginError }}</v-alert>
         </v-sheet>
+        <router-link to="/register"><span class="text-decoration-underline font-weight-light">Nie posiadasz konta?</span></router-link>
     </v-container>
 </template>
 
