@@ -6,8 +6,9 @@
             <v-list-item v-if="points.currentPoint?.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ address }}</v-list-item>
             <v-list-item v-if="points.currentPoint?.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>{{ points.currentPoint?.phoneNumber }}</v-list-item>
             <v-list-item><v-icon icon="mdi-calendar-range" class="mr-2"></v-icon>{{ dates }}</v-list-item>
+            <v-list-item v-if="points.currentPoint?.lat && points.currentPoint?.lon"><v-btn @click="points.setRouteToPoint(points.currentPoint.lat, points.currentPoint.lon)" variant="flat" color="#B0E8BC">Trasa</v-btn></v-list-item>
         </v-list>
-        <WasteTypesChips mode="detail" :is-dynamic="true" :waste-types="points.currentPoint.dynamicPointInfo?.additionalWasteTypes"></WasteTypesChips>
+        <WasteTypesChips mode="detail" :is-dynamic="true" :waste-types="points.currentPoint.dynamicPointInfo.additionalWasteTypes"></WasteTypesChips>
         <Comments :pointId="points.currentPoint.id"></Comments>
     </v-card>
 </template>
