@@ -1,14 +1,5 @@
 <template>
-    <v-row>
-        <v-col colse="12" sm="3" class="pl-0">
-            <v-tooltip max-width="300px" text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
-                <template v-slot:activator="{ props }">
-                    <v-checkbox class="ml-0 pl-0 showDynamicPoints" v-model="filters.filters.addDynamicPoints" v-bind="props" label="Pokazuj punkty dynamiczne" color="#B0E7BB"></v-checkbox>
-                </template>
-            </v-tooltip>
-        </v-col>
-    </v-row>
-    <v-row no-gutters class="mb-10">
+    <v-row no-gutters>
         <v-col
           cols="12" sm="3"
         >
@@ -39,7 +30,7 @@
         </v-col>
         <v-col
             cols="12"
-            sm="5"
+            sm="7"
         >
             <v-autocomplete
                 v-model="filters.filters.wasteTypesNames"
@@ -48,12 +39,31 @@
                 clearable
                 label="Rodzaj odpadów"
                 :items="filters.wasteTypesNames"
-                class="mr-0 mr-sm-3 wasteTypesNames"
+                class="wasteTypesNames"
             ></v-autocomplete>
+        </v-col>
+    </v-row>
+    <v-row class="mb-10" justify="space-between" no-gutters>
+        <v-col cols="12" sm="4" class="d-inline-flex">
+            <v-checkbox class="showDynamicPoints d-inline-flex mr-4 pr-4" v-model="filters.filters.addDynamicPoints" label="Pokazuj punkty dynamiczne" color="#B0E7BB">
+                <template v-slot:append>
+                    <v-tooltip
+                        location="top"
+                        :open-on-hover="false"
+                        open-on-click
+                        max-width="300px"
+                        close-on-content-click
+                        text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
+                        <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props">mdi-help</v-icon>
+                        </template>
+                    </v-tooltip>
+                </template>
+            </v-checkbox>
         </v-col>
         <v-col
             cols="12"
-          sm="2"
+            sm="2"
         >
             <v-btn
                 @click.prevent="points.getPoints"

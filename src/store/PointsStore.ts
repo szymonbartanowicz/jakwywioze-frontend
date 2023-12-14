@@ -24,7 +24,8 @@ export interface Point {
     openingHours: string,
     type: string,
     imageLink: string,
-    wasteTypes: wasteType[]
+    wasteTypes: wasteType[],
+    isDynamic: boolean
 }
 
 interface currentAvailabilityData {
@@ -34,7 +35,9 @@ interface currentAvailabilityData {
 interface Marker {
     lat: number,
     lon: number,
-    name: string
+    name: string,
+    isDynamic: boolean,
+    id: number
 }
 
 interface Comment {
@@ -54,6 +57,7 @@ export const usePointsStore = defineStore('points', () => {
     const comment = ref('')
     const authorization = useAuthorizationStore()
     const dynamicPoints = ref([])
+    const showAddedPointAlert = ref(false)
     async function getPoints() {
         isLoading.value = true
         isSearchBtnClicked.value = true;
@@ -138,6 +142,8 @@ export const usePointsStore = defineStore('points', () => {
             marker.lat = point.lat
             marker.lon = point.lon
             marker.name = point.name
+            marker.isDynamic = point.isDynamic
+            marker.id = point.id
             return marker
         })
     })
@@ -165,6 +171,8 @@ export const usePointsStore = defineStore('points', () => {
         marker.lat = <number>currentPoint.value?.lat
         marker.lon = <number>currentPoint.value?.lon
         marker.name = <string>currentPoint.value?.name
+        marker.isDynamic = <boolean>currentPoint.value?.isDynamic
+        marker.id = <number>currentPoint.value?.id
         return [marker]
     })
 
@@ -220,6 +228,7 @@ export const usePointsStore = defineStore('points', () => {
                 },
             });
             if (typeof response === 'object') {
+                showAddedPointAlert.value = true
                 await router.push({name: 'home'})
             }
         } catch (error) {
@@ -253,6 +262,7 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointEndDate,
         dynamicPointAdditionalWasteType,
         dynamicPoints,
+        showAddedPointAlert,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,

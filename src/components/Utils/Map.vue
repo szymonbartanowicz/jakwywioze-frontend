@@ -24,11 +24,15 @@ function setMarkers(map: L.Map) {
   const markers = getMarkers(props.mode);
   for (let i = 0; i < markers.length; i++) {
     const marker = L.marker([markers[i].lat, markers[i].lon], {
-      icon: defaultIcon,
+      icon: markers[i].isDynamic? dynamicPointIcon : pointIcon,
     }).addTo(map);
-    const markerPopup = L.popup().setContent(markers[i].name);
+    const markerPopup = L.popup().setContent(getPopupContent(markers[i].name, markers[i].id));
     marker.bindPopup(markerPopup);
   }
+}
+
+function getPopupContent(pointName: string, pointId: number) {
+    return `<a href='/points/${pointId}' target="_blank"><span>${pointName}</span></a>`
 }
 
 function setUserMarker(map: L.Map) {
@@ -36,14 +40,23 @@ function setUserMarker(map: L.Map) {
     const marker = L.marker([filters.userLat, filters.userLon], {
       icon: userIcon,
     }).addTo(map);
+    const markerPopup = L.popup().setContent('Twoja lokalizacja');
+    marker.bindPopup(markerPopup);
   }
 }
 
-const defaultIcon = L.icon({
+const pointIcon = L.icon({
   iconUrl: require('@/assets/images/map-marker.svg'),
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -16],
+});
+
+const dynamicPointIcon = L.icon({
+    iconUrl: require('@/assets/images/map-marker-blue.svg'),
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -16],
 });
 
 const userIcon = L.icon({

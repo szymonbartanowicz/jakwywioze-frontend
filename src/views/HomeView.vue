@@ -1,5 +1,14 @@
 <template>
   <v-container>
+      <v-alert
+              v-if="points.showAddedPointAlert"
+              closable
+              type="success"
+              variant="tonal"
+              class="mb-6"
+      >
+          Dodawanie punktu zakończone sukcesem.
+      </v-alert>
     <Filters/>
     <Landing v-if="!points.isLoading && points.points.length === 0 && !points.isSearchBtnClicked"/>
     <span v-if="!points.isLoading && points.points.length === 0 && !filters.filtersAreEmpty() && points.isSearchBtnClicked">Brak punktów spełniających podane kryteria.</span>
