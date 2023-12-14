@@ -1,5 +1,6 @@
 <template>
-    <v-card class="mx-auto elevation-6">
+    <v-col cols="12" sm="6" class="points-wrapper">
+    <v-card class="elevation-6">
         <router-link :to="{
                             name: 'point',
                             params: {
@@ -36,6 +37,7 @@
             <v-btn @click="points.setRouteToPoint(point.lat, point.lon)" variant="flat" color="#B0E8BC" class="ml-2">Trasa</v-btn>
         </v-card-actions>
     </v-card>
+    </v-col>
 </template>
 <script lang="ts" setup>
 import { defineProps, PropType } from 'vue';
@@ -58,7 +60,7 @@ const props = defineProps({
     color: inherit;
 }
 
-.v-card {
-    border-radius: 0!important;
-}
+/*.v-card {*/
+/*    border-radius: 0!important;*/
+/*}*/
 </style>

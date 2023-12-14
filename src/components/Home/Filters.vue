@@ -40,6 +40,7 @@
                 label="Rodzaj odpadów"
                 :items="filters.wasteTypesNames"
                 class="wasteTypesNames"
+
             ></v-autocomplete>
         </v-col>
     </v-row>
@@ -55,7 +56,7 @@
                         close-on-content-click
                         text="Dynamiczny punkt pozwala znaleźć inne osoby chętne podzielić koszty utylizacji konkretnego rodzaju odpadów. Dynamiczny punkt będzie widoczny dla innych użytkowników, jeśli znajdzie się on w ich zasięgu.">
                         <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props">mdi-help</v-icon>
+                            <v-icon v-bind="props">mdi-help-circle-outline</v-icon>
                         </template>
                     </v-tooltip>
                 </template>

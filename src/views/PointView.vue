@@ -24,12 +24,12 @@ const points = usePointsStore()
 </script>
 
 <style scoped>
-.main-wrapper {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    min-height: calc(100vh - 250px);
-    height: calc(100vh - 250px);
-}
+/*.main-wrapper {*/
+/*    overflow-y: scroll;*/
+/*    overflow-x: hidden;*/
+/*    min-height: calc(100vh - 250px);*/
+/*    height: calc(100vh - 250px);*/
+/*}*/
 
 a {
     text-decoration: none;

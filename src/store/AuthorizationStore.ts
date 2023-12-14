@@ -19,7 +19,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const loginPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length >= 8 || 'Hasło musi mieć co najmniej 8 znaków'
+        (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków'
     ]
     const loginError = ref('')
     const registerUsername = ref('')
@@ -38,11 +38,11 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const registerPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków'
+        (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków'
     ]
     const registerConfirmPasswordRules = [
         (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
-        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
         (v: string) => v === registerPassword.value || 'Hasła nie są jednakowe'
     ]
     const sendResetPasswordEmailEmailRules = [
@@ -51,11 +51,11 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const resetPasswordPasswordRules = [
         (v: string) => !!v || 'Pole hasło jest wymagane',
-        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
     ]
     const resetPasswordConfirmPasswordRules = [
         (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
-        (v: string) => v.length > 8 || 'Hasło musi być dłuższe niz 8 znaków',
+        (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
         (v: string) => v === resetPasswordPassword.value || 'Hasła nie są jednakowe'
     ]
     const loginMessageStatus = ref('')
@@ -78,19 +78,15 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             currentUser.value = response.data
             loginMessageStatus.value = ''
             setCookie('currentUser', JSON.stringify(response.data), response.data.exp)
-            setCookie('token', generateToken(loginEmail.value, loginPassword.value), response.data.exp)
+            setCookie('token', generateToken(), response.data.exp)
             await router.push({ name: 'home' })
         } catch (error) {
-            if (error.response.data === 'User not active') {
-                loginError.value = 'To konto jest nieaktywne'
-            }
-            else {
-                loginError.value = 'Nieprawidłowe dane logowania'
-            }
+            loginError.value = 'Nieprawidłowe dane logowania'
+
         }
     }
 
-    function generateToken(email: string, password: string) {
+    function generateToken() {
         return btoa(`${loginEmail.value}:${loginPassword.value}`)
     }
 
