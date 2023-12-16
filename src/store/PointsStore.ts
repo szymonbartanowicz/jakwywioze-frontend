@@ -164,7 +164,6 @@ export const usePointsStore = defineStore('points', () => {
         if (!validated.valid) {
             return
         }
-        console.log(123)
         const response = await axios.post('/comments', {
             text: comment.value,
             point: pointId,
@@ -244,7 +243,7 @@ export const usePointsStore = defineStore('points', () => {
                 street: dynamicPointStreet.value,
                 zipcode: dynamicPointZipcode.value,
                 phoneNumber: dynamicPointPhone.value,
-                // wasteTypes: dynamicPointWasteTypes.value,
+                wasteTypes: dynamicPointWasteTypes.value,
                 dynamicPointInfo: {
                     user: authorization?.currentUser?.id,
                     description: dynamicPointDescription.value,
