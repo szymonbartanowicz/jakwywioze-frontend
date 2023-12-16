@@ -16,7 +16,7 @@
                         :rules="authorization.sendResetPasswordEmailEmailRules"
                         label="Email"
                 ></v-text-field>
-                <v-btn type="submit" block color="#B0E8BC" text="#112A46" class="mt-4">Wyślij linka resetującego hasło</v-btn>
+                <v-btn :disabled="authorization.disableSendResetPasswordEmailBtn" :loading="authorization.disableSendResetPasswordEmailBtn" type="submit" block color="green" text="#112A46" class="mt-4">Wyślij linka resetującego hasło</v-btn>
             </v-form>
         </v-sheet>
     </v-container>

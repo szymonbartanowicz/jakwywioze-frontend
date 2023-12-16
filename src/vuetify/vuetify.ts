@@ -9,8 +9,12 @@ import * as directives from 'vuetify/directives'
 const defaultTheme = {
     dark: false,
     colors: {
-        green: '#00C500',
-        blue: '#007199',
+        green: '#b0e8bc',
+        green1: '#55cb8e',
+        green2: '#00b999',
+        blue: '#00b999',
+        blue1: '#00a3a6',
+        blue2: '#008cb1',
         white: '#FFFFFF'
     },
 }

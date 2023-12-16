@@ -12,6 +12,7 @@
                 item-title="name"
                 item-value="id"
                 class="mr-0 mr-sm-3"
+                :disabled="filters.disableSetCityBtn"
             >
                 <template v-slot:prepend-inner>
                     <v-icon @click="filters.setClosestCity" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
@@ -46,10 +47,10 @@
     </v-row>
     <v-row class="mb-10" justify="space-between" no-gutters>
         <v-col cols="12" sm="4" class="d-inline-flex">
-            <v-checkbox class="showDynamicPoints d-inline-flex mr-4 pr-4" v-model="filters.filters.addDynamicPoints" label="Pokazuj punkty dynamiczne" color="#B0E7BB">
+            <v-checkbox class="showDynamicPoints d-inline-flex mr-4 pr-4" v-model="filters.filters.addDynamicPoints" label="Pokazuj punkty dynamiczne" color="green">
                 <template v-slot:append>
                     <v-tooltip
-                        location="top"
+                        location="bottom"
                         :open-on-hover="false"
                         open-on-click
                         max-width="300px"
@@ -68,10 +69,13 @@
         >
             <v-btn
                 @click.prevent="points.getPoints"
-                color="#B0E8BC"
+                color="green"
                 text="#112A46"
                 block
                 height="56px"
+                :disabled="filters.disableSearchBtn"
+                :loading="filters.disableSearchBtn"
+                id="searchBtn"
             >
                 Szukaj
             </v-btn>
@@ -89,7 +93,6 @@ const points = usePointsStore()
 
 onMounted(() => {
     filters.getCities()
-    filters.getWasteTypesNames()
 })
 </script>
 

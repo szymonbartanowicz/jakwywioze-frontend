@@ -38,21 +38,16 @@ export const useFiltersStore = defineStore('filters', () => {
     const currentCityName = ref()
     const userLat = ref(0)
     const userLon = ref(0)
-
-    // let debounceApiCallTimer: number | null = null;
+    const disableSetCityBtn = ref(false)
+    const disableSearchBtn = ref(false)
 
     async function getCities(city: string = '') {
         if (city?.length < 3) {
             cities.value = []
             return
         }
-        // if (debounceApiCallTimer !== null) {
-        //     clearTimeout(debounceApiCallTimer);
-        // }
-        // debounceApiCallTimer = setTimeout(async () => {
         const response = await axios.get(`/cities/find?name=${city}`);
         cities.value = response.data;
-        // }, 500);
     }
 
     function setCity(city: City | string) {
@@ -94,11 +89,13 @@ export const useFiltersStore = defineStore('filters', () => {
         }).then((response) => {
             filters.value.cityId = response.data.id
             currentCityName.value = response.data.name
+            disableSetCityBtn.value = false
         })
     }
 
     function setClosestCity() {
         if (navigator.geolocation) {
+            disableSetCityBtn.value = true
             navigator.geolocation.getCurrentPosition(async (position) => {
                 await setCityOnFilters(position)
             });
@@ -119,6 +116,8 @@ export const useFiltersStore = defineStore('filters', () => {
         currentCityName,
         userLat,
         userLon,
+        disableSetCityBtn,
+        disableSearchBtn,
         getCities,
         getWasteTypesNames,
         filtersAreEmpty,

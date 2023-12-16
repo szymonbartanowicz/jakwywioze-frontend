@@ -11,11 +11,14 @@ import { onMounted } from 'vue';
 import Navbar from '@/components/Utils/Navbar.vue';
 import Footer from '@/components/Utils/Footer.vue';
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
+import {useFiltersStore} from "@/store/FiltersStore";
 
 const authorization = useAuthorizationStore()
+const filters = useFiltersStore()
 
 onMounted(() => {
     authorization.setInitialData()
+    filters.getWasteTypesNames()
 })
 </script>
 

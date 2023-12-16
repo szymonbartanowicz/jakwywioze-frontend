@@ -19,27 +19,54 @@
             <v-text-field :rules="phoneRules" v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="points.dynamicPointAdditionalWasteType" label="Typy odpadów przecinku, np. typ1, typ2, typ3"></v-text-field>
+              <v-autocomplete
+                      v-model="points.dynamicPointWasteTypes"
+                      multiple
+                      chips
+                      clearable
+                      label="Rodzaj odpadów"
+                      :items="filters.wasteTypesNames"
+              ></v-autocomplete>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field v-model="points.dynamicPointAdditionalWasteTypes" label="Inne rodzaje po przecinku, np. typ1, typ2, typ3"></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea :rules="descriptionRules" v-model="points.dynamicPointDescription" label="Opis"></v-textarea>
           </v-col>
-          <v-col cols="12" sm="6">
-            <date-picker
-                label="Data od"
-                value=""
-                v-model="points.dynamicPointStartDate"
-            ></date-picker>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <date-picker
-                label="Data do"
-                value=""
-                v-model="points.dynamicPointEndDate"
-            ></date-picker>
+            <v-col cols="12" sm="6">
+                <VDatePicker v-model="points.dynamicPointStartDate" :min-date="moment().format('YYYY-MM-DD')" :popover="false" color="green">
+                    <template #default="{ togglePopover, inputValue, inputEvents }">
+                        <v-text-field
+                                hint="Data od"
+                                persistent-hint
+                                readonly
+                                :value="inputValue"
+                                v-on="inputEvents"
+                                @click="() => togglePopover()"
+                                append-icon="mdi-calendar"
+                        ></v-text-field>
+                    </template>
+                </VDatePicker>
+            </v-col>
+              <v-col cols="12" sm="6">
+            <VDatePicker v-model="points.dynamicPointEndDate" :min-date="moment().format('YYYY-MM-DD')" :popover="false" color="green">
+                <template #default="{ togglePopover, inputValue, inputEvents }">
+                    <v-text-field
+                            hint="Data do"
+                            persistent-hint
+                            readonly
+                            :value="inputValue"
+                            v-on="inputEvents"
+                            @click="() => togglePopover()"
+                            append-icon="mdi-calendar"
+                            :rules="endDateRules"
+                    ></v-text-field>
+                </template>
+            </VDatePicker>
           </v-col>
         </v-row>
-        <v-btn type="submit" color="#B0E8BC" block text="#112A46" class="mt-2">Dodaj punkt</v-btn>
+        <v-btn :disabled="points.disableAddDynamicPointBtn" :loading="points.disableAddDynamicPointBtn" type="submit" color="green" block text="#112A46" class="mt-2">Dodaj punkt</v-btn>
       </v-form>
     </v-sheet>
   </v-container>
@@ -48,7 +75,9 @@
 <script lang="ts" setup>
 import DatePicker from "@/components/Utils/DatePicker.vue";
 import {usePointsStore} from '@/store/PointsStore'
-import {ref} from "vue";
+import {useFiltersStore} from "@/store/FiltersStore";
+import moment from "moment/moment";
+const points = usePointsStore()
 
 const nameRules = [
     (v: string) => !!v || 'Pole nazwa jest wymagane',
@@ -71,8 +100,13 @@ const phoneRules = [
 ]
 const descriptionRules = [
     (v: string) => !!v || 'Pole opis jest wymagane',
+    (v: string) => v.length <= 255 || 'Pole opis może posiadać maksymalnie 255 znaków',
 ]
 
-const points = usePointsStore()
+const endDateRules = [
+    (v: string) => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
+]
+
+const filters = useFiltersStore()
 
 </script>

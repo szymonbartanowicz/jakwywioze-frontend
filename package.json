@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.4.0",
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
     "moment": "^2.29.4",
     "pinia": "^2.0.35",
+    "v-calendar": "^3.1.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuetify": "^3.4.3"

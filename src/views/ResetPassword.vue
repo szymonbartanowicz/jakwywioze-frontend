@@ -20,7 +20,7 @@
                     @click:append-inner="showConfirmPassword = !showConfirmPassword"
                     counter
                 ></v-text-field>
-                <v-btn type="submit" block color="#B0E8BC" text="#112A46" class="mt-4">Zresetuj hasło</v-btn>
+                <v-btn :disabled="authorization.disableResetPasswordBtn" :loading="authorization.disableResetPasswordBtn" type="submit" block color="green" text="#112A46" class="mt-4">Zresetuj hasło</v-btn>
             </v-form>
         </v-sheet>
     </v-container>

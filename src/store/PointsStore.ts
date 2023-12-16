@@ -1,14 +1,13 @@
 import { defineStore } from "pinia";
-import {Comment, computed, ref} from 'vue'
+import {Comment, computed, Ref, ref} from 'vue'
 import axios from "@/axios/axios";
 import { useFiltersStore } from '@/store/FiltersStore'
 import moment from "moment";
 import Point from "@/components/Home/Point.vue";
 import config from "@/config/config";
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
-import router from "@/router";
-import {tr} from "vuetify/locale";
 import {SubmitEventPromise} from "vuetify";
+import router from "@/router";
 
 export interface wasteType {
     id: number,
@@ -41,6 +40,8 @@ interface Marker {
 }
 
 interface Comment {
+    id: number,
+    userId: number,
     user: number,
     text: string,
     createdAt: string
@@ -58,7 +59,10 @@ export const usePointsStore = defineStore('points', () => {
     const authorization = useAuthorizationStore()
     const dynamicPoints = ref([])
     const showAddedPointAlert = ref(false)
+    const disableSetRouteBtn = ref(false)
+    const disableAddDynamicPointBtn = ref(false)
     async function getPoints() {
+        filters.disableSearchBtn = true
         isLoading.value = true
         isSearchBtnClicked.value = true;
         const response = await axios.post('/points/filtered', filters.filters)
@@ -66,6 +70,7 @@ export const usePointsStore = defineStore('points', () => {
         filters.paginationLength = setPaginationLength(response.data.totalPoints)
         isLoading.value = false
         initLoad.value = false
+        filters.disableSearchBtn = false
     }
 
     async function getPoint(pointId: string | string[]) {
@@ -154,7 +159,12 @@ export const usePointsStore = defineStore('points', () => {
         return response.data
     }
 
-    async function addComment(pointId: number) {
+    async function addComment(event: SubmitEventPromise, pointId: number) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
+        console.log(123)
         const response = await axios.post('/comments', {
             text: comment.value,
             point: pointId,
@@ -164,6 +174,17 @@ export const usePointsStore = defineStore('points', () => {
         await getComments(pointId)
         comment.value = ''
         return response.data
+    }
+
+    async function deleteComment(commentId: number, pointId: number) {
+        try {
+            if (confirm('Czy jesteś pewnien?')) {
+                await axios.delete(`/comments/${commentId}`)
+                await getComments(pointId)
+            }
+        } catch (error) {
+            //
+        }
     }
 
     const currentPointMarker = computed(() => {
@@ -183,6 +204,7 @@ export const usePointsStore = defineStore('points', () => {
 
     function setRouteToPoint(pointLat: number, pointLon: number) {
         if (navigator.geolocation) {
+            disableSetRouteBtn.value = true
             navigator.geolocation.getCurrentPosition((position) => {
                 openGoogleMapsRoute(position, pointLat, pointLon)
             });
@@ -195,6 +217,7 @@ export const usePointsStore = defineStore('points', () => {
         const origin = encodeURIComponent(`${latitude},${longitude}`);
         const destination = encodeURIComponent(`${pointLat},${pointLon}`);
         window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`)
+        disableSetRouteBtn.value = false
     }
 
     const dynamicPointName = ref('')
@@ -205,7 +228,8 @@ export const usePointsStore = defineStore('points', () => {
     const dynamicPointDescription = ref('')
     const dynamicPointStartDate = ref(new Date())
     const dynamicPointEndDate = ref(new Date())
-    const dynamicPointAdditionalWasteType = ref('')
+    const dynamicPointAdditionalWasteTypes = ref('')
+    const dynamicPointWasteTypes:Ref<String[]> = ref([])
 
     async function addDynamicPoint(event: SubmitEventPromise) {
         const validated = await event
@@ -213,18 +237,20 @@ export const usePointsStore = defineStore('points', () => {
             return
         }
         try {
+            disableAddDynamicPointBtn.value = true
             const response = await axios.post("/points", {
                 name: dynamicPointName.value,
                 city: dynamicPointCity.value,
                 street: dynamicPointStreet.value,
                 zipcode: dynamicPointZipcode.value,
                 phoneNumber: dynamicPointPhone.value,
+                // wasteTypes: dynamicPointWasteTypes.value,
                 dynamicPointInfo: {
                     user: authorization?.currentUser?.id,
                     description: dynamicPointDescription.value,
                     startDate: dynamicPointStartDate.value,
                     endDate: dynamicPointEndDate.value,
-                    additionalWasteTypes: dynamicPointAdditionalWasteType.value.split(','),
+                    additionalWasteTypes: dynamicPointAdditionalWasteTypes.value.split(','),
                 },
             });
             if (typeof response === 'object') {
@@ -234,6 +260,7 @@ export const usePointsStore = defineStore('points', () => {
         } catch (error) {
             //
         }
+        disableAddDynamicPointBtn.value = false
     }
 
     async function getDynamicPoints(userId: number) {
@@ -260,9 +287,13 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointDescription,
         dynamicPointStartDate,
         dynamicPointEndDate,
-        dynamicPointAdditionalWasteType,
+        dynamicPointAdditionalWasteTypes,
+        dynamicPointWasteTypes,
         dynamicPoints,
         showAddedPointAlert,
+        disableSetRouteBtn,
+        disableAddDynamicPointBtn,
+        deleteComment,
         getPoints,
         getAvailability,
         getWasteTypesMatchingFilters,

@@ -32,7 +32,7 @@
                     counter
                 ></v-text-field>
                 <router-link to="/login"><span class="float-right mb-3 text-decoration-underline font-weight-light">Posiadasz już konto?</span></router-link>
-                <v-btn type="submit" block color="#B0E8BC" text="112A46">Zarejestruj się</v-btn>
+                <v-btn :disabled="authorization.disableRegisterBtn" :loading="authorization.disableRegisterBtn" type="submit" block color="green" text="112A46">Zarejestruj się</v-btn>
             </v-form>
             <v-alert color="error" variant="text" v-show="authorization.registerError">{{ authorization.registerError }}</v-alert>
         </v-sheet>
@@ -42,7 +42,6 @@
 <script lang="ts" setup>
 import { useAuthorizationStore } from '@/store/AuthorizationStore'
 import {ref} from "vue";
-
 const authorization = useAuthorizationStore()
 
 const showPassword = ref(false)

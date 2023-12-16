@@ -13,14 +13,16 @@
     <Landing v-if="!points.isLoading && points.points.length === 0 && !points.isSearchBtnClicked"/>
     <span v-if="!points.isLoading && points.points.length === 0 && !filters.filtersAreEmpty() && points.isSearchBtnClicked">Brak punktów spełniających podane kryteria.</span>
     <v-progress-circular v-if="points.isLoading" indeterminate color="blue"></v-progress-circular>
-    <v-row v-else-if="!points.isLoading && points.points.length" class="elevation-12" no-gutters justify="center">
-        <v-col cols="12" class="d-none d-sm-block">
-            <Map mode="list" class="map-cstm"></Map>
-        </v-col>
-    </v-row>
-    <v-row>
-        <Point v-for="point in points.points" :key="point.id" :point="point"></Point>
-    </v-row>
+    <div v-else-if="!points.isLoading && points.points.length">
+        <v-row class="elevation-12" no-gutters justify="center">
+            <v-col cols="12" class="d-none d-sm-block">
+                <Map mode="list" class="map-cstm"></Map>
+            </v-col>
+        </v-row>
+        <v-row>
+            <Point v-for="point in points.points" :key="point.id" :point="point"></Point>
+        </v-row>
+    </div>
     <Pagination v-if="!points.isLoading && points.points.length"></Pagination>
   </v-container>
 </template>

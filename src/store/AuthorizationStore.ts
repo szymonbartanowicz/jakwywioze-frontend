@@ -60,16 +60,19 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     ]
     const loginMessageStatus = ref('')
     const registerError = ref('')
-
     const showResetEmailSendMessage = ref(false)
-
     const currentUser = ref<User>()
+    const disableLoginBtn = ref(false)
+    const disableRegisterBtn = ref(false)
+    const disableSendResetPasswordEmailBtn = ref(false)
+    const disableResetPasswordBtn = ref(false)
     async function login(event: SubmitEventPromise) {
         const validated = await event
         if (!validated.valid) {
             return
         }
         try {
+            disableLoginBtn.value = true
             const response = await axios.post('/users/login', {
                 email: loginEmail.value,
                 password: loginPassword.value
@@ -82,8 +85,8 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             await router.push({ name: 'home' })
         } catch (error) {
             loginError.value = 'Nieprawidłowe dane logowania'
-
         }
+        disableLoginBtn.value = false
     }
 
     function generateToken() {
@@ -96,6 +99,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             return
         }
         try {
+            disableRegisterBtn.value = true
             await axios.post('/users/register', {
                 email: registerEmail.value,
                 username: registerUsername.value,
@@ -112,6 +116,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
                 registerError.value = 'Ta nazwa użytkownika jest już zajęta'
             }
         }
+        disableRegisterBtn.value = false
     }
 
     async function logout() {
@@ -181,6 +186,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             return
         }
         try {
+            disableSendResetPasswordEmailBtn.value = true
             await axios.post('/users/reset-password', {
                 email: sendResetPasswordEmailEmail.value,
             });
@@ -188,6 +194,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         } catch (error) {
             //
         }
+        disableSendResetPasswordEmailBtn.value = false
     }
 
     async function resetPassword(event: SubmitEventPromise) {
@@ -201,6 +208,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
             return
         }
         try {
+            disableResetPasswordBtn.value = true
             await axios.post('/users/password-reset-confirmation', {
                 password: resetPasswordPassword.value,
                 token: token,
@@ -210,6 +218,7 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         } catch (error) {
             //
         }
+        disableResetPasswordBtn.value = false
     }
 
     return {
@@ -237,6 +246,10 @@ export const useAuthorizationStore = defineStore('authorization', () => {
         resetPasswordPasswordRules,
         resetPasswordConfirmPasswordRules,
         showResetEmailSendMessage,
+        disableLoginBtn,
+        disableRegisterBtn,
+        disableSendResetPasswordEmailBtn,
+        disableResetPasswordBtn,
         login,
         isUserLoggedIn,
         logout,
