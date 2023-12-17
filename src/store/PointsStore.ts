@@ -61,6 +61,7 @@ export const usePointsStore = defineStore('points', () => {
     const showAddedPointAlert = ref(false)
     const disableSetRouteBtn = ref(false)
     const disableAddDynamicPointBtn = ref(false)
+    const addDynamicPointError = ref('')
     async function getPoints() {
         filters.disableSearchBtn = true
         isLoading.value = true
@@ -237,11 +238,11 @@ export const usePointsStore = defineStore('points', () => {
         }
         try {
             disableAddDynamicPointBtn.value = true
+            addDynamicPointError.value = ''
             const response = await axios.post("/points", {
                 name: dynamicPointName.value,
                 city: dynamicPointCity.value,
                 street: dynamicPointStreet.value,
-                zipcode: dynamicPointZipcode.value,
                 phoneNumber: dynamicPointPhone.value,
                 wasteTypes: dynamicPointWasteTypes.value,
                 dynamicPointInfo: {
@@ -257,7 +258,7 @@ export const usePointsStore = defineStore('points', () => {
                 await router.push({name: 'home'})
             }
         } catch (error) {
-            //
+            addDynamicPointError.value = 'Nie udało się znaleźć lokalizacji, wpisz poprawne dane'
         }
         disableAddDynamicPointBtn.value = false
     }
@@ -278,6 +279,7 @@ export const usePointsStore = defineStore('points', () => {
         initLoad,
         comments,
         comment,
+        addDynamicPointError,
         dynamicPointName,
         dynamicPointCity,
         dynamicPointStreet,

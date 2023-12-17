@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-sheet max-width="500" class="mx-auto mb-6">
+      <v-alert v-show="points.addDynamicPointError" color="error" variant="text">{{ points.addDynamicPointError }}</v-alert>
       <v-form @submit.prevent="points.addDynamicPoint($event)">
         <v-row>
           <v-col cols="12">
@@ -12,9 +13,9 @@
           <v-col cols="12" sm="6">
             <v-text-field :rules="streetRules" v-model="points.dynamicPointStreet" label="Ulica i numer"></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field :rules="zipcodeRules" v-model="points.dynamicPointZipcode" label="Kod pocztowy"></v-text-field>
-          </v-col>
+<!--          <v-col cols="12" sm="6">-->
+<!--            <v-text-field :rules="zipcodeRules" v-model="points.dynamicPointZipcode" label="Kod pocztowy"></v-text-field>-->
+<!--          </v-col>-->
           <v-col cols="12" sm="6">
             <v-text-field :rules="phoneRules" v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
@@ -88,11 +89,11 @@ const cityRules = [
 const streetRules = [
     (v: string) => !!v || 'Pole ulica i numer jest wymagane',
 ]
-const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/
-const zipcodeRules = [
-    (v: string) => !!v || 'Pole kod pocztowy jest wymagane',
-    (v: string) => zipcodeRegex.test(v) || 'Nieprawidłowy format kodu pocztowego',
-]
+// const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/
+// const zipcodeRules = [
+//     (v: string) => !!v || 'Pole kod pocztowy jest wymagane',
+//     (v: string) => zipcodeRegex.test(v) || 'Nieprawidłowy format kodu pocztowego',
+// ]
 const phoneRegex = /^(\+48)?\d{9}$/
 const phoneRules = [
     (v: string) => !!v || 'Pole numer telefonu jest wymagane',
