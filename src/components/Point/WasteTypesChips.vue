@@ -1,5 +1,5 @@
 <template>
-    <div class="ml-5 mb-2 d-flex flex-wrap">
+    <div class="ml-4 mb-2 d-flex flex-wrap">
         <v-chip size="x-small" class="mr-1 mb-1" v-for="wasteType in wasteTypes">
             {{ wasteType.name ? wasteType.name : wasteType }}
         </v-chip>

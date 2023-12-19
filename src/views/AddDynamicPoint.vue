@@ -12,9 +12,9 @@
           <v-col cols="12" sm="6">
             <v-text-field :rules="streetRules" v-model="points.dynamicPointStreet" label="Ulica i numer"></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field :rules="zipcodeRules" v-model="points.dynamicPointZipcode" label="Kod pocztowy"></v-text-field>
-          </v-col>
+<!--          <v-col cols="12" sm="6">-->
+<!--            <v-text-field :rules="zipcodeRules" v-model="points.dynamicPointZipcode" label="Kod pocztowy"></v-text-field>-->
+<!--          </v-col>-->
           <v-col cols="12" sm="6">
             <v-text-field :rules="phoneRules" v-model="points.dynamicPointPhone" label="Numer telefonu"></v-text-field>
           </v-col>
@@ -68,12 +68,12 @@
         </v-row>
         <v-btn :disabled="points.disableAddDynamicPointBtn" :loading="points.disableAddDynamicPointBtn" type="submit" color="green" block text="#112A46" class="mt-2">Dodaj punkt</v-btn>
       </v-form>
+        <v-alert v-show="points.addDynamicPointError" color="error" variant="text">{{ points.addDynamicPointError }}</v-alert>
     </v-sheet>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import DatePicker from "@/components/Utils/DatePicker.vue";
 import {usePointsStore} from '@/store/PointsStore'
 import {useFiltersStore} from "@/store/FiltersStore";
 import moment from "moment/moment";
@@ -88,11 +88,11 @@ const cityRules = [
 const streetRules = [
     (v: string) => !!v || 'Pole ulica i numer jest wymagane',
 ]
-const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/
-const zipcodeRules = [
-    (v: string) => !!v || 'Pole kod pocztowy jest wymagane',
-    (v: string) => zipcodeRegex.test(v) || 'Nieprawidłowy format kodu pocztowego',
-]
+// const zipcodeRegex = /^[0-9]{2}-[0-9]{3}$/
+// const zipcodeRules = [
+//     (v: string) => !!v || 'Pole kod pocztowy jest wymagane',
+//     (v: string) => zipcodeRegex.test(v) || 'Nieprawidłowy format kodu pocztowego',
+// ]
 const phoneRegex = /^(\+48)?\d{9}$/
 const phoneRules = [
     (v: string) => !!v || 'Pole numer telefonu jest wymagane',
@@ -104,7 +104,7 @@ const descriptionRules = [
 ]
 
 const endDateRules = [
-    (v: string) => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
+    () => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
 ]
 
 const filters = useFiltersStore()

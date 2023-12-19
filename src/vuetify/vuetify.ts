@@ -9,11 +9,11 @@ import * as directives from 'vuetify/directives'
 const defaultTheme = {
     dark: false,
     colors: {
-        green: '#b0e8bc',
+        green: '#b0e8bc', //kolor przyciskow
         green1: '#55cb8e',
         green2: '#00b999',
         blue: '#00b999',
-        blue1: '#00a3a6',
+        blue1: '#00a3a6', // kolor paska menu
         blue2: '#008cb1',
         white: '#FFFFFF'
     },

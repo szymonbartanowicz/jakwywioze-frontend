@@ -59,8 +59,10 @@ export const usePointsStore = defineStore('points', () => {
     const authorization = useAuthorizationStore()
     const dynamicPoints = ref([])
     const showAddedPointAlert = ref(false)
-    const disableSetRouteBtn = ref(false)
+    const disableSetRouteBtnList = ref(false)
+    const disableSetRouteBtnDetail = ref(false)
     const disableAddDynamicPointBtn = ref(false)
+    const addDynamicPointError = ref('')
     async function getPoints() {
         filters.disableSearchBtn = true
         isLoading.value = true
@@ -105,14 +107,14 @@ export const usePointsStore = defineStore('points', () => {
                 data.info = `Otwarcie ${config.weekDays[currentDay]} ${openingHoursArray[currentDay].split('–')[0]}`
             }
             else {
-                let nextDay = currentDay += 1
+                let nextDay = currentDay += 1 % 6
                 let nextFrom = openingHoursArray[nextDay]
                 let i = currentDay
                 while (nextFrom == '0') {
                     i++
-                    nextFrom = openingHoursArray[i % 7]
+                    nextFrom = openingHoursArray[i % 6]
                 }
-                data.info = `Otwarcie ${config.weekDays[i % 7]} ${openingHoursArray[i % 7].split('–')[0]}`
+                data.info = `Otwarcie ${config.weekDays[i % 6]} ${openingHoursArray[i % 6].split('–')[0]}`
             }
         }
         else {
@@ -179,6 +181,7 @@ export const usePointsStore = defineStore('points', () => {
         try {
             if (confirm('Czy jesteś pewnien?')) {
                 await axios.delete(`/comments/${commentId}`)
+                console.log('usunieto')
                 await getComments(pointId)
             }
         } catch (error) {
@@ -203,7 +206,8 @@ export const usePointsStore = defineStore('points', () => {
 
     function setRouteToPoint(pointLat: number, pointLon: number) {
         if (navigator.geolocation) {
-            disableSetRouteBtn.value = true
+            // disableSetRouteBtnList.value = true
+            disableSetRouteBtnDetail.value = true
             navigator.geolocation.getCurrentPosition((position) => {
                 openGoogleMapsRoute(position, pointLat, pointLon)
             });
@@ -216,7 +220,8 @@ export const usePointsStore = defineStore('points', () => {
         const origin = encodeURIComponent(`${latitude},${longitude}`);
         const destination = encodeURIComponent(`${pointLat},${pointLon}`);
         window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`)
-        disableSetRouteBtn.value = false
+        // disableSetRouteBtnList.value = false
+        disableSetRouteBtnDetail.value = false
     }
 
     const dynamicPointName = ref('')
@@ -236,6 +241,7 @@ export const usePointsStore = defineStore('points', () => {
             return
         }
         try {
+            addDynamicPointError.value = ''
             disableAddDynamicPointBtn.value = true
             const response = await axios.post("/points", {
                 name: dynamicPointName.value,
@@ -257,7 +263,7 @@ export const usePointsStore = defineStore('points', () => {
                 await router.push({name: 'home'})
             }
         } catch (error) {
-            //
+            addDynamicPointError.value = 'Nie udało się znaleźć lokalizacji, wpisz poprawne dane.'
         }
         disableAddDynamicPointBtn.value = false
     }
@@ -290,8 +296,10 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointWasteTypes,
         dynamicPoints,
         showAddedPointAlert,
-        disableSetRouteBtn,
+        disableSetRouteBtnList,
+        disableSetRouteBtnDetail,
         disableAddDynamicPointBtn,
+        addDynamicPointError,
         deleteComment,
         getPoints,
         getAvailability,

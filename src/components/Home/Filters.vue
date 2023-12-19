@@ -13,6 +13,7 @@
                 item-value="id"
                 class="mr-0 mr-sm-3"
                 :disabled="filters.disableSetCityBtn"
+                @blur="handleCity()"
             >
                 <template v-slot:prepend-inner>
                     <v-icon @click="filters.setClosestCity" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
@@ -51,7 +52,7 @@
                 <template v-slot:append>
                     <v-tooltip
                         location="bottom"
-                        :open-on-hover="false"
+                        :open-on-hover="true"
                         open-on-click
                         max-width="300px"
                         close-on-content-click
@@ -90,6 +91,18 @@ import config from "@/config/config";
 
 const filters = useFiltersStore()
 const points = usePointsStore()
+
+async function handleCity() {
+    await filters.getCities(filters.currentCityName)
+    if (filters.cities.length === 1) {
+        filters.currentCityName  = filters.cities[0].name
+        filters.setCity(filters.cities[0])
+    }
+    else {
+        filters.currentCityName = ''
+        filters.filters.cityId = 0
+    }
+}
 
 onMounted(() => {
     filters.getCities()
