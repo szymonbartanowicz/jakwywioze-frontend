@@ -243,11 +243,11 @@ export const usePointsStore = defineStore('points', () => {
         try {
             addDynamicPointError.value = ''
             disableAddDynamicPointBtn.value = true
+            addDynamicPointError.value = ''
             const response = await axios.post("/points", {
                 name: dynamicPointName.value,
                 city: dynamicPointCity.value,
                 street: dynamicPointStreet.value,
-                zipcode: dynamicPointZipcode.value,
                 phoneNumber: dynamicPointPhone.value,
                 wasteTypes: dynamicPointWasteTypes.value,
                 dynamicPointInfo: {
@@ -284,6 +284,7 @@ export const usePointsStore = defineStore('points', () => {
         initLoad,
         comments,
         comment,
+        addDynamicPointError,
         dynamicPointName,
         dynamicPointCity,
         dynamicPointStreet,
