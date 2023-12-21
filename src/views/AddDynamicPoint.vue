@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-sheet max-width="500" class="mx-auto mb-6">
-      <v-alert v-show="points.addDynamicPointError" color="error" variant="text">{{ points.addDynamicPointError }}</v-alert>
       <v-form @submit.prevent="points.addDynamicPoint($event)">
         <v-row>
           <v-col cols="12">
