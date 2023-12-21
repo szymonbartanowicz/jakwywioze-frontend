@@ -69,12 +69,12 @@
         </v-row>
         <v-btn :disabled="points.disableAddDynamicPointBtn" :loading="points.disableAddDynamicPointBtn" type="submit" color="green" block text="#112A46" class="mt-2">Dodaj punkt</v-btn>
       </v-form>
+        <v-alert v-show="points.addDynamicPointError" color="error" variant="text">{{ points.addDynamicPointError }}</v-alert>
     </v-sheet>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import DatePicker from "@/components/Utils/DatePicker.vue";
 import {usePointsStore} from '@/store/PointsStore'
 import {useFiltersStore} from "@/store/FiltersStore";
 import moment from "moment/moment";
@@ -105,7 +105,7 @@ const descriptionRules = [
 ]
 
 const endDateRules = [
-    (v: string) => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
+    () => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
 ]
 
 const filters = useFiltersStore()

@@ -1,7 +1,7 @@
 <template>
     <div class="px-4">
-        <v-form @submit.prevent="points.addComment($event, pointId)" class="d-flex">
-            <v-text-field :rules="commentRules" v-if="authorization.isUserLoggedIn()" label="Dodaj komentarz" variant="underlined" v-model="points.comment">
+        <v-form v-if="authorization.isUserLoggedIn()" @submit.prevent="points.addComment($event, pointId)" class="d-flex">
+            <v-text-field :rules="commentRules" label="Dodaj komentarz" variant="underlined" v-model="points.comment">
             </v-text-field>
             <v-btn type="submit" :ripple="false" class="ma-0 pa-0 ml-2" variant="plain" size="xs" :disabled="!points.comment" @click="points.addComment($event, pointId)" icon="mdi-send"></v-btn>
         </v-form>
@@ -10,7 +10,7 @@
                 <span>{{ comment.user }}</span>
                 <span> &bull; </span>
                 <span>{{ moment(comment.createdAt).add(1, 'hours').fromNow() }}</span>
-                <a v-if="authorization.currentUser?.id === comment.userId" class="ml-1 text-caption text-grey-darken-2" href="" @click.prevent="points.deleteComment(2, <number>props.pointId)"> usuń</a>
+                <a v-if="authorization.currentUser?.id === comment.userId" class="ml-1 text-caption text-grey-darken-2" href="" @click.prevent="points.deleteComment(comment.id, <number>props.pointId)"> usuń</a>
             </div>
             <p class="text-body-2">{{ comment.text }}</p>
         </div>

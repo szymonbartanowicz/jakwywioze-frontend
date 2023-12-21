@@ -1,6 +1,6 @@
 <template>
     <v-col cols="12" sm="6" class="points-wrapper">
-    <v-card class="elevation-6">
+    <v-card class="elevation-6" min-height="500px">
         <router-link :to="{
                             name: 'point',
                             params: {
@@ -35,12 +35,12 @@
         </v-list>
         <v-card-actions class="float-right pa-4">
             <v-btn
-                :loading="points.disableSetRouteBtn"
-                :disabled="points.disableSetRouteBtn"
+                :loading="points.disableSetRouteBtnList"
+                :disabled="points.disableSetRouteBtnList"
                 @click="points.setRouteToPoint(point.lat, point.lon)"
                 variant="flat"
                 color="green"
-                class="ml-2">
+                class="ml-2 showRoute">
                 Trasa
             </v-btn>
         </v-card-actions>
@@ -68,7 +68,9 @@ const props = defineProps({
     color: inherit;
 }
 
-/*.v-card {*/
-/*    border-radius: 0!important;*/
-/*}*/
+.showRoute {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+}
 </style>

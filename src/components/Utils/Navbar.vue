@@ -30,24 +30,24 @@
                         {{ authorization.getCurrentUser.username }}
                     </v-btn>
                 </template>
-                <v-list class="">
+                <v-list>
                     <v-list-item>
                         <v-list-item-title>
-                            <router-link to="/profile">
+                            <router-link to="/profile" class="text-decoration-none">
                                 <v-btn prepend-icon="mdi-account" variant="text" color="#112A46">Profil</v-btn>
                             </router-link>
                         </v-list-item-title>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-title>
-                            <router-link to="/add-dynamic-point">
+                            <router-link to="/add-dynamic-point" class="text-decoration-none">
                               <v-btn prepend-icon="mdi-plus" variant="text" color="#112A46">Dodaj punkt</v-btn>
                             </router-link>
                         </v-list-item-title>
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-title>
-                            <v-btn prepend-icon="mdi-logout" variant="text" color="#112A46" @click="authorization.logout">Wyloguj się</v-btn>
+                            <v-btn prepend-icon="mdi-logout" variant="text" color="#112A46" class="text-decoration-none" @click="authorization.logout">Wyloguj się</v-btn>
                         </v-list-item-title>
                     </v-list-item>
                 </v-list>

@@ -32,7 +32,13 @@
             </v-menu>
             <v-list-item link v-if="points.currentPoint.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="points.currentPoint.website" target="_blank">{{ points.getShortenedWebsite(points.currentPoint.website) }}</a></v-list-item>
             <v-list-item v-if="points.currentPoint.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>{{ points.currentPoint.phoneNumber }}</v-list-item>
-            <v-list-item v-if="points.currentPoint?.lat && points.currentPoint?.lon"><v-btn @click="points.setRouteToPoint(points.currentPoint.lat, points.currentPoint.lon)" variant="flat" color="green">Trasa</v-btn></v-list-item>
+            <v-list-item
+                v-if="points.currentPoint?.lat && points.currentPoint?.lon">
+                <v-btn
+                    @click="points.setRouteToPoint(points.currentPoint.lat, points.currentPoint.lon)"
+                    :loading="points.disableSetRouteBtnDetail"
+                    :disabled="points.disableSetRouteBtnDetail"
+                    variant="flat" color="green" class="my-2">Trasa</v-btn></v-list-item>
         </v-list>
         <WasteTypesChips mode="detail" :is-dynamic="false" :waste-types="points.currentPoint.wasteTypes"></WasteTypesChips>
         <Comments :pointId="points.currentPoint.id"></Comments>
