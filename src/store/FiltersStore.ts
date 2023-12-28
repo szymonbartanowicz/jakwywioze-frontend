@@ -13,7 +13,7 @@ interface Filters {
     itemsPerPage: number,
     addDynamicPoints: boolean,
 }
-interface City {
+export interface City {
     id: number,
     name: string,
     voivodeship: string,
@@ -42,6 +42,9 @@ export const useFiltersStore = defineStore('filters', () => {
     const disableSearchBtn = ref(false)
 
     async function getCities(city: string = '') {
+        if (typeof city === 'object') {
+            return
+        }
         if (city?.length < 3) {
             cities.value = []
             return

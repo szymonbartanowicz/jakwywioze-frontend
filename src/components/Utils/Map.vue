@@ -1,5 +1,5 @@
 <template>
-    <div id="map"></div>
+    <div id="map" class="sticky"></div>
 </template>
 
 <script setup lang="ts">

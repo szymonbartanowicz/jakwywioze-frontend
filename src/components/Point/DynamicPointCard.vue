@@ -3,7 +3,7 @@
         <v-card-title class="text-left mt-2 ml-1">{{ points.currentPoint?.name }}</v-card-title>
         <v-card-text class="text-left mt-2 ml-1">{{ points.currentPoint.dynamicPointInfo?.description }}</v-card-text>
         <v-list class="text-left d-block" density="compact">
-            <v-list-item v-if="points.currentPoint?.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ address }}</v-list-item>
+            <v-list-item v-if="points.currentPoint?.city"><v-icon icon="mdi-map-marker" class="mr-2" color="#0000FF"></v-icon>{{ address }}</v-list-item>
             <v-list-item v-if="points.currentPoint?.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>{{ points.currentPoint?.phoneNumber }}</v-list-item>
             <v-list-item><v-icon icon="mdi-calendar-range" class="mr-2"></v-icon>{{ dates }}</v-list-item>
             <v-list-item v-if="points.currentPoint?.lat && points.currentPoint?.lon">

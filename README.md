@@ -15,5 +15,20 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Used libraries
+- vuetify
+  - https://vuetifyjs.com
+- vue-router
+  - https://router.vuejs.org/
+- v-calendar
+  - https://vcalendar.io/
+- pinia
+  - https://pinia.vuejs.org/
+- moment
+  - https://momentjs.com/
+- leaflet
+  - https://leafletjs.com/
+- axios
+  - https://axios-http.com/docs/intro
+- jwt-decode
+  - https://www.npmjs.com/package/jwt-decode

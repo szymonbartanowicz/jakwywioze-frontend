@@ -7,3 +7,4 @@ import VCalendar from 'v-calendar';
 import 'v-calendar/style.css';
 
 createApp(App).use(router).use(vuetify).use(createPinia()).use(VCalendar).mount('#app')
+

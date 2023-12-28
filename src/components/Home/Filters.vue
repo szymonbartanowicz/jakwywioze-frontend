@@ -94,7 +94,7 @@ const points = usePointsStore()
 
 async function handleCity() {
     await filters.getCities(filters.currentCityName)
-    if (filters.cities.length === 1) {
+    if (filters.cities.length > 0) {
         filters.currentCityName  = filters.cities[0].name
         filters.setCity(filters.cities[0])
     }

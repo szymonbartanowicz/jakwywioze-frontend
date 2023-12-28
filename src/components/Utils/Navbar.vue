@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app :elevation="2" color="blue1" class="custom-navbar">
+  <v-app-bar app :elevation="2" color="blue1" class="custom-navbar" id="header">
     <v-container>
       <v-row align="center">
         <v-col cols="2 ml-10 ml-sm-0">
@@ -61,10 +61,29 @@
 <script lang="ts" setup>
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import {useFiltersStore} from "@/store/FiltersStore";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const authorization = useAuthorizationStore();
 const filters = useFiltersStore();
 
-const drawer = ref(false)
+onMounted(() => {
+    let lastScrollTop = 0;
+    const header = document.getElementById('header');
+    const headerHeight = 64;
+
+    window.addEventListener('scroll', function() {
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > lastScrollTop && currentScroll > headerHeight) {
+            // Scrolling down, hide the header
+            header.style.top = `-${headerHeight}px`;
+        } else {
+            // Scrolling up or at the top, show the header
+            header.style.top = '0';
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+    });
+})
+
 </script>

@@ -12,6 +12,7 @@ import Navbar from '@/components/Utils/Navbar.vue';
 import Footer from '@/components/Utils/Footer.vue';
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import {useFiltersStore} from "@/store/FiltersStore";
+import PointCard from "@/components/Point/PointCard.vue";
 
 const authorization = useAuthorizationStore()
 const filters = useFiltersStore()
@@ -33,5 +34,9 @@ onMounted(() => {
 
 .v-application__wrap  > .v-container {
     margin-top: 100px;
+}
+
+html, head, body {
+    overflow: visible!important;
 }
 </style>

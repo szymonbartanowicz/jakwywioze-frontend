@@ -181,7 +181,6 @@ export const usePointsStore = defineStore('points', () => {
         try {
             if (confirm('Czy jesteś pewnien?')) {
                 await axios.delete(`/comments/${commentId}`)
-                console.log('usunieto')
                 await getComments(pointId)
             }
         } catch (error) {

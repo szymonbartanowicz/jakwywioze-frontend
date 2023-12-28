@@ -15,7 +15,7 @@ const points = usePointsStore()
 const props = defineProps({
     wasteTypes: {
         type: Object as PropType<wasteType[]>,
-        required: true,
+        required: false,
     },
     mode: {
         type: String,
@@ -34,10 +34,10 @@ onMounted(() => {
         wasteTypes.value = points.getWasteTypesMatchingFilters(props.wasteTypes)
     }
     else if (props.mode === 'detail' && !props.isDynamic) {
-        wasteTypes.value = props.wasteTypes
+        wasteTypes.value = points.currentPoint.wasteTypes
     }
     else {
-        wasteTypes.value = props.wasteTypes
+        wasteTypes.value = points.currentPoint.wasteTypes.concat(points.currentPoint.dynamicPointInfo.additionalWasteTypes)
     }
 })
 </script>
