@@ -2,8 +2,8 @@ import axios from "axios";
 import { useAuthorizationStore } from "@/store/AuthorizationStore";
 
 const instance = axios.create({
-    // baseURL: process.env.VUE_APP_BACKEND_URL || 'http://localhost:8081',
-    baseURL: 'http://localhost:8081',
+    baseURL: process.env.VUE_APP_BACKEND_URL || 'http://localhost:8081',
+    // baseURL: 'http://localhost:8081',
 });
 
 instance.interceptors.request.use((config) => {

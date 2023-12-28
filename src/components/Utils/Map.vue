@@ -1,13 +1,16 @@
 <template>
-    <div id="map" class="sticky"></div>
+  <div id="map" class="sticky"></div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted } from 'vue';
+import {createApp, defineProps, onMounted} from 'vue';
+import vuetify from "@/vuetify/vuetify";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { usePointsStore } from '@/store/PointsStore';
 import { useFiltersStore } from '@/store/FiltersStore';
+import PointPopupContent from "@/components/Utils/PointPopupContent.vue";
+import router from "@/router";
 
 const props = defineProps<{ mode: string }>();
 const points = usePointsStore();
@@ -32,7 +35,19 @@ function setMarkers(map: L.Map) {
 }
 
 function getPopupContent(pointName: string, pointId: number) {
-    return `<a href='/points/${pointId}' target="_blank"><span>${pointName}</span></a>`
+  const app = createApp(PointPopupContent, {
+    pointName,
+    pointId,
+  }).use(vuetify).use(router);
+
+  const dummyElement = document.createElement('div');
+  app.mount(dummyElement);
+
+  const content = dummyElement.outerHTML;
+
+  app.unmount();
+
+  return content;
 }
 
 function setUserMarker(map: L.Map) {
@@ -53,17 +68,17 @@ const pointIcon = L.icon({
 });
 
 const dynamicPointIcon = L.icon({
-    iconUrl: require('@/assets/images/map-marker-blue.svg'),
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -16],
+  iconUrl: require('@/assets/images/map-marker-blue.svg'),
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -16],
 });
 
 const userIcon = L.icon({
-    iconUrl: require('@/assets/images/map-marker-red.svg'),
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -16],
+  iconUrl: require('@/assets/images/map-marker-red.svg'),
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -16],
 });
 
 function getMarkers(mode: string) {
