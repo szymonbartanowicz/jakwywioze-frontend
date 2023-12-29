@@ -10,7 +10,7 @@
                 <span>{{ comment.user }}</span>
                 <span> &bull; </span>
                 <span>{{ moment(comment.createdAt).add(1, 'hours').fromNow() }}</span>
-                <a v-if="authorization.currentUser?.id === comment.userId" class="ml-1 text-caption text-grey-darken-2" href="" @click.prevent="points.deleteComment(comment.id, <number>props.pointId)"> usuń</a>
+                <a v-if="authorization.currentUser?.id === comment.userId" class="ml-1 text-caption text-red" href="" @click.prevent="points.deleteComment(comment.id, <number>props.pointId)"> usuń</a>
             </div>
             <p class="text-body-2">{{ comment.text }}</p>
         </div>

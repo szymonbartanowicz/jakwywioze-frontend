@@ -22,7 +22,6 @@
                       <v-icon @click="setClosestCity()" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
                   </template>
               </v-combobox>
-<!--            <v-text-field :rules="cityRules" v-model="points.dynamicPointCity" label="Miasto"></v-text-field>-->
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field :rules="streetRules" v-model="points.dynamicPointStreet" label="Ulica i numer"></v-text-field>
@@ -38,10 +37,11 @@
                       clearable
                       label="Rodzaj odpadów"
                       :items="filters.wasteTypesNames"
+                      :rules="wasteTypesRules"
               ></v-autocomplete>
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="points.dynamicPointAdditionalWasteTypes" label="Inne rodzaje po przecinku, np. typ1, typ2, typ3"></v-text-field>
+            <v-text-field :rules="wasteTypesRules" v-model="points.dynamicPointAdditionalWasteTypes" label="Inne rodzaje po przecinku, np. typ1, typ2, typ3"></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea :rules="descriptionRules" v-model="points.dynamicPointDescription" label="Opis"></v-textarea>
@@ -115,6 +115,10 @@ const descriptionRules = [
 
 const endDateRules = [
     () => !moment(points.dynamicPointEndDate).isBefore(points.dynamicPointStartDate) || 'Data do nie może być przed Datą od',
+]
+
+const wasteTypesRules = [
+    () => !!points.dynamicPointAdditionalWasteTypes || !!points.dynamicPointWasteTypes.length || 'Co najmniej jeden rodzaj odpadów jest wymagany',
 ]
 
 const filters = useFiltersStore()

@@ -3,18 +3,11 @@
         <v-list class="text-left">
             <v-list-item><span>Nazwa użytkownika: </span><span class="font-weight-bold">{{ authorization.currentUser.username }}</span></v-list-item>
             <v-list-item><span>Email: </span><span class="font-weight-bold">{{ authorization.currentUser.email }}</span></v-list-item>
+            <v-list-item><span>Twoje punkty dynamiczne:</span></v-list-item>
         </v-list>
-        <v-list v-if="points.dynamicPoints.length" class="text-left">
-                <v-list-item>Punkty dynamiczne:</v-list-item>
-                <router-link v-for="dynamicPoint in points.dynamicPoints" :to="{
-                                name: 'point',
-                                params: {
-                                  id: dynamicPoint.id
-                                }
-                              }">
-                    <v-list-item class="text-h5 text-black">{{ dynamicPoint.name }}</v-list-item>
-                </router-link>
-        </v-list>
+        <v-row v-if="points.dynamicPoints.length" class="px-4">
+            <Point v-for="point in points.dynamicPoints" :key="point.id" :point="point"></Point>
+        </v-row>
     </v-container>
 </template>
 
@@ -22,6 +15,7 @@
 import {useAuthorizationStore} from "@/store/AuthorizationStore";
 import {onMounted} from "vue";
 import {usePointsStore} from "@/store/PointsStore";
+import Point from "@/components/Home/Point.vue";
 
 const authorization = useAuthorizationStore()
 const points = usePointsStore()

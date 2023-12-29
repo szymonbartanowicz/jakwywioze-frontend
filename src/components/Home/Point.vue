@@ -27,7 +27,7 @@
         </v-card-title>
         <WasteTypesChips mode="list" :waste-types="point.wasteTypes"></WasteTypesChips>
         <v-list class="text-left d-block" density="compact">
-            <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2"></v-icon>{{ point.city }}</v-list-item>
+            <v-list-item v-if="point.city"><v-icon icon="mdi-map-marker" class="mr-2" :color="point.isDynamic ? '#0000FF' : 'black'"></v-icon>{{ point.city }}</v-list-item>
             <CurrentAvailability v-if="point.openingHours" :opening-hours="point.openingHours" class="ml-4"></CurrentAvailability>
             <v-list-item link v-if="point.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="point.website" target="_blank">{{ points.getShortenedWebsite(point.website) }}</a></v-list-item>
             <v-list-item v-if="point.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
