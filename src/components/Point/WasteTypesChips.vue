@@ -37,7 +37,7 @@ onMounted(() => {
         wasteTypes.value = points.currentPoint.wasteTypes
     }
     else {
-        wasteTypes.value = points.currentPoint.wasteTypes.concat(points.currentPoint.dynamicPointInfo.additionalWasteTypes)
+        wasteTypes.value = points.currentPoint.wasteTypes.concat(points.currentPoint.dynamicPointInfo.additionalWasteTypes.filter(el => el))
     }
 })
 </script>

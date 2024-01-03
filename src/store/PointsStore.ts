@@ -24,7 +24,16 @@ export interface Point {
     type: string,
     imageLink: string,
     wasteTypes: wasteType[],
-    isDynamic: boolean
+    isDynamic: boolean,
+    phoneNumber: string,
+    dynamicPointInfo: {
+        description: string,
+        startDate: Date,
+        endDate: Date,
+        id: number,
+        user: number,
+        additionalWasteTypes: string
+    }
 }
 
 interface currentAvailabilityData {
@@ -59,10 +68,14 @@ export const usePointsStore = defineStore('points', () => {
     const authorization = useAuthorizationStore()
     const dynamicPoints = ref([])
     const showAddedPointAlert = ref(false)
+    const showEditedPointAlert = ref(false)
+    const showDeletedPointAlert = ref(false)
     const disableSetRouteBtnList = ref(false)
     const disableSetRouteBtnDetail = ref(false)
     const disableAddDynamicPointBtn = ref(false)
     const addDynamicPointError = ref('')
+    const addingComment = ref(false)
+    const editedDynamicPoint = ref<Point>()
     async function getPoints() {
         filters.disableSearchBtn = true
         isLoading.value = true
@@ -75,7 +88,7 @@ export const usePointsStore = defineStore('points', () => {
         filters.disableSearchBtn = false
     }
 
-    async function getPoint(pointId: string | string[]) {
+    async function getPoint(pointId: string | number | string[]) {
         const response = await axios.get(`/points/${pointId}`)
         currentPoint.value = response.data
         return response.data
@@ -84,7 +97,8 @@ export const usePointsStore = defineStore('points', () => {
     function openingHoursValidated(openingHours: string): boolean {
         if (!openingHours.length) return false;
         const openingHoursArray = openingHours.split(';')
-        const regex = /^(?:(\d{1,2}:\d{2}–\d{1,2}:\d{2})|0)(?:;(?:\d{1,2}:\d{2}–\d{1,2}:\d{2}|0)){6}$/
+        // const regex = /^(?:(\d{1,2}:\d{2}–\d{1,2}:\d{2})|0)(?:;(?:\d{1,2}:\d{2}–\d{1,2}:\d{2}|0)){6}$/
+        const regex = /^(?:(\d{1,2}:\d{2}[–-]\d{1,2}:\d{2})|0)(?:;(?:\d{1,2}:\d{2}[–-]\d{1,2}:\d{2}|0)){6}$/
         return regex.test(openingHours);
     }
 
@@ -100,11 +114,11 @@ export const usePointsStore = defineStore('points', () => {
         const currentTime = moment().format('HH:mm')
         let currentDay = moment().weekday()
         const todayFromAndTo = openingHoursArray[currentDay]
-        const [todayFrom, todayTo] = openingHoursArray[currentDay].split('–')
+        const [todayFrom, todayTo] = openingHoursArray[currentDay].split(/[-–]/)
         if (todayFromAndTo == '0' || currentTime < todayFrom || currentTime > todayTo) {
             data.status = 'closed'
             if (currentTime < todayFrom) {
-                data.info = `Otwarcie ${config.weekDays[currentDay]} ${openingHoursArray[currentDay].split('–')[0]}`
+                data.info = `Otwarcie ${config.weekDays[currentDay]} ${openingHoursArray[currentDay].split(/[-–]/)[0]}`
             }
             else {
                 let nextDay = currentDay += 1 % 6
@@ -114,7 +128,7 @@ export const usePointsStore = defineStore('points', () => {
                     i++
                     nextFrom = openingHoursArray[i % 6]
                 }
-                data.info = `Otwarcie ${config.weekDays[i % 6]} ${openingHoursArray[i % 6].split('–')[0]}`
+                data.info = `Otwarcie ${config.weekDays[i % 6]} ${openingHoursArray[i % 6].split(/[-–]/)[0]}`
             }
         }
         else {
@@ -166,6 +180,7 @@ export const usePointsStore = defineStore('points', () => {
         if (!validated.valid) {
             return
         }
+        addingComment.value = true
         const response = await axios.post('/comments', {
             text: comment.value,
             point: pointId,
@@ -174,6 +189,7 @@ export const usePointsStore = defineStore('points', () => {
         comments.value = response.data
         await getComments(pointId)
         comment.value = ''
+        addingComment.value = false
         return response.data
     }
 
@@ -223,16 +239,16 @@ export const usePointsStore = defineStore('points', () => {
         disableSetRouteBtnDetail.value = false
     }
 
+    const dynamicPointId = ref()
     const dynamicPointName = ref('')
     const dynamicPointCity = ref('')
     const dynamicPointStreet = ref('')
-    const dynamicPointZipcode = ref('')
     const dynamicPointPhone = ref('')
     const dynamicPointDescription = ref('')
     const dynamicPointStartDate = ref(new Date())
     const dynamicPointEndDate = ref(new Date())
     const dynamicPointAdditionalWasteTypes = ref('')
-    const dynamicPointWasteTypes:Ref<String[]> = ref([])
+    const dynamicPointWasteTypes:Ref<string[]> = ref([])
 
     async function addDynamicPoint(event: SubmitEventPromise) {
         const validated = await event
@@ -246,7 +262,6 @@ export const usePointsStore = defineStore('points', () => {
                 name: dynamicPointName.value,
                 city: dynamicPointCity.value,
                 street: dynamicPointStreet.value,
-                zipcode: dynamicPointZipcode.value,
                 phoneNumber: dynamicPointPhone.value,
                 wasteTypes: dynamicPointWasteTypes.value,
                 dynamicPointInfo: {
@@ -259,7 +274,7 @@ export const usePointsStore = defineStore('points', () => {
             });
             if (typeof response === 'object') {
                 showAddedPointAlert.value = true
-                await router.push({name: 'home'})
+                await router.push({name: 'profile'})
             }
         } catch (error) {
             addDynamicPointError.value = 'Nie udało się znaleźć lokalizacji, wpisz poprawne dane.'
@@ -267,10 +282,74 @@ export const usePointsStore = defineStore('points', () => {
         disableAddDynamicPointBtn.value = false
     }
 
+    async function deleteDynamicPoint(id: number) {
+        try {
+            if (confirm('Czy jesteś pewnien?')) {
+                await axios.delete(`/points/${id}`)
+                if (authorization.currentUser?.id) {
+                    await getDynamicPoints(authorization.currentUser?.id)
+                }
+                showDeletedPointAlert.value = true
+                await router.push({name: 'profile'})
+            }
+        } catch (error) {
+            //
+        }
+    }
+
     async function getDynamicPoints(userId: number) {
         const response = await axios.get(`/points/user/${userId}`)
         dynamicPoints.value = response.data
         return response.data
+    }
+
+    async function editDynamicPoint(event: SubmitEventPromise) {
+        const validated = await event
+        if (!validated.valid) {
+            return
+        }
+        try {
+            addDynamicPointError.value = ''
+            disableAddDynamicPointBtn.value = true
+            const response = await axios.put("/points", {
+                id: dynamicPointId.value,
+                name: dynamicPointName.value,
+                city: dynamicPointCity.value,
+                street: dynamicPointStreet.value,
+                phoneNumber: dynamicPointPhone.value,
+                wasteTypes: dynamicPointWasteTypes.value,
+                dynamicPointInfo: {
+                    description: dynamicPointDescription.value,
+                    startDate: dynamicPointStartDate.value,
+                    endDate: dynamicPointEndDate.value,
+                    additionalWasteTypes: dynamicPointAdditionalWasteTypes.value.split(','),
+                },
+            });
+            if (typeof response === 'object') {
+                showEditedPointAlert.value = true
+                await router.push({name: 'profile'})
+            }
+        } catch (error) {
+            addDynamicPointError.value = 'Nie udało się znaleźć lokalizacji, wpisz poprawne dane.'
+        }
+        disableAddDynamicPointBtn.value = false
+    }
+
+    async function setDynamicPointValues(id: number | string | string[]) {
+        await getPoint(id)
+        if (currentPoint.value) {
+            dynamicPointId.value = currentPoint.value.id
+            dynamicPointName.value = currentPoint.value.name
+            dynamicPointCity.value = currentPoint.value.city
+            dynamicPointStreet.value = currentPoint.value.street
+            dynamicPointPhone.value = currentPoint.value.phoneNumber
+            dynamicPointDescription.value = currentPoint.value.dynamicPointInfo.description
+            dynamicPointStartDate.value = currentPoint.value.dynamicPointInfo.startDate
+            dynamicPointEndDate.value = currentPoint.value.dynamicPointInfo.endDate
+            dynamicPointWasteTypes.value = currentPoint.value.wasteTypes.map((el) => el.name)
+            dynamicPointAdditionalWasteTypes.value = currentPoint.value.dynamicPointInfo.additionalWasteTypes.toString()
+        }
+
     }
 
     return {
@@ -286,7 +365,6 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointName,
         dynamicPointCity,
         dynamicPointStreet,
-        dynamicPointZipcode,
         dynamicPointPhone,
         dynamicPointDescription,
         dynamicPointStartDate,
@@ -295,10 +373,13 @@ export const usePointsStore = defineStore('points', () => {
         dynamicPointWasteTypes,
         dynamicPoints,
         showAddedPointAlert,
+        showEditedPointAlert,
+        showDeletedPointAlert,
         disableSetRouteBtnList,
         disableSetRouteBtnDetail,
         disableAddDynamicPointBtn,
         addDynamicPointError,
+        addingComment,
         deleteComment,
         getPoints,
         getAvailability,
@@ -310,6 +391,9 @@ export const usePointsStore = defineStore('points', () => {
         getOpeningHoursForDay,
         setRouteToPoint,
         addDynamicPoint,
-        getDynamicPoints
+        getDynamicPoints,
+        deleteDynamicPoint,
+        editDynamicPoint,
+        setDynamicPointValues,
     }
 })

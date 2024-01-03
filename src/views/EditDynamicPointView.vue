@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <dynamic-point-form></dynamic-point-form>
-  </v-container>
+    <v-container>
+        <dynamic-point-form mode="edit"></dynamic-point-form>
+    </v-container>
 </template>
 
 <script lang="ts" setup>

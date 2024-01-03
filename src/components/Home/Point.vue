@@ -32,18 +32,34 @@
             <v-list-item link v-if="point.website"><v-icon icon="mdi-web" class="mr-2"></v-icon><a :href="point.website" target="_blank">{{ points.getShortenedWebsite(point.website) }}</a></v-list-item>
             <v-list-item v-if="point.phoneNumber"><v-icon icon="mdi-phone" class="mr-2"></v-icon>
                 {{ point.phoneNumber }}</v-list-item>
+            <v-list-item class="pl-2 my-2">
+                <v-btn
+                    :loading="points.disableSetRouteBtnList"
+                    :disabled="points.disableSetRouteBtnList"
+                    @click="points.setRouteToPoint(point.lat, point.lon)"
+                    variant="flat"
+                    color="green"
+                    class="ml-2 showRoute">
+                    Trasa
+                </v-btn>
+                <router-link :to="{
+                            name: 'edit-dynamic-point',
+                            params: {
+                              id: point.id
+                            }
+                          }">
+                    <v-btn
+                        v-if="point.isDynamic && point.dynamicPointInfo.user === authorization.currentUser?.id"
+                        variant="flat" color="blue2" class="my-2 ml-2">Edytuj
+                    </v-btn>
+                </router-link>
+                <v-btn
+                    v-if="point.isDynamic && point.dynamicPointInfo.user === authorization.currentUser?.id"
+                    @click="points.deleteDynamicPoint(point.id)"
+                    variant="flat" color="red" class="ml-2 delete">Usuń
+                </v-btn>
+            </v-list-item>
         </v-list>
-        <v-card-actions class="float-right pa-4">
-            <v-btn
-                :loading="points.disableSetRouteBtnList"
-                :disabled="points.disableSetRouteBtnList"
-                @click="points.setRouteToPoint(point.lat, point.lon)"
-                variant="flat"
-                color="green"
-                class="ml-2 showRoute">
-                Trasa
-            </v-btn>
-        </v-card-actions>
     </v-card>
     </v-col>
 </template>
@@ -52,6 +68,8 @@ import { defineProps, PropType } from 'vue';
 import { usePointsStore, Point } from '@/store/PointsStore'
 import CurrentAvailability from "@/components/Point/CurrentAvailability.vue";
 import WasteTypesChips from "@/components/Point/WasteTypesChips.vue";
+import {useAuthorizationStore} from "@/store/AuthorizationStore";
+const authorization = useAuthorizationStore()
 
 const points = usePointsStore()
 const props = defineProps({
@@ -68,9 +86,21 @@ const props = defineProps({
     color: inherit;
 }
 
-.showRoute {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
-}
+/*.showRoute {*/
+/*    position: absolute;*/
+/*    bottom: 24px;*/
+/*    right: 24px;*/
+/*}*/
+
+/*.edit {*/
+/*    position: absolute;*/
+/*    bottom: 24px;*/
+/*    right: 24px;*/
+/*}*/
+
+/*.delete {*/
+/*    position: absolute;*/
+/*    bottom: 24px;*/
+/*    !*right: 24px;*!*/
+/*}*/
 </style>

@@ -10,6 +10,7 @@ import SendResetPasswordEmail from "@/views/SendResetPasswordEmail.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import Profile from "@/views/Profile.vue";
 import AddDynamicPoint from "@/views/AddDynamicPoint.vue";
+import EditDynamicPointView from "@/views/EditDynamicPointView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -66,6 +67,19 @@ const routes: Array<RouteRecordRaw> = [
     component: AddDynamicPoint,
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path: '/edit-dynamic-point/:id',
+    name: 'edit-dynamic-point',
+    component: EditDynamicPointView,
+    meta: {
+      requiresAuth: true
+    },
+    beforeEnter: async  (to, from, next) => {
+      const points = usePointsStore() ;
+      await points.setDynamicPointValues(to.params.id)
+      next()
     }
   },
   {
