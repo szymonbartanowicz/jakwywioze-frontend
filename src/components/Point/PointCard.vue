@@ -38,7 +38,9 @@
                     @click="points.setRouteToPoint(points.currentPoint.lat, points.currentPoint.lon)"
                     :loading="points.disableSetRouteBtnDetail"
                     :disabled="points.disableSetRouteBtnDetail"
-                    variant="flat" color="green" class="my-2">Trasa</v-btn></v-list-item>
+                    variant="flat" color="green" class="my-2">Trasa
+                </v-btn>
+            </v-list-item>
         </v-list>
         <WasteTypesChips mode="detail" :is-dynamic="false" :waste-types="points.currentPoint.wasteTypes"></WasteTypesChips>
         <Comments :pointId="points.currentPoint.id"></Comments>
