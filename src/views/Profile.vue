@@ -61,12 +61,6 @@
             <v-card-subtitle class="text-center grey--text">
                 <span>{{ authorization.currentUser.email }}</span>
             </v-card-subtitle>
-            <v-card-text>
-                <v-card color="blue1">
-                    <v-card-title>Punkty Dynamiczne</v-card-title>
-                    <v-card-text :style="{ fontSize: '20px' }">{{ points.dynamicPoints.length }}</v-card-text>
-                </v-card>
-            </v-card-text>
         </v-card>
         <v-row v-if="points.dynamicPoints.length" class="px-4">
             <Point v-for="point in points.dynamicPoints" :key="point.id" :point="point"></Point>
