@@ -14,10 +14,12 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     const loginEmail = ref('')
     const loginPassword = ref('')
     const loginEmailRules = [
+        (v: string) => v.length <= 255 || 'Login może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole email jest wymagane',
         (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
     ]
     const loginPasswordRules = [
+        (v: string) => v.length <= 255 || 'Hasło może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków'
     ]
@@ -30,30 +32,37 @@ export const useAuthorizationStore = defineStore('authorization', () => {
     const resetPasswordPassword = ref('')
     const resetPasswordConfirmPassword = ref('')
     const registerUsernameRules = [
+        (v: string) => v.length <= 255 || 'Login może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole login jest wymagane'
     ]
     const registerEmailRules = [
+        (v: string) => v.length <= 255 || 'Email może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole email jest wymagane',
         (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
     ]
     const registerPasswordRules = [
+        (v: string) => v.length <= 255 || 'Hasło może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków'
     ]
     const registerConfirmPasswordRules = [
+        (v: string) => v.length <= 255 || 'Powtórz hasło może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
         (v: string) => v === registerPassword.value || 'Hasła nie są jednakowe'
     ]
     const sendResetPasswordEmailEmailRules = [
+        (v: string) => v.length <= 255 || 'Email może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole email jest wymagane',
         (v: string) => emailRegex.test(v) || 'Nieprawidłowy format maila',
     ]
     const resetPasswordPasswordRules = [
+        (v: string) => v.length <= 255 || 'Hasło może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
     ]
     const resetPasswordConfirmPasswordRules = [
+        (v: string) => v.length <= 255 || 'Hasło może posiadać maksymalnie 255 znaków',
         (v: string) => !!v || 'Pole powtórz hasło jest wymagane',
         (v: string) => v.length >= 8 || 'Hasło musi posiadać co najmniej 8 znaków',
         (v: string) => v === resetPasswordPassword.value || 'Hasła nie są jednakowe'
