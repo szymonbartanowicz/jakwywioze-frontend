@@ -16,6 +16,7 @@
                             class="mr-0 mr-sm-3"
                             :disabled="disableSetCityBtn"
                             @blur="handleCity()"
+                            :rules="cityRules"
                     >
                         <template v-slot:prepend-inner>
                             <v-icon @click="setClosestCity()" icon="mdi-crosshairs-gps" size="small" class="mr-2 mt-1"></v-icon>
@@ -102,6 +103,7 @@ const props = defineProps({
 
 const nameRules = [
     (v: string) => !!v || 'Pole nazwa jest wymagane',
+    (v: string) => v.length <= 255 || 'Pole nazwa może posiadać maksymalnie 255 znaków',
 ]
 const cityRules = [
     (v: string) => !!v || 'Pole miasto jest wymagane',
